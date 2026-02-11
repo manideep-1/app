@@ -1,0 +1,150 @@
+{
+  "identity": {
+    "name": "ifelse",
+    "persona": "E1 - The Anti-AI Designer",
+    "tone": "Energetic, High-Performance, Gamified, Developer-Centric",
+    "archetype": "Electric Obsidian (Performance Pro + Neon Twist)"
+  },
+  "typography": {
+    "fonts": {
+      "heading": "Outfit",
+      "body": "Plus Jakarta Sans",
+      "code": "JetBrains Mono"
+    },
+    "installation": "yarn add @fontsource/outfit @fontsource/plus-jakarta-sans @fontsource/jetbrains-mono",
+    "usage": {
+      "h1": "font-heading font-bold text-5xl md:text-7xl tracking-tight leading-none",
+      "h2": "font-heading font-semibold text-3xl md:text-5xl tracking-tight",
+      "h3": "font-heading font-medium text-2xl md:text-3xl",
+      "body": "font-body text-base md:text-lg leading-relaxed text-muted-foreground",
+      "code": "font-code text-sm"
+    }
+  },
+  "colors": {
+    "palette": {
+      "background": "#030712",
+      "foreground": "#f9fafb",
+      "card": "#0f172a",
+      "card_foreground": "#f3f4f6",
+      "primary": "#6366f1",
+      "primary_foreground": "#ffffff",
+      "secondary": "#ec4899",
+      "secondary_foreground": "#ffffff",
+      "accent": "#22d3ee",
+      "accent_foreground": "#0f172a",
+      "muted": "#1e293b",
+      "muted_foreground": "#94a3b8",
+      "border": "#1e293b",
+      "input": "#1e293b",
+      "ring": "#6366f1"
+    },
+    "css_vars": {
+      "light": {
+        "--background": "224 71% 4%",
+        "--foreground": "213 31% 91%",
+        "--card": "222 47% 11%",
+        "--card-foreground": "214 32% 91%",
+        "--popover": "224 71% 4%",
+        "--popover-foreground": "215 20.2% 65.1%",
+        "--primary": "243 75% 59%",
+        "--primary-foreground": "210 40% 98%",
+        "--secondary": "322 81% 60%",
+        "--secondary-foreground": "210 40% 98%",
+        "--muted": "217 33% 17%",
+        "--muted-foreground": "215 20.2% 65.1%",
+        "--accent": "189 94% 43%",
+        "--accent-foreground": "222 47% 11%",
+        "--destructive": "0 62.8% 30.6%",
+        "--destructive-foreground": "210 40% 98%",
+        "--border": "217 33% 17%",
+        "--input": "217 33% 17%",
+        "--ring": "243 75% 59%"
+      },
+      "dark": {
+        "--background": "224 71% 4%",
+        "--foreground": "213 31% 91%",
+        "--card": "222 47% 11%",
+        "--card-foreground": "214 32% 91%",
+        "--popover": "224 71% 4%",
+        "--popover-foreground": "215 20.2% 65.1%",
+        "--primary": "243 75% 59%",
+        "--primary-foreground": "210 40% 98%",
+        "--secondary": "322 81% 60%",
+        "--secondary-foreground": "210 40% 98%",
+        "--muted": "217 33% 17%",
+        "--muted-foreground": "215 20.2% 65.1%",
+        "--accent": "189 94% 43%",
+        "--accent-foreground": "222 47% 11%",
+        "--destructive": "0 62.8% 30.6%",
+        "--destructive-foreground": "210 40% 98%",
+        "--border": "217 33% 17%",
+        "--input": "217 33% 17%",
+        "--ring": "243 75% 59%"
+      }
+    },
+    "forbidden_colors": ["#7351B7", "#1B93A4"]
+  },
+  "layout": {
+    "spacing_scale": "p-1, p-2, p-4, p-6, p-8, p-12, p-16, p-20, p-24, p-32",
+    "container_padding": "px-6 md:px-12 lg:px-24",
+    "border_radius": "rounded-lg",
+    "grids": {
+      "marketing": "grid grid-cols-1 md:grid-cols-12 gap-8",
+      "dashboard": "grid grid-cols-1 md:grid-cols-4 gap-6"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300",
+      "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/90",
+      "outline": "border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+    },
+    "cards": {
+      "default": "bg-card text-card-foreground border border-border/50 shadow-xl backdrop-blur-sm",
+      "hover_effect": "hover:border-primary/50 hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] transition-all duration-300"
+    },
+    "inputs": {
+      "default": "bg-input/50 border-input focus:border-primary focus:ring-primary/30"
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": "bg-background/60 backdrop-blur-xl border border-white/10",
+    "gradients": {
+      "hero_text": "bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent",
+      "surface_sheen": "bg-gradient-to-br from-white/5 to-transparent"
+    },
+    "textures": "Use subtle noise overlay on the background to reduce digital flatness."
+  },
+  "image_urls": {
+    "hero_background": {
+      "url": "https://images.unsplash.com/photo-1748375548801-a78f33241b03?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2ODl8MHwxfHNlYXJjaHwyfHxhYnN0cmFjdCUyMGRpZ2l0YWwlMjBsb2dpYyUyMGZsb3clMjB2aWJyYW50fGVufDB8fHx8MTc3MDgzMTA1NXww&ixlib=rb-4.1.0&q=85",
+      "description": "Abstract digital waves, vibrant and energetic. Use as a hero section background with overlay."
+    },
+    "feature_code_execution": {
+      "url": "https://images.unsplash.com/photo-1604364477640-2866132697ac?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODh8MHwxfHNlYXJjaHwzfHxwcm9ncmFtbWVyJTIwY29kaW5nJTIwbmVvbiUyMGxpZ2h0fGVufDB8fHx8MTc3MDgzMTA1MXww&ixlib=rb-4.1.0&q=85",
+      "description": "Green code light in dark room. Use for the 'Code Execution' or 'IDE' feature section."
+    },
+    "feature_community": {
+      "url": "https://images.unsplash.com/photo-1731587739733-814654058dc3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODh8MHwxfHNlYXJjaHwyfHxwcm9ncmFtbWVyJTIwY29kaW5nJTIwbmVvbiUyMGxpZ2h0fGVufDB8fHx8MTc3MDgzMTA1MXww&ixlib=rb-4.1.0&q=85",
+      "description": "Man in neon light looking at phone. Use for 'Community' or 'Mobile' feature."
+    }
+  },
+  "instructions_to_main_agent": [
+    "1. INSTALL FONTS: Run `yarn add @fontsource/outfit @fontsource/plus-jakarta-sans @fontsource/jetbrains-mono`.",
+    "2. UPDATE TAILWIND CONFIG: Extend the theme with the colors and fonts defined above. Ensure `darkMode: 'class'` is set.",
+    "3. UPDATE CSS VARIABLES: Replace the contents of `src/index.css` with the CSS variables provided in the `colors.css_vars` section. Note: The provided values are in HSL format (without 'hsl()') to work with Tailwind's opacity modifier syntax.",
+    "4. CREATE LAYOUTS: Build the `MarketingLayout` and `DashboardLayout` components using the grid systems defined.",
+    "5. APPLY STYLES: Use the `visual_enhancers` classes for glassmorphism and gradients.",
+    "6. USE IMAGES: Implement the provided image URLs in their respective sections. Use `next/image` if possible, or standard `img` tags if using plain React.",
+    "7. DATA-TESTID: Ensure every interactive element (buttons, inputs, links) has a `data-testid` attribute (e.g., `data-testid='login-btn'`).",
+    "8. FILE EXTENSIONS: Since the environment uses .js, ensure all new components are created as .js files (e.g., `Button.js`, `Hero.js`)."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "Avoid generic 'AI slop' designs. Use the specified 'Electric Obsidian' theme.",
+    "Do not use gradients for dark colors; use them for text or accents only.",
+    "Ensure all interactive elements have hover states and transitions.",
+    "Use 'sonner' for toasts.",
+    "Prioritize Shadcn UI components but customize them to match the 'Electric Obsidian' theme.",
+    "Do not use 'Inter' font. Use 'Outfit' for headings and 'Plus Jakarta Sans' for body."
+  ]
+}
