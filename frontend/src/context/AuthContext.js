@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      fetchUser();
+      fetchUser().catch(() => {});
     } else {
       setLoading(false);
     }
@@ -29,9 +29,9 @@ export const AuthProvider = ({ children }) => {
       const response = await api.get('/auth/me');
       setUser(response.data);
     } catch (error) {
-      console.error('Failed to fetch user:', error);
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -64,8 +64,34 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const sendSignupOtp = async (email) => {
+    await api.post('/auth/send-signup-otp', { email });
+  };
+
+  const registerWithOtp = async (email, otp, username, password, full_name) => {
+    const response = await api.post('/auth/verify-signup-otp', {
+      email,
+      otp,
+      username,
+      password,
+      full_name,
+    });
+    localStorage.setItem('access_token', response.data.access_token);
+    localStorage.setItem('refresh_token', response.data.refresh_token);
+    await fetchUser();
+    return response.data;
+  };
+
+  const loginWithGoogle = async (credential) => {
+    const response = await api.post('/auth/google', { credential });
+    localStorage.setItem('access_token', response.data.access_token);
+    localStorage.setItem('refresh_token', response.data.refresh_token);
+    await fetchUser();
+    return response.data;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, sendSignupOtp, registerWithOtp, loginWithGoogle }}>
       {children}
     </AuthContext.Provider>
   );

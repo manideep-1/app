@@ -3,22 +3,57 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/utils/api';
 import { Button } from '@/components/ui/button';
-import { Code2, LogOut, TrendingUp, CheckCircle2, Clock } from 'lucide-react';
+import IfElseIcon from '@/components/IfElseIcon';
+import { LogOut, TrendingUp, CheckCircle2, Clock, Flame, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+
+const currentYear = new Date().getFullYear();
 
 const DashboardPage = () => {
   const [progress, setProgress] = useState(null);
+  const [activity, setActivity] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { user, logout } = useAuth();
+  const [deleting, setDeleting] = useState(false);
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const { user, loading: authLoading, logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (authLoading) return;
     if (!user) {
       navigate('/login');
       return;
     }
     fetchProgress();
-  }, [user]);
+    fetchActivity(selectedYear);
+  }, [user, authLoading]);
+
+  useEffect(() => {
+    if (!user) return;
+    fetchActivity(selectedYear);
+  }, [selectedYear, user]);
+
+  // Refetch activity when user returns to dashboard (e.g. after submitting) so streak updates
+  useEffect(() => {
+    if (!user) return;
+    const onFocus = () => {
+      fetchProgress();
+      fetchActivity(selectedYear);
+    };
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
+  }, [user, selectedYear]);
 
   const fetchProgress = async () => {
     try {
@@ -31,11 +66,49 @@ const DashboardPage = () => {
     }
   };
 
+  const fetchActivity = async (year) => {
+    try {
+      const response = await api.get('/user/activity', { params: { year } });
+      setActivity(response.data);
+    } catch {
+      setActivity({
+        submission_dates: [],
+        dates_count: {},
+        current_streak: 0,
+        longest_streak: 0,
+        year: year,
+        available_years: [currentYear, currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4],
+      });
+    }
+  };
+
   const handleLogout = () => {
     logout();
     navigate('/');
     toast.success('Logged out successfully');
   };
+
+  const handleDeleteProgress = async () => {
+    setDeleting(true);
+    try {
+      await api.delete('/user/progress');
+      await fetchProgress();
+      await fetchActivity();
+      toast.success('All progress and submissions have been deleted.');
+    } catch (err) {
+      toast.error(err.response?.data?.detail || 'Failed to delete progress');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -45,10 +118,10 @@ const DashboardPage = () => {
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-                <Code2 className="w-5 h-5 text-white" />
+                <IfElseIcon className="w-5 h-5 text-white" />
               </div>
               <span className="font-heading font-bold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent">
-                ifelse
+                If Else
               </span>
             </Link>
             <div className="flex items-center gap-4">
@@ -57,6 +130,32 @@ const DashboardPage = () => {
                   Problems
                 </Button>
               </Link>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="outline" className="border-destructive/50 text-destructive hover:bg-destructive/10" title="Delete all progress">
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Delete progress
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete all progress?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This will permanently delete all your submissions and reset your solved/attempted progress. This action cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => handleDeleteProgress()}
+                      disabled={deleting}
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    >
+                      {deleting ? 'Deleting...' : 'Delete all'}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
               <Button
                 variant="outline"
                 onClick={handleLogout}
@@ -116,6 +215,46 @@ const DashboardPage = () => {
               />
             </div>
 
+            {/* Streak & Activity */}
+            {activity && (
+              <div className="bg-card border border-border/50 rounded-lg p-8 shadow-xl">
+                <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                  <h2 className="font-heading font-semibold text-2xl flex items-center gap-2">
+                    <Flame className="w-7 h-7 text-orange-400" />
+                    Your Streak
+                  </h2>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground mr-2">Year:</span>
+                    {(activity.available_years || [currentYear, currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4]).map((y) => (
+                      <Button
+                        key={y}
+                        variant={selectedYear === y ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSelectedYear(y)}
+                        className={selectedYear === y ? 'bg-primary' : ''}
+                      >
+                        {y}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-8 mb-6">
+                  <div>
+                    <p className="text-sm text-muted-foreground">
+                      {selectedYear === currentYear ? 'Current streak' : `Streak at end of ${selectedYear}`}
+                    </p>
+                    <p className="font-heading font-bold text-3xl text-orange-400">{activity.current_streak} day{activity.current_streak !== 1 ? 's' : ''}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Longest streak in {activity.year}</p>
+                    <p className="font-heading font-bold text-3xl text-muted-foreground">{activity.longest_streak} day{activity.longest_streak !== 1 ? 's' : ''}</p>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground mb-2">Submission activity in {activity.year} (like GitHub contributions)</p>
+                <ActivityCalendarYear datesSet={new Set(activity.submission_dates || [])} year={activity.year} />
+              </div>
+            )}
+
             {/* Progress Breakdown */}
             <div className="bg-card border border-border/50 rounded-lg p-8 shadow-xl" data-testid="progress-breakdown">
               <h2 className="font-heading font-semibold text-2xl mb-6">Progress by Difficulty</h2>
@@ -162,6 +301,96 @@ const DashboardPage = () => {
             </div>
           </div>
         )}
+      </div>
+    </div>
+  );
+};
+
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/** GitHub-style full-year activity grid: 7 rows (Sun–Sat), columns grouped by month with spacing. */
+const ActivityCalendarYear = ({ datesSet, year }) => {
+  const jan1 = new Date(year, 0, 1);
+  const dec31 = new Date(year, 11, 31);
+  const start = new Date(jan1);
+  start.setDate(jan1.getDate() - jan1.getDay());
+  const end = new Date(dec31);
+  end.setDate(dec31.getDate() + (6 - dec31.getDay()));
+  const totalDays = Math.round((end - start) / (24 * 60 * 60 * 1000)) + 1;
+  const numWeeks = Math.ceil(totalDays / 7);
+
+  const grid = Array(7)
+    .fill(null)
+    .map(() => Array(numWeeks).fill(null));
+  const cursor = new Date(start);
+  for (let i = 0; i < totalDays; i++) {
+    const dayOfWeek = cursor.getDay();
+    const weekIndex = Math.floor(i / 7);
+    const key = cursor.toISOString().slice(0, 10);
+    if (cursor >= jan1 && cursor <= dec31) {
+      grid[dayOfWeek][weekIndex] = { key, active: datesSet.has(key) };
+    }
+    cursor.setDate(cursor.getDate() + 1);
+  }
+
+  // First week index that contains any day of each month (for grouping and labels)
+  const firstWeekOfMonth = [];
+  for (let m = 0; m < 12; m++) {
+    const firstDay = new Date(year, m, 1);
+    let wi = 0;
+    for (; wi < numWeeks; wi++) {
+      const weekStart = new Date(start);
+      weekStart.setDate(weekStart.getDate() + wi * 7);
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+      if (weekStart <= firstDay && firstDay <= weekEnd) break;
+      if (weekStart > firstDay) break;
+    }
+    firstWeekOfMonth[m] = Math.min(wi, numWeeks);
+  }
+
+  // Build month blocks: each block is { monthIndex, weekStart, weekEnd }
+  const monthBlocks = [];
+  for (let m = 0; m < 12; m++) {
+    const weekStart = firstWeekOfMonth[m];
+    const weekEnd = m < 11 ? firstWeekOfMonth[m + 1] - 1 : numWeeks - 1;
+    if (weekStart <= weekEnd) monthBlocks.push({ monthIndex: m, weekStart, weekEnd });
+  }
+
+  return (
+    <div className="overflow-x-auto">
+      <div className="flex items-start gap-1.5 min-w-0">
+        <div className="flex flex-col justify-around text-[10px] text-muted-foreground pt-1 shrink-0" style={{ height: 7 * 12 }}>
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
+            <span key={d} className="h-3 leading-3">{d}</span>
+          ))}
+        </div>
+        <div className="flex gap-4">
+          {monthBlocks.map(({ monthIndex, weekStart, weekEnd }) => (
+            <div key={monthIndex} className="flex flex-col gap-1">
+              <span className="text-[10px] text-muted-foreground h-3 leading-3 block mb-0.5">
+                {MONTH_NAMES[monthIndex]}
+              </span>
+              <div className="flex gap-0.5">
+                {Array.from({ length: weekEnd - weekStart + 1 }, (_, i) => weekStart + i).map((wi) => (
+                  <div key={wi} className="flex flex-col gap-0.5">
+                    {Array.from({ length: 7 }, (_, di) => {
+                      const cell = grid[di][wi];
+                      if (!cell) return <div key={di} className="w-3 h-3 rounded-sm bg-transparent shrink-0" />;
+                      return (
+                        <div
+                          key={cell.key}
+                          title={`${cell.key}${cell.active ? ' • activity' : ''}`}
+                          className={`w-3 h-3 rounded-sm shrink-0 ${cell.active ? 'bg-primary' : 'bg-muted/50'}`}
+                        />
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
