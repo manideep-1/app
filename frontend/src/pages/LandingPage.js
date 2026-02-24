@@ -1,9 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Code2, Zap, Trophy, Users } from 'lucide-react';
+import IfElseIcon from '@/components/IfElseIcon';
+import { Zap, Trophy, Users, Youtube, Linkedin, Twitter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/AuthContext';
 
 const LandingPage = () => {
+  const { user, logout } = useAuth();
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
@@ -12,10 +16,10 @@ const LandingPage = () => {
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-                <Code2 className="w-5 h-5 text-white" />
+                <IfElseIcon className="w-5 h-5 text-white" />
               </div>
               <span className="font-heading font-bold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent">
-                ifelse
+                If Else
               </span>
             </Link>
             <div className="flex items-center gap-4">
@@ -24,16 +28,41 @@ const LandingPage = () => {
                   Problems
                 </Button>
               </Link>
-              <Link to="/login" data-testid="nav-login-link">
-                <Button variant="outline" className="border-input hover:bg-accent hover:text-accent-foreground">
-                  Login
-                </Button>
-              </Link>
-              <Link to="/register" data-testid="nav-register-link">
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300">
-                  Get Started
-                </Button>
-              </Link>
+              {user ? (
+                <>
+                  <Link to="/compiler" data-testid="nav-compiler-link">
+                    <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                      Compiler
+                    </Button>
+                  </Link>
+                  <Link to="/dashboard" data-testid="nav-dashboard-link">
+                    <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                      Dashboard
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="outline"
+                    className="border-input hover:bg-accent hover:text-accent-foreground"
+                    onClick={() => logout()}
+                    data-testid="nav-logout-btn"
+                  >
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" data-testid="nav-login-link">
+                    <Button variant="outline" className="border-input hover:bg-accent hover:text-accent-foreground">
+                      Login
+                    </Button>
+                  </Link>
+                  <Link to="/register" data-testid="nav-register-link">
+                    <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300">
+                      Get Started
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -56,16 +85,33 @@ const LandingPage = () => {
                 Elevate your problem-solving skills with ifelse.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link to="/register" data-testid="hero-get-started-btn">
-                  <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300">
-                    Start Practicing Free
-                  </Button>
-                </Link>
-                <Link to="/problems" data-testid="hero-explore-problems-btn">
-                  <Button size="lg" variant="outline" className="border-input hover:bg-accent hover:text-accent-foreground">
-                    Explore Problems
-                  </Button>
-                </Link>
+                {user ? (
+                  <>
+                    <Link to="/problems" data-testid="hero-get-started-btn">
+                      <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300">
+                        Go to Problems
+                      </Button>
+                    </Link>
+                    <Link to="/compiler" data-testid="hero-compiler-btn">
+                      <Button size="lg" variant="outline" className="border-input hover:bg-accent hover:text-accent-foreground">
+                        Compiler
+                      </Button>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/register" data-testid="hero-get-started-btn">
+                      <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300">
+                        Start Practicing Free
+                      </Button>
+                    </Link>
+                    <Link to="/problems" data-testid="hero-explore-problems-btn">
+                      <Button size="lg" variant="outline" className="border-input hover:bg-accent hover:text-accent-foreground">
+                        Explore Problems
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
             <div className="md:col-span-5">
@@ -95,7 +141,7 @@ const LandingPage = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <FeatureCard
-              icon={<Code2 className="w-8 h-8" />}
+              icon={<IfElseIcon className="w-8 h-8" />}
               title="Real-time Code Execution"
               description="Run your code instantly with our blazing-fast execution engine"
               color="primary"
@@ -132,25 +178,131 @@ const LandingPage = () => {
             <p className="font-body text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
               Join thousands of developers mastering their coding interview skills
             </p>
-            <Link to="/register" data-testid="cta-register-btn">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300">
-                Start Your Journey
-              </Button>
-            </Link>
+            {user ? (
+              <Link to="/problems" data-testid="cta-problems-btn">
+                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300">
+                  Go to Problems
+                </Button>
+              </Link>
+            ) : (
+              <Link to="/register" data-testid="cta-register-btn">
+                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300">
+                  Start Your Journey
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border/50 py-8">
+      {/* Footer - four columns: Links, Social, Contact, Legal */}
+      <footer className="border-t border-border/50 bg-card/50 py-12 md:py-14">
         <div className="container mx-auto px-6 md:px-12 lg:px-24">
-          <div className="flex items-center justify-between">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-16">
+            {/* Links */}
+            <div>
+              <h3 className="font-heading font-bold text-foreground mb-4">Links</h3>
+              <ul className="space-y-3">
+                <li>
+                  <Link to="/problems" className="text-sm text-primary hover:text-primary/80 transition-colors">
+                    Problems
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/compiler" className="text-sm text-primary hover:text-primary/80 transition-colors">
+                    Compiler
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/dashboard" className="text-sm text-primary hover:text-primary/80 transition-colors">
+                    Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    href="https://github.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary hover:text-primary/80 transition-colors"
+                  >
+                    How to use ifelse effectively
+                  </a>
+                </li>
+              </ul>
+            </div>
+            {/* Social */}
+            <div>
+              <h3 className="font-heading font-bold text-foreground mb-4">Social</h3>
+              <ul className="space-y-3">
+                <li>
+                  <a
+                    href="https://youtube.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
+                  >
+                    <Youtube className="w-4 h-4 text-red-500" />
+                    YouTube
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://linkedin.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
+                  >
+                    <Linkedin className="w-4 h-4" />
+                    LinkedIn
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://twitter.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
+                  >
+                    <Twitter className="w-4 h-4" />
+                    Twitter
+                  </a>
+                </li>
+              </ul>
+            </div>
+            {/* Contact */}
+            <div>
+              <h3 className="font-heading font-bold text-foreground mb-4">Contact</h3>
+              <a
+                href="mailto:support@ifelse.io"
+                className="text-sm text-foreground hover:text-primary transition-colors"
+              >
+                support@ifelse.io
+              </a>
+            </div>
+            {/* Legal */}
+            <div>
+              <h3 className="font-heading font-bold text-foreground mb-4">Legal</h3>
+              <ul className="space-y-3">
+                <li>
+                  <Link to="/privacy" className="text-sm text-primary hover:text-primary/80 transition-colors">
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/terms" className="text-sm text-primary hover:text-primary/80 transition-colors">
+                    Terms of Service
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-12 pt-8 border-t border-border/50 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <Code2 className="w-5 h-5 text-primary" />
-              <span className="font-heading font-bold text-lg">ifelse</span>
+              <IfElseIcon className="w-5 h-5 text-primary" />
+              <span className="font-heading font-bold text-lg text-foreground">If Else</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              © 2025 ifelse. All rights reserved.
+              © {new Date().getFullYear()} If Else. All rights reserved.
             </p>
           </div>
         </div>

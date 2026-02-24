@@ -14,8 +14,10 @@ export const STATUS_COLORS = {
   accepted: 'text-green-400',
   wrong_answer: 'text-red-400',
   time_limit_exceeded: 'text-yellow-400',
+  memory_limit_exceeded: 'text-amber-400',
   runtime_error: 'text-orange-400',
   compile_error: 'text-red-400',
+  pending: 'text-muted-foreground',
 };
 
 export const STARTER_CODE = {

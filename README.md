@@ -92,38 +92,79 @@ A production-ready coding interview practice platform built with **React** + **F
 
 ### Prerequisites
 - Python 3.11+
-- Node.js 18+ & Yarn
-- MongoDB running locally
+- Node.js 18+ & Yarn (or npm)
+- MongoDB running locally (or use Docker Compose)
 
-### Installation
+### Option A: Run with Docker Compose (recommended for clean install)
 
-1. **Backend Setup**
+From the project root (`/app` or `learning/app`):
+
 ```bash
-cd /app/backend
+docker-compose up -d mongodb    # Start MongoDB
+# Wait for MongoDB to be healthy, then:
+cd backend
+cp .env.example .env            # Edit .env: set MONGO_URL=mongodb://localhost:27017, DB_NAME=ifelse_db
 pip install -r requirements.txt
-python seed_db.py  # Seed database with sample problems
+python seed_db.py               # One-time: seed problems and admin/demo users
+uvicorn server:app --reload --host 0.0.0.0 --port 8000
 ```
 
-2. **Frontend Setup**
+In another terminal (frontend):
+
 ```bash
-cd /app/frontend
+cd frontend
+yarn install   # or npm install
+yarn start     # or npm start
+```
+
+Backend: http://localhost:8000  
+Frontend: http://localhost:3000  
+API docs: http://localhost:8000/docs
+
+### Option B: Full stack with Docker Compose (backend + MongoDB)
+
+```bash
+docker-compose up -d
+# Seed DB once (run from host with backend deps, or exec into backend container):
+# docker-compose exec backend python seed_db.py
+```
+
+Then run frontend locally (see above).
+
+### Option C: Local install (no Docker)
+
+1. **Backend**
+```bash
+cd backend
+pip install -r requirements.txt
+# Create .env with MONGO_URL, DB_NAME, JWT_SECRET (see .env.example)
+python seed_db.py  # One-time: seed database
+uvicorn server:app --reload --port 8000
+```
+
+2. **Frontend**
+```bash
+cd frontend
 yarn install
+yarn start
 ```
 
 3. **Environment Variables**
 
-Backend (`.env`):
+Backend (`.env` in `backend/`). **Required**: `MONGO_URL`, `DB_NAME`. Optional: `JWT_SECRET`, `CORS_ORIGINS`, `GOOGLE_CLIENT_ID`, SMTP vars for email OTP.
 ```env
 MONGO_URL=mongodb://localhost:27017
 DB_NAME=ifelse_db
-JWT_SECRET=your-super-secret-jwt-key
+JWT_SECRET=your-super-secret-jwt-key-change-in-production
 CORS_ORIGINS=*
 ```
 
-Frontend (`.env`):
+Frontend (`.env` in `frontend/`). For local dev, frontend uses `http://localhost:8000` when hostname is localhost.
 ```env
-REACT_APP_BACKEND_URL=https://your-backend-url.com
+REACT_APP_BACKEND_URL=http://localhost:8000
 ```
+
+**Note:** The backend fails fast at startup if `MONGO_URL` or `DB_NAME` are missing.
 
 ---
 

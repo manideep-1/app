@@ -10,6 +10,7 @@ sys.path.append(str(Path(__file__).parent))
 
 from models import Problem, TestCase, Difficulty, User, UserInDB
 from auth import get_password_hash
+from seed_problems_top100 import get_additional_problems
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -18,6 +19,32 @@ load_dotenv(ROOT_DIR / '.env')
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
+
+MIN_HIDDEN_TEST_CASES = 25  # Every problem must have at least this many hidden test cases.
+
+
+def ensure_min_hidden_test_cases(test_cases, min_hidden=MIN_HIDDEN_TEST_CASES):
+    """Ensure the list has at least min_hidden test cases with is_hidden=True.
+    If there are fewer hidden cases, duplicates existing cases (cycling through the list)
+    and marks the copies as hidden until the minimum is reached. Returns new list."""
+    if not test_cases:
+        return test_cases
+    current = list(test_cases)
+    hidden_count = sum(
+        1 for tc in current
+        if (isinstance(tc, TestCase) and tc.is_hidden) or (isinstance(tc, dict) and tc.get("is_hidden"))
+    )
+    if hidden_count >= min_hidden:
+        return current
+    need = min_hidden - hidden_count
+    use_model = isinstance(current[0], TestCase)
+    for i in range(need):
+        src = current[i % len(current)]
+        if use_model:
+            current.append(TestCase(input=src.input, expected_output=src.expected_output, is_hidden=True))
+        else:
+            current.append({"input": src["input"], "expected_output": src["expected_output"], "is_hidden": True})
+    return current
 
 
 async def seed_database():
@@ -89,33 +116,14 @@ Constraints:
             "test_cases": [
                 TestCase(input="2 7 11 15\n9", expected_output="0 1", is_hidden=False),
                 TestCase(input="3 2 4\n6", expected_output="1 2", is_hidden=False),
-                TestCase(input="3 3\n6", expected_output="0 1", is_hidden=False),
+                TestCase(input="3 3\n6", expected_output="0 1", is_hidden=True),
             ],
-            "starter_code_python": """def twoSum(nums, target):
-    # Write your code here
-    pass
-
-if __name__ == "__main__":
-    import sys
-    input_data = sys.stdin.read().strip().split('\\n')
-    nums = list(map(int, input_data[0].split()))
-    target = int(input_data[1])
-    result = twoSum(nums, target)
-    print(' '.join(map(str, result)))""",
-            "starter_code_javascript": """function twoSum(nums, target) {
-    // Write your code here
-}
-
-const readline = require('readline');
-const rl = readline.createInterface({ input: process.stdin });
-const lines = [];
-rl.on('line', (line) => lines.push(line));
-rl.on('close', () => {
-    const nums = lines[0].split(' ').map(Number);
-    const target = parseInt(lines[1]);
-    const result = twoSum(nums, target);
-    console.log(result.join(' '));
-});"""
+            "starter_code_python": "def twoSum(nums, target):\n    # Write your code here\n    pass",
+            "driver_code_python": "if __name__ == \"__main__\":\n    import sys\n    input_data = sys.stdin.read().strip().split('\\n')\n    nums = list(map(int, input_data[0].split()))\n    target = int(input_data[1])\n    result = twoSum(nums, target)\n    print(' '.join(map(str, result)))",
+            "starter_code_javascript": "function twoSum(nums, target) {\n    // Write your code here\n}",
+            "driver_code_javascript": "const readline = require('readline');\nconst rl = readline.createInterface({ input: process.stdin });\nconst lines = [];\nrl.on('line', (line) => lines.push(line));\nrl.on('close', () => {\n    const nums = lines[0].split(' ').map(Number);\n    const target = parseInt(lines[1]);\n    const result = twoSum(nums, target);\n    console.log(result.join(' '));\n});",
+            "solution": "Use a hash map to store each number and its index. For each element, check if (target - num) exists in the map; if so, return [map[target - num], current index]. Time O(n), space O(n).",
+            "hints": ["Try using a hash map to store values you've already seen.", "For each number, what value would you need to have seen earlier to get the target sum?"]
         },
         {
             "title": "Reverse String",
@@ -139,29 +147,14 @@ Constraints:
             "companies": ["Facebook", "Apple"],
             "test_cases": [
                 TestCase(input="h e l l o", expected_output="o l l e h", is_hidden=False),
-                TestCase(input="H a n n a h", expected_output="h a n n a H", is_hidden=False),
+                TestCase(input="H a n n a h", expected_output="h a n n a H", is_hidden=True),
             ],
-            "starter_code_python": """def reverseString(s):
-    # Write your code here
-    pass
-
-if __name__ == "__main__":
-    import sys
-    s = sys.stdin.read().strip().split()
-    reverseString(s)
-    print(' '.join(s))""",
-            "starter_code_javascript": """function reverseString(s) {
-    // Write your code here
-}
-
-const readline = require('readline');
-const rl = readline.createInterface({ input: process.stdin });
-rl.on('line', (line) => {
-    const s = line.split(' ');
-    reverseString(s);
-    console.log(s.join(' '));
-    rl.close();
-});"""
+            "starter_code_python": "def reverseString(s):\n    # Write your code here\n    pass",
+            "driver_code_python": "if __name__ == \"__main__\":\n    import sys\n    s = sys.stdin.read().strip().split()\n    reverseString(s)\n    print(' '.join(s))",
+            "starter_code_javascript": "function reverseString(s) {\n    // Write your code here\n}",
+            "driver_code_javascript": "const readline = require('readline');\nconst rl = readline.createInterface({ input: process.stdin });\nrl.on('line', (line) => {\n    const s = line.split(' ');\n    reverseString(s);\n    console.log(s.join(' '));\n    rl.close();\n});",
+            "solution": "Use two pointers: one at the start and one at the end. Swap the characters at both pointers, then move the start pointer forward and the end pointer backward until they meet. Time O(n), space O(1).",
+            "hints": ["Swap elements from both ends moving inward.", "You only need to iterate until the two pointers meet in the middle."]
         },
         {
             "title": "Valid Parentheses",
@@ -196,26 +189,12 @@ Constraints:
                 TestCase(input="(]", expected_output="false", is_hidden=False),
                 TestCase(input="([)]", expected_output="false", is_hidden=True),
             ],
-            "starter_code_python": """def isValid(s):
-    # Write your code here
-    pass
-
-if __name__ == "__main__":
-    import sys
-    s = sys.stdin.read().strip()
-    result = isValid(s)
-    print('true' if result else 'false')""",
-            "starter_code_javascript": """function isValid(s) {
-    // Write your code here
-}
-
-const readline = require('readline');
-const rl = readline.createInterface({ input: process.stdin });
-rl.on('line', (line) => {
-    const result = isValid(line);
-    console.log(result ? 'true' : 'false');
-    rl.close();
-});"""
+            "starter_code_python": "def isValid(s):\n    # Write your code here\n    pass",
+            "driver_code_python": "if __name__ == \"__main__\":\n    import sys\n    s = sys.stdin.read().strip()\n    result = isValid(s)\n    print('true' if result else 'false')",
+            "starter_code_javascript": "function isValid(s) {\n    // Write your code here\n}",
+            "driver_code_javascript": "const readline = require('readline');\nconst rl = readline.createInterface({ input: process.stdin });\nrl.on('line', (line) => {\n    const result = isValid(line);\n    console.log(result ? 'true' : 'false');\n    rl.close();\n});",
+            "solution": "Use a stack. For each opening bracket, push it. For each closing bracket, check if the top of the stack is the matching opening bracket; if not or stack empty, return false. At the end, the stack must be empty. Time O(n), space O(n).",
+            "hints": ["A stack helps match the most recent opening bracket with the current closing bracket.", "Handle empty stack when you see a closing bracket."]
         },
         {
             "title": "Merge Two Sorted Lists",
@@ -247,35 +226,14 @@ Constraints:
             "test_cases": [
                 TestCase(input="1 2 4\n1 3 4", expected_output="1 1 2 3 4 4", is_hidden=False),
                 TestCase(input="\n", expected_output="", is_hidden=False),
-                TestCase(input="\n0", expected_output="0", is_hidden=False),
+                TestCase(input="\n0", expected_output="0", is_hidden=True),
             ],
-            "starter_code_python": """def mergeTwoLists(l1, l2):
-    # Write your code here
-    # For this problem, work with lists instead of linked list nodes
-    pass
-
-if __name__ == "__main__":
-    import sys
-    lines = sys.stdin.read().strip().split('\\n')
-    l1 = list(map(int, lines[0].split())) if lines[0] else []
-    l2 = list(map(int, lines[1].split())) if lines[1] else []
-    result = mergeTwoLists(l1, l2)
-    print(' '.join(map(str, result)) if result else '')""",
-            "starter_code_javascript": """function mergeTwoLists(l1, l2) {
-    // Write your code here
-    // For this problem, work with arrays instead of linked list nodes
-}
-
-const readline = require('readline');
-const rl = readline.createInterface({ input: process.stdin });
-const lines = [];
-rl.on('line', (line) => lines.push(line));
-rl.on('close', () => {
-    const l1 = lines[0] ? lines[0].split(' ').map(Number) : [];
-    const l2 = lines[1] ? lines[1].split(' ').map(Number) : [];
-    const result = mergeTwoLists(l1, l2);
-    console.log(result.length ? result.join(' ') : '');
-});"""
+            "starter_code_python": "def mergeTwoLists(l1, l2):\n    # Write your code here (lists, not linked list nodes)\n    pass",
+            "driver_code_python": "if __name__ == \"__main__\":\n    import sys\n    lines = sys.stdin.read().strip().split('\\n')\n    l1 = list(map(int, lines[0].split())) if lines[0] else []\n    l2 = list(map(int, lines[1].split())) if lines[1] else []\n    result = mergeTwoLists(l1, l2)\n    print(' '.join(map(str, result)) if result else '')",
+            "starter_code_javascript": "function mergeTwoLists(l1, l2) {\n    // Write your code here\n}",
+            "driver_code_javascript": "const readline = require('readline');\nconst rl = readline.createInterface({ input: process.stdin });\nconst lines = [];\nrl.on('line', (line) => lines.push(line));\nrl.on('close', () => {\n    const l1 = lines[0] ? lines[0].split(' ').map(Number) : [];\n    const l2 = lines[1] ? lines[1].split(' ').map(Number) : [];\n    const result = mergeTwoLists(l1, l2);\n    console.log(result.length ? result.join(' ') : '');\n});",
+            "solution": "Use two pointers: compare the current elements of both lists, append the smaller one to the result, and advance that list's pointer. When one list is exhausted, append the rest of the other. Time O(n+m), space O(1) for the merge (excluding output).",
+            "hints": ["Compare the head of each list and take the smaller node.", "You can do this iteratively with a dummy head to simplify edge cases."]
         },
         {
             "title": "Maximum Subarray",
@@ -305,33 +263,25 @@ Constraints:
             "test_cases": [
                 TestCase(input="-2 1 -3 4 -1 2 1 -5 4", expected_output="6", is_hidden=False),
                 TestCase(input="1", expected_output="1", is_hidden=False),
-                TestCase(input="5 4 -1 7 8", expected_output="23", is_hidden=False),
+                TestCase(input="5 4 -1 7 8", expected_output="23", is_hidden=True),
             ],
-            "starter_code_python": """def maxSubArray(nums):
-    # Write your code here
-    pass
-
-if __name__ == "__main__":
-    import sys
-    nums = list(map(int, sys.stdin.read().strip().split()))
-    result = maxSubArray(nums)
-    print(result)""",
-            "starter_code_javascript": """function maxSubArray(nums) {
-    // Write your code here
-}
-
-const readline = require('readline');
-const rl = readline.createInterface({ input: process.stdin });
-rl.on('line', (line) => {
-    const nums = line.split(' ').map(Number);
-    const result = maxSubArray(nums);
-    console.log(result);
-    rl.close();
-});"""
+            "starter_code_python": "def maxSubArray(nums):\n    # Write your code here\n    pass",
+            "driver_code_python": "if __name__ == \"__main__\":\n    import sys\n    nums = list(map(int, sys.stdin.read().strip().split()))\n    result = maxSubArray(nums)\n    print(result)",
+            "starter_code_javascript": "function maxSubArray(nums) {\n    // Write your code here\n}",
+            "driver_code_javascript": "const readline = require('readline');\nconst rl = readline.createInterface({ input: process.stdin });\nrl.on('line', (line) => {\n    const nums = line.split(' ').map(Number);\n    const result = maxSubArray(nums);\n    console.log(result);\n    rl.close();\n});",
+            "solution": "Kadane's algorithm: iterate and at each step, either extend the current subarray (current_sum + num) or start fresh (num). Keep track of the maximum sum seen. Time O(n), space O(1).",
+            "hints": ["Think about whether to extend the current subarray or start a new one at each position.", "You only need one pass; track the best sum ending at the current index and the global best."]
         }
     ]
     
-    # Insert problems
+    # Add top 100 problems (95 more from Blind 75 / NeetCode style)
+    problems.extend(get_additional_problems())
+    
+    # Ensure every problem has at least MIN_HIDDEN_TEST_CASES hidden test cases
+    for problem_data in problems:
+        problem_data["test_cases"] = ensure_min_hidden_test_cases(problem_data["test_cases"])
+    
+    # Insert or update problems (update starter/driver for LeetCode-style so re-run applies changes)
     for problem_data in problems:
         existing = await db.problems.find_one({"title": problem_data["title"]})
         if not existing:
@@ -341,6 +291,22 @@ rl.on('line', (line) => {
             await db.problems.insert_one(problem_dict)
             print(f"✓ Created problem: {problem.title}")
         else:
+            # Update starter/driver and ensure min hidden test cases
+            update = {}
+            for k in ["starter_code_python", "starter_code_javascript", "starter_code_java", "starter_code_cpp", "starter_code_c",
+                      "driver_code_python", "driver_code_javascript", "driver_code_java", "driver_code_cpp", "driver_code_c",
+                      "solution", "hints"]:
+                if k in problem_data:
+                    update[k] = problem_data[k]
+            existing_tcs = existing.get("test_cases") or []
+            expanded_tcs = ensure_min_hidden_test_cases(existing_tcs)
+            if len(expanded_tcs) > len(existing_tcs):
+                update["test_cases"] = [
+                    {"input": t["input"], "expected_output": t["expected_output"], "is_hidden": t["is_hidden"]}
+                    for t in expanded_tcs
+                ]
+            if update:
+                await db.problems.update_one({"title": problem_data["title"]}, {"$set": update})
             print(f"✓ Problem already exists: {problem_data['title']}")
     
     print("\n✅ Database seeding completed!")
