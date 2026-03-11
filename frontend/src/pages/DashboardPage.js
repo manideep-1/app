@@ -4,27 +4,14 @@ import { useAuth } from '@/context/AuthContext';
 import api from '@/utils/api';
 import { Button } from '@/components/ui/button';
 import IfElseIcon from '@/components/IfElseIcon';
-import { LogOut, TrendingUp, CheckCircle2, Clock, Flame, Trash2 } from 'lucide-react';
+import { LogOut, TrendingUp, CheckCircle2, Clock, Flame } from 'lucide-react';
 import { toast } from 'sonner';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-
 const currentYear = new Date().getFullYear();
 
 const DashboardPage = () => {
   const [progress, setProgress] = useState(null);
   const [activity, setActivity] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [deleting, setDeleting] = useState(false);
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const { user, loading: authLoading, logout } = useAuth();
   const navigate = useNavigate();
@@ -88,20 +75,6 @@ const DashboardPage = () => {
     toast.success('Logged out successfully');
   };
 
-  const handleDeleteProgress = async () => {
-    setDeleting(true);
-    try {
-      await api.delete('/user/progress');
-      await fetchProgress();
-      await fetchActivity();
-      toast.success('All progress and submissions have been deleted.');
-    } catch (err) {
-      toast.error(err.response?.data?.detail || 'Failed to delete progress');
-    } finally {
-      setDeleting(false);
-    }
-  };
-
   if (authLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -125,37 +98,16 @@ const DashboardPage = () => {
               </span>
             </Link>
             <div className="flex items-center gap-4">
+              <Link to="/my-plan" data-testid="nav-my-plan-link">
+                <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                  My Plan
+                </Button>
+              </Link>
               <Link to="/problems" data-testid="nav-problems-link">
                 <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
                   Problems
                 </Button>
               </Link>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="outline" className="border-destructive/50 text-destructive hover:bg-destructive/10" title="Delete all progress">
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Delete progress
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Delete all progress?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This will permanently delete all your submissions and reset your solved/attempted progress. This action cannot be undone.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={() => handleDeleteProgress()}
-                      disabled={deleting}
-                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                    >
-                      {deleting ? 'Deleting...' : 'Delete all'}
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
               <Button
                 variant="outline"
                 onClick={handleLogout}
@@ -197,13 +149,13 @@ const DashboardPage = () => {
                 icon={<TrendingUp className="w-8 h-8" />}
                 title="Total Submissions"
                 value={progress?.total_submissions || 0}
-                color="secondary"
+                color="primary"
               />
               <StatCard
                 icon={<CheckCircle2 className="w-8 h-8" />}
                 title="Easy Solved"
                 value={progress?.easy_solved || 0}
-                color="accent"
+                color="primary"
                 subtitle={`${progress?.easy_solved || 0} problems`}
               />
               <StatCard
@@ -281,7 +233,7 @@ const DashboardPage = () => {
             </div>
 
             {/* CTA */}
-            <div className="bg-gradient-to-br from-primary/20 via-secondary/10 to-accent/20 rounded-3xl p-12 text-center border border-border/50">
+            <div className="bg-gradient-to-br from-primary/20 via-secondary/10 to-primary/20 rounded-3xl p-12 text-center border border-border/50">
               <h2 className="font-heading font-semibold text-3xl mb-4">
                 Keep Going!
               </h2>
@@ -293,7 +245,7 @@ const DashboardPage = () => {
               <Link to="/problems" data-testid="continue-practicing-btn">
                 <Button
                   size="lg"
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all duration-300"
                 >
                   Continue Practicing
                 </Button>
@@ -357,31 +309,42 @@ const ActivityCalendarYear = ({ datesSet, year }) => {
     if (weekStart <= weekEnd) monthBlocks.push({ monthIndex: m, weekStart, weekEnd });
   }
 
+  const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const cellSize = 'w-3 h-3';
+  const gap = 'gap-0.5';
+
   return (
     <div className="overflow-x-auto">
-      <div className="flex items-start gap-1.5 min-w-0">
-        <div className="flex flex-col justify-around text-[10px] text-muted-foreground pt-1 shrink-0" style={{ height: 7 * 12 }}>
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
-            <span key={d} className="h-3 leading-3">{d}</span>
+      <div className="inline-flex min-w-0" style={{ alignItems: 'stretch' }}>
+        {/* Day labels column: one spacer row (aligns with month row) + 7 day rows */}
+        <div className={`flex flex-col ${gap} shrink-0 pr-2`}>
+          <div className={cellSize} aria-hidden="true" />
+          {dayLabels.map((d) => (
+            <div key={d} className={`${cellSize} flex items-center justify-end`}>
+              <span className="text-[10px] text-muted-foreground leading-none">{d}</span>
+            </div>
           ))}
         </div>
+        {/* Month blocks + grid: same row structure so labels align */}
         <div className="flex gap-4">
           {monthBlocks.map(({ monthIndex, weekStart, weekEnd }) => (
-            <div key={monthIndex} className="flex flex-col gap-1">
-              <span className="text-[10px] text-muted-foreground h-3 leading-3 block mb-0.5">
-                {MONTH_NAMES[monthIndex]}
-              </span>
-              <div className="flex gap-0.5">
+            <div key={monthIndex} className={`flex flex-col ${gap}`}>
+              <div className={`${cellSize} flex items-center`}>
+                <span className="text-[10px] text-muted-foreground leading-none">
+                  {MONTH_NAMES[monthIndex]}
+                </span>
+              </div>
+              <div className={`flex ${gap}`}>
                 {Array.from({ length: weekEnd - weekStart + 1 }, (_, i) => weekStart + i).map((wi) => (
-                  <div key={wi} className="flex flex-col gap-0.5">
+                  <div key={wi} className={`flex flex-col ${gap}`}>
                     {Array.from({ length: 7 }, (_, di) => {
                       const cell = grid[di][wi];
-                      if (!cell) return <div key={di} className="w-3 h-3 rounded-sm bg-transparent shrink-0" />;
+                      if (!cell) return <div key={di} className={`${cellSize} rounded-sm bg-transparent shrink-0`} />;
                       return (
                         <div
                           key={cell.key}
                           title={`${cell.key}${cell.active ? ' • activity' : ''}`}
-                          className={`w-3 h-3 rounded-sm shrink-0 ${cell.active ? 'bg-primary' : 'bg-muted/50'}`}
+                          className={`${cellSize} rounded-sm shrink-0 ${cell.active ? 'bg-primary' : 'bg-muted/50'}`}
                         />
                       );
                     })}
@@ -404,7 +367,7 @@ const StatCard = ({ icon, title, value, color, subtitle }) => {
   };
 
   return (
-    <div className="bg-card text-card-foreground border border-border/50 shadow-xl backdrop-blur-sm rounded-lg p-6 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(99,102,241,0.15)] transition-all duration-300">
+    <div className="bg-card text-card-foreground border border-border/50 shadow-xl backdrop-blur-sm rounded-lg p-6 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(37,99,235,0.15)] transition-all duration-300">
       <div className={`${colorClasses[color]} mb-4`}>{icon}</div>
       <h3 className="font-body text-sm text-muted-foreground mb-1">{title}</h3>
       <p className="font-heading font-bold text-3xl">{value}</p>

@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/utils/api';
 import { Button } from '@/components/ui/button';
-import { Play, Check, X, ArrowLeft, Timer, Lightbulb, Building2, Tag, ChevronDown, ChevronUp, Beaker, ArrowRight } from 'lucide-react';
+import { Play, Check, X, ArrowLeft, Timer, Lightbulb, Building2, Tag, ChevronDown, ChevronUp, Beaker, ArrowRight, ExternalLink, Eye } from 'lucide-react';
 import IfElseIcon from '@/components/IfElseIcon';
 import { DIFFICULTY_COLORS, DIFFICULTY_BG, STATUS_COLORS } from '@/utils/constants';
 import { toast } from 'sonner';
@@ -20,12 +20,13 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels';
 import { Textarea } from '@/components/ui/textarea';
-import { Plus, Trash2, Copy } from 'lucide-react';
+import { Plus, Copy } from 'lucide-react';
 import AICoachPanel from '@/components/AICoachPanel';
 
-/** Normalize code block indentation for display: strip common leading spaces so relative indent is preserved. */
+/** Normalize code block indentation for display: expand tabs to 4 spaces, then strip common leading spaces so relative indent is preserved. */
 function normalizeCodeIndent(code) {
   if (code == null || typeof code !== 'string') return code;
+  code = code.replace(/\t/g, '    ');
   const lines = code.split(/\r?\n/);
   let minIndent = Infinity;
   for (const line of lines) {
@@ -38,7 +39,13 @@ function normalizeCodeIndent(code) {
   return lines.map((line) => (line.length >= minIndent ? line.slice(minIndent) : line)).join('\n');
 }
 
-/** Derive a problem-appropriate function name from title (e.g. "Two Sum" -> twoSum, "Contains Duplicate" -> containsDuplicate). */
+/** Replace generic identifier "solve" with fnName in starter/driver code (avoids changing "solution"). */
+function replaceSolveWithFnName(code, fnName) {
+  if (code == null || typeof code !== 'string' || !fnName) return code;
+  return code.replace(/\bsolve\b/g, fnName);
+}
+
+/** Derive a problem-appropriate function name from title (e.g. "Two Sum" -> twoSum). Used only when problem has no function_metadata. */
 function titleToFunctionName(title) {
   if (!title || typeof title !== 'string') return 'solution';
   const numberWord = { 2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six', 7: 'seven', 8: 'eight', 9: 'nine' };
@@ -56,6 +63,14 @@ function titleToFunctionName(title) {
   return lead + rest;
 }
 
+/** Canonical function name: from problem metadata (single source of truth) or fallback from title. */
+function getProblemFunctionName(problem) {
+  if (!problem) return 'solution';
+  const meta = problem.function_metadata;
+  if (meta && typeof meta === 'object' && meta.function_name) return meta.function_name;
+  return titleToFunctionName(problem.title);
+}
+
 const ProblemSolvePage = () => {
   const { problemId } = useParams();
   const { user, loading: authLoading } = useAuth();
@@ -63,7 +78,7 @@ const ProblemSolvePage = () => {
   
   const [problem, setProblem] = useState(null);
   const [code, setCode] = useState('');
-  const [language, setLanguage] = useState('python');
+  const [language, setLanguage] = useState('java');
   const [submitting, setSubmitting] = useState(false);
   const [running, setRunning] = useState(false);
   const [result, setResult] = useState(null);
@@ -73,7 +88,7 @@ const ProblemSolvePage = () => {
   const [expandedSubmissionId, setExpandedSubmissionId] = useState(null);
   const [submissionFilterStatus, setSubmissionFilterStatus] = useState('');
   const [submissionFilterLanguage, setSubmissionFilterLanguage] = useState('');
-  // NeetCode-style: timer/stopwatch
+  // timer/stopwatch
   const [timerOpen, setTimerOpen] = useState(false);
   const [timerMode, setTimerMode] = useState('stopwatch'); // 'stopwatch' | 'timer'
   const [timerSeconds, setTimerSeconds] = useState(0);
@@ -88,18 +103,19 @@ const ProblemSolvePage = () => {
   // Bottom: Test Case vs Output; which test case selected
   const [bottomTab, setBottomTab] = useState('testcase'); // 'testcase' | 'output'
   const [activeTestCaseIndex, setActiveTestCaseIndex] = useState(0);
-  // Hints & Console open; progressive hints (LeetCode-style: reveal one by one)
+  // Hints & Console open; progressive hints (: reveal one by one)
   const [hintsOpen, setHintsOpen] = useState(false);
   const [hintsRevealedCount, setHintsRevealedCount] = useState(0);
   const [consoleOpen, setConsoleOpen] = useState(false);
   // User-added manual test cases
   const [customTestCases, setCustomTestCases] = useState([]);
-  const [newTestInput, setNewTestInput] = useState('');
   const [relatedProblems, setRelatedProblems] = useState([]);
   const [solutionCodeOpen, setSolutionCodeOpen] = useState({}); // approach index -> open (default true)
-  const [solutionCodeLang, setSolutionCodeLang] = useState('python'); // language for solution code tabs: python | javascript | java | cpp | c
+  const [solutionCodeLang, setSolutionCodeLang] = useState('python'); // language for solution code: python | javascript | java | cpp | go | csharp | c
+  const [approachRevealed, setApproachRevealed] = useState({}); // approach index -> true when user clicks "Reveal"
 
   const [aiPanelOpen, setAiPanelOpen] = useState(false);
+  const [aiPanelPosition, setAiPanelPosition] = useState('right'); // 'left' | 'right' | 'console'
 
   /** Which language runtimes are available on the server (from GET /api/runtimes). null = loading. */
   const [runtimes, setRuntimes] = useState(null);
@@ -122,7 +138,7 @@ const ProblemSolvePage = () => {
     try {
       const payload = {
         code: codeVal ?? '',
-        language: langVal ?? 'python',
+        language: langVal ?? 'java',
         solutionTabs: (tabsVal || []).map((t) => ({ id: t.id, name: t.name, code: t.code ?? '' })),
       };
       localStorage.setItem(DRAFT_KEY(pid), JSON.stringify(payload));
@@ -137,6 +153,7 @@ const ProblemSolvePage = () => {
     }
     fetchProblem();
     setSolutionCodeOpen({});
+    setApproachRevealed({});
   }, [problemId, user, authLoading]);
 
   // Fetch which runtimes are available on the server (so we only offer runnable languages)
@@ -146,23 +163,27 @@ const ProblemSolvePage = () => {
       .catch(() => setRuntimes({}));
   }, []);
 
-  // If current language is not available on server, switch to first available
-  const editorLanguageOrder = ['python', 'javascript', 'java', 'cpp', 'c'];
-  const availableEditorLanguages =
-    runtimes && Object.keys(runtimes).length > 0
-      ? (() => {
-          const available = editorLanguageOrder.filter((lang) => runtimes[lang] === true);
-          return available.length > 0 ? available : editorLanguageOrder;
-        })()
-      : editorLanguageOrder;
+  // Show all supported languages so user can write in any of them; Run will show a message if runtime is unavailable.
+  const editorLanguageOrder = ['java', 'python', 'javascript', 'cpp', 'c', 'go', 'csharp', 'typescript'];
+  const LANGUAGE_LABELS = { java: 'Java', python: 'Python', javascript: 'JavaScript', cpp: 'C++', c: 'C', go: 'Go', csharp: 'C#', typescript: 'TypeScript' };
+  const availableEditorLanguages = editorLanguageOrder;
+  const isRuntimeAvailable = (lang) => runtimes && runtimes[lang] === true;
   useEffect(() => {
     if (!runtimes || typeof runtimes !== 'object') return;
-    const available = editorLanguageOrder.filter((lang) => runtimes[lang] === true);
-    const list = available.length > 0 ? available : editorLanguageOrder;
-    if (list.length > 0 && !list.includes(language)) {
-      setLanguage(list[0]);
+    // Only auto-switch if current language is invalid (e.g. from old storage)
+    if (!editorLanguageOrder.includes(language)) {
+      setLanguage(editorLanguageOrder[0] || 'java');
     }
   }, [runtimes, language]);
+  const getLanguageLabel = (lang) => LANGUAGE_LABELS[lang] || (lang ? lang.charAt(0).toUpperCase() + lang.slice(1) : '');
+
+  const visibleTestCases = (problem?.test_cases ?? []).filter((tc) => !tc.is_hidden);
+  const totalCaseCount = visibleTestCases.length + customTestCases.length;
+  useEffect(() => {
+    if (activeTestCaseIndex >= totalCaseCount && totalCaseCount > 0) {
+      setActiveTestCaseIndex(Math.max(0, totalCaseCount - 1));
+    }
+  }, [totalCaseCount, activeTestCaseIndex]);
 
   useEffect(() => {
     if (problemId && user) fetchSubmissions();
@@ -229,14 +250,18 @@ const ProblemSolvePage = () => {
       } catch {
         setRelatedProblems([]);
       }
-      // LeetCode-style: user writes only the solution function; driver (server-side) handles input/output
-      const fnName = titleToFunctionName(p.title);
+      // Contract: when server sends function_metadata, starters are metadata-generated; use as-is. Otherwise align with title-derived name.
+      const fnName = getProblemFunctionName(p);
+      const hasMetadata = p.function_metadata && typeof p.function_metadata === 'object' && p.function_metadata.function_name;
       const starters = {
-        python: p.starter_code_python || `def ${fnName}(nums):\n    # Implement the solution function only. Do not read input.\n    pass\n`,
-        javascript: p.starter_code_javascript || `function ${fnName}(nums) {\n    // Implement the solution function only. Do not read input.\n}\n`,
-        java: p.starter_code_java || `// Only implement the solution. Do not read input - the system calls your method with test inputs.\npublic class Solution {\n    public static int ${fnName}(int[] nums) {\n        return 0;\n    }\n}\n`,
-        cpp: p.starter_code_cpp || `// Only implement the solution. Do not read input - the system calls your function.\nclass Solution {\npublic:\n    int ${fnName}(vector<int>& nums) {\n        return 0;\n    }\n};\n`,
-        c: p.starter_code_c || `// Only implement the solution. Do not read input - the system calls your function.\nint ${fnName}(int* nums, int n) {\n    return 0;\n}\n`,
+        python: hasMetadata ? (p.starter_code_python || '') : (replaceSolveWithFnName(p.starter_code_python, fnName) || `def ${fnName}(nums):\n    # Implement the solution function only. Do not read input.\n    pass\n`),
+        javascript: hasMetadata ? (p.starter_code_javascript || '') : (replaceSolveWithFnName(p.starter_code_javascript, fnName) || `function ${fnName}(nums) {\n    // Implement the solution function only. Do not read input.\n}\n`),
+        java: hasMetadata ? (p.starter_code_java || '') : (replaceSolveWithFnName(p.starter_code_java, fnName) || `// Only implement the solution. Do not read input - the system calls your method with test inputs.\npublic class Solution {\n    public static int ${fnName}(int[] nums) {\n        return 0;\n    }\n}\n`),
+        cpp: hasMetadata ? (p.starter_code_cpp || '') : (replaceSolveWithFnName(p.starter_code_cpp, fnName) || `// Only implement the solution. Do not read input - the system calls your function.\nclass Solution {\npublic:\n    int ${fnName}(vector<int>& nums) {\n        return 0;\n    }\n};\n`),
+        c: hasMetadata ? (p.starter_code_c || '') : (replaceSolveWithFnName(p.starter_code_c, fnName) || `// Only implement the solution. Do not read input - the system calls your function.\nint ${fnName}(int* nums, int n) {\n    return 0;\n}\n`),
+        go: hasMetadata ? (p.starter_code_go || '') : (replaceSolveWithFnName(p.starter_code_go, fnName) || `func ${fnName}(nums []int) []int {\n\treturn nil\n}`),
+        csharp: hasMetadata ? (p.starter_code_csharp || '') : (replaceSolveWithFnName(p.starter_code_csharp, fnName) || `public class Solution {\n    public int[] ${fnName}(int[] nums) { return new int[0]; }\n}`),
+        typescript: hasMetadata ? (p.starter_code_typescript || '') : (replaceSolveWithFnName(p.starter_code_typescript, fnName) || `function ${fnName}(nums: number[]): number[] {\n    return [];\n}`),
       };
       const draft = loadDraft(problemId);
       if (draft && draft.code) {
@@ -248,7 +273,7 @@ const ProblemSolvePage = () => {
         setSolutionTabs(tabs);
         setActiveSolutionIndex(0);
       } else {
-        const starter = starters[language] || starters.python;
+        const starter = starters[language] || starters.java || starters.python;
         setCode(starter);
         setSolutionTabs([{ id: 1, name: 'Solution 1', code: starter }]);
         setActiveSolutionIndex(0);
@@ -263,16 +288,19 @@ const ProblemSolvePage = () => {
 
   const getStarterCode = (lang) => {
     if (!problem) return '';
-    const fnName = titleToFunctionName(problem.title);
-    // Function-only: user implements the solution; system handles input/output via driver
+    const fnName = getProblemFunctionName(problem);
+    const hasMetadata = problem.function_metadata && typeof problem.function_metadata === 'object' && problem.function_metadata.function_name;
     const starters = {
-      python: problem.starter_code_python || `def ${fnName}(nums):\n    # Implement only the solution function. Do not read input.\n    pass\n`,
-      javascript: problem.starter_code_javascript || `function ${fnName}(nums) {\n    // Implement only the solution function. Do not read input.\n}\n`,
-      java: problem.starter_code_java || `// Implement only the solution. Input is provided by the system.\npublic class Solution {\n    public static int ${fnName}(int[] nums) { return 0; }\n}\n`,
-      cpp: problem.starter_code_cpp || `// Implement only the solution. Input is provided by the system.\nclass Solution {\npublic:\n    int ${fnName}(vector<int>& nums) { return 0; }\n};\n`,
-      c: problem.starter_code_c || `// Implement only the solution. Input is provided by the system.\nint ${fnName}(int* nums, int n) { return 0; }\n`,
+      python: hasMetadata ? (problem.starter_code_python || '') : (replaceSolveWithFnName(problem.starter_code_python, fnName) || `def ${fnName}(nums):\n    # Implement only the solution function. Do not read input.\n    pass\n`),
+      javascript: hasMetadata ? (problem.starter_code_javascript || '') : (replaceSolveWithFnName(problem.starter_code_javascript, fnName) || `function ${fnName}(nums) {\n    // Implement only the solution function. Do not read input.\n}\n`),
+      java: hasMetadata ? (problem.starter_code_java || '') : (replaceSolveWithFnName(problem.starter_code_java, fnName) || `// Implement only the solution. Input is provided by the system.\npublic class Solution {\n    public static int ${fnName}(int[] nums) { return 0; }\n}\n`),
+      cpp: hasMetadata ? (problem.starter_code_cpp || '') : (replaceSolveWithFnName(problem.starter_code_cpp, fnName) || `// Implement only the solution. Input is provided by the system.\nclass Solution {\npublic:\n    int ${fnName}(vector<int>& nums) { return 0; }\n};\n`),
+      c: hasMetadata ? (problem.starter_code_c || '') : (replaceSolveWithFnName(problem.starter_code_c, fnName) || `// Implement only the solution. Input is provided by the system.\nint ${fnName}(int* nums, int n) { return 0; }\n`),
+      go: hasMetadata ? (problem.starter_code_go || '') : (replaceSolveWithFnName(problem.starter_code_go, fnName) || `func ${fnName}(nums []int) []int {\n\treturn nil\n}`),
+      csharp: hasMetadata ? (problem.starter_code_csharp || '') : (replaceSolveWithFnName(problem.starter_code_csharp, fnName) || `public class Solution {\n    public int[] ${fnName}(int[] nums) { return new int[0]; }\n}`),
+      typescript: hasMetadata ? (problem.starter_code_typescript || '') : (replaceSolveWithFnName(problem.starter_code_typescript, fnName) || `function ${fnName}(nums: number[]): number[] {\n    return [];\n}`),
     };
-    return starters[lang] || starters.python;
+    return starters[lang] || starters.java || starters.python || '';
   };
 
   const setCurrentCode = (value) => {
@@ -285,9 +313,16 @@ const ProblemSolvePage = () => {
   };
 
   const handleLanguageChange = (newLanguage) => {
+    if (newLanguage === language) return;
+    const starter = problem ? getStarterCode(newLanguage) : '';
+    const currentStarter = problem ? getStarterCode(language) : '';
+    const hasEdits = (code || '').trim() !== (currentStarter || '').trim();
+    if (hasEdits && problem) {
+      const confirmed = window.confirm('Switching language will reset your code to the new template. Continue?');
+      if (!confirmed) return;
+    }
     setLanguage(newLanguage);
-    if (problem) {
-      const starter = getStarterCode(newLanguage);
+    if (problem && starter) {
       setSolutionTabs((prev) => {
         const next = [...prev];
         if (next[activeSolutionIndex]) next[activeSolutionIndex] = { ...next[activeSolutionIndex], code: starter };
@@ -385,7 +420,7 @@ const ProblemSolvePage = () => {
       if (response.data.status === 'accepted') {
         toast.success('Accepted! All test cases passed. Great job.');
       } else {
-        const statusMsg = response.data.status === 'wrong_answer' ? 'Wrong answer — check the test case breakdown below.' : response.data.status === 'time_limit_exceeded' ? 'Time limit exceeded — try a more efficient approach.' : response.data.status === 'runtime_error' ? 'Runtime error — check the output for details.' : 'Some test cases failed. Review the breakdown below.';
+        const statusMsg = response.data.status === 'wrong_answer' ? 'Wrong answer — check the test case breakdown below.' : response.data.status === 'time_limit_exceeded' ? 'Time limit exceeded — try a more efficient approach.' : response.data.status === 'memory_limit_exceeded' ? 'Memory limit exceeded.' : response.data.status === 'compile_error' ? 'Compile error — check the output for details.' : response.data.status === 'runtime_error' ? 'Runtime error — check the output for details.' : 'Some test cases failed. Review the breakdown below.';
         toast.error(statusMsg);
       }
     } catch (error) {
@@ -487,10 +522,28 @@ const ProblemSolvePage = () => {
         </div>
       </div>
 
-      {/* Main Content - AI panel opens only when user clicks Hint or If else AI */}
+      {/* Main Content - AI panel position: left | right | console */}
       <div className="flex-1 flex overflow-hidden min-h-0">
-        <PanelGroup key={aiPanelOpen ? 'three-panels' : 'two-panels'} direction="horizontal" className="w-full">
-          <Panel defaultSize={aiPanelOpen ? 33.33 : 40} minSize={20} maxSize={50} className="flex flex-col min-w-0">
+        <PanelGroup key={`${aiPanelPosition}-${aiPanelOpen}`} direction="horizontal" className="w-full">
+          {aiPanelPosition === 'left' && aiPanelOpen && (
+            <>
+              <Panel defaultSize={33.34} minSize={20} maxSize={50} className="flex flex-col min-h-0 bg-card/20 border-r border-border/50">
+                <AICoachPanel
+                  problemId={problemId}
+                  problem={problem}
+                  code={code}
+                  language={language}
+                  submissionStatus={result?.status}
+                  failingTestInfo={result?.result?.test_results?.[0] ? `Expected: ${result.result.test_results[0].expected}\nGot: ${result.result.test_results[0].output}` : undefined}
+                  onClose={() => setAiPanelOpen(false)}
+                  panelPosition={aiPanelPosition}
+                  onMoveTo={setAiPanelPosition}
+                />
+              </Panel>
+              <PanelResizeHandle withHandle className="w-2 bg-border/50 hover:bg-primary/20 transition-colors data-[resize-handle-active]:bg-primary/30 shrink-0" />
+            </>
+          )}
+          <Panel defaultSize={aiPanelOpen && (aiPanelPosition === 'left' || aiPanelPosition === 'right') ? 33.33 : 40} minSize={20} maxSize={50} className="flex flex-col min-w-0">
             {/* Left Panel - Problem Description (Question / Solution / Submissions) */}
             <div className="flex-1 overflow-y-auto flex flex-col border-r border-border/50" data-testid="problem-description">
           <Tabs defaultValue="question" className="w-full flex flex-col flex-1 min-h-0 p-6" onValueChange={(v) => v === 'submissions' && fetchSubmissions()}>
@@ -527,7 +580,41 @@ const ProblemSolvePage = () => {
                 )}
               </div>
 
-              {/* Hints - own row, next line */}
+              <div>
+                <h2 className="font-heading font-semibold text-lg mb-2">Description</h2>
+                <div className="prose prose-invert max-w-none">
+                  <p className="text-muted-foreground whitespace-pre-wrap text-sm">{problem?.description}</p>
+                </div>
+              </div>
+
+              {/* Examples (from visible test cases) */}
+              <div>
+                <h3 className="font-heading font-medium text-base mb-2">Examples</h3>
+                <div className="space-y-4">
+                  {(problem?.test_cases ?? [])
+                    .filter((tc) => !tc.is_hidden)
+                    .slice(0, 3)
+                    .map((testCase, idx) => (
+                      <div key={idx} className="bg-muted/20 rounded-lg p-4 border border-border/30">
+                        <p className="text-sm font-medium text-muted-foreground mb-1">Example {idx + 1}:</p>
+                        <div className="mb-2">
+                          <span className="text-xs text-muted-foreground">Input: </span>
+                          <pre className="mt-0.5 text-sm font-mono bg-background/50 p-2 rounded overflow-x-auto">
+                            {testCase.input}
+                          </pre>
+                        </div>
+                        <div>
+                          <span className="text-xs text-muted-foreground">Output: </span>
+                          <pre className="mt-0.5 text-sm font-mono bg-background/50 p-2 rounded overflow-x-auto">
+                            {testCase.expected_output}
+                          </pre>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+
+              {/* Hints - after description and examples */}
               <div className="rounded-lg border border-border/50 bg-card/30 overflow-hidden">
                 <Collapsible open={hintsOpen} onOpenChange={setHintsOpen}>
                   <CollapsibleTrigger asChild>
@@ -585,40 +672,6 @@ const ProblemSolvePage = () => {
                 </Collapsible>
               </div>
 
-              <div>
-                <h2 className="font-heading font-semibold text-lg mb-2">Description</h2>
-                <div className="prose prose-invert max-w-none">
-                  <p className="text-muted-foreground whitespace-pre-wrap text-sm">{problem?.description}</p>
-                </div>
-              </div>
-
-              {/* Examples (from visible test cases) */}
-              <div>
-                <h3 className="font-heading font-medium text-base mb-2">Examples</h3>
-                <div className="space-y-4">
-                  {(problem?.test_cases ?? [])
-                    .filter((tc) => !tc.is_hidden)
-                    .slice(0, 3)
-                    .map((testCase, idx) => (
-                      <div key={idx} className="bg-muted/20 rounded-lg p-4 border border-border/30">
-                        <p className="text-sm font-medium text-muted-foreground mb-1">Example {idx + 1}:</p>
-                        <div className="mb-2">
-                          <span className="text-xs text-muted-foreground">Input: </span>
-                          <pre className="mt-0.5 text-sm font-mono bg-background/50 p-2 rounded overflow-x-auto">
-                            {testCase.input}
-                          </pre>
-                        </div>
-                        <div>
-                          <span className="text-xs text-muted-foreground">Output: </span>
-                          <pre className="mt-0.5 text-sm font-mono bg-background/50 p-2 rounded overflow-x-auto">
-                            {testCase.expected_output}
-                          </pre>
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              </div>
-
               {problem?.test_cases?.some((tc) => tc.is_hidden) && (
                 <p className="text-sm text-muted-foreground">
                   Additional hidden test cases run on Submit.
@@ -657,141 +710,236 @@ const ProblemSolvePage = () => {
               <div className="flex-1 min-h-[200px] overflow-y-auto pb-6">
               {Array.isArray(problem?.solutions) && problem.solutions.length > 0 ? (
                 <div className="space-y-8 pb-6">
-                  {/* Topic / category subtitle (e.g. Stacks) */}
-                  {problem?.tags?.length > 0 && (
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-sm font-medium text-muted-foreground">Topic:</span>
-                      {problem.tags.map((t) => (
-                        <span key={t} className="text-sm px-2.5 py-1 bg-muted/50 text-foreground rounded-md border border-border/50">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Prerequisites */}
-                  {problem.prerequisites && problem.prerequisites.length > 0 ? (
+                  {/* 1. Prerequisites — clickable tags */}
+                  {problem.prerequisites && problem.prerequisites.length > 0 && (
                     <div className="rounded-lg border border-border/50 bg-card/30 overflow-hidden">
                       <h3 className="px-4 py-3 border-b border-border/50 font-semibold text-base text-foreground">
                         Prerequisites
                       </h3>
-                      <p className="px-4 pt-3 pb-1 text-sm text-muted-foreground">
+                      <p className="px-4 pt-3 pb-2 text-sm text-muted-foreground">
                         Before attempting this problem, you should be comfortable with:
                       </p>
-                      <ul className="list-disc list-inside px-4 pb-4 space-y-2 text-sm text-foreground leading-relaxed">
+                      <div className="px-4 pb-4 flex flex-wrap gap-2">
                         {problem.prerequisites.map((item, i) => (
-                          <li key={i} className="text-muted-foreground">{item}</li>
+                          <span
+                            key={i}
+                            className="text-sm px-3 py-1.5 bg-accent/10 text-accent rounded-md border border-border/50 cursor-default hover:bg-accent/20 transition-colors"
+                            title={item}
+                          >
+                            {item}
+                          </span>
                         ))}
-                      </ul>
+                      </div>
                     </div>
-                  ) : null}
+                  )}
 
-                  {/* Solution approaches - same format for all */}
+                  {/* 2. Video Explanation */}
+                  {(problem.youtube_video_id || problem.youtube_video_url) && (
+                    <div className="rounded-lg border border-border/50 bg-card/30 overflow-hidden">
+                      <h3 className="px-4 py-3 border-b border-border/50 font-semibold text-base text-foreground">
+                        Video Explanation
+                      </h3>
+                      <div className="p-4 space-y-3">
+                        {problem.youtube_video_id ? (
+                          <div className="aspect-video w-full max-w-2xl rounded-lg overflow-hidden bg-muted/30">
+                            <iframe
+                              title="Video explanation"
+                              src={`https://www.youtube.com/embed/${problem.youtube_video_id}`}
+                              className="w-full h-full"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
+                          </div>
+                        ) : (
+                          <p className="text-sm text-muted-foreground">
+                            Curated video is not available yet for this problem.
+                          </p>
+                        )}
+                        <a
+                          href={problem.youtube_video_id
+                            ? `https://www.youtube.com/watch?v=${problem.youtube_video_id}`
+                            : problem.youtube_video_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          {problem.youtube_video_id ? 'View on YouTube' : 'Find on YouTube'}
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 3. Pattern Recognition (premium) */}
+                  {problem.pattern_recognition && (
+                    <div className="rounded-lg border border-border/50 bg-card/30 overflow-hidden">
+                      <h3 className="px-4 py-3 border-b border-border/50 font-semibold text-base text-foreground">
+                        Pattern Recognition
+                      </h3>
+                      <p className="px-4 py-4 text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">
+                        {problem.pattern_recognition}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* 4. Brute Force → Better → Optimal — progressive reveal */}
                   {problem.solutions.map((approach, idx) => (
                     <div key={idx} className="rounded-lg border border-border/50 bg-card/30 overflow-hidden">
                       <h3 className="px-4 py-3 border-b border-border/50 font-semibold text-base text-foreground">
                         {approach.title}
                       </h3>
-                      <div className="p-4 space-y-5">
-                        {approach.intuition != null && approach.intuition !== '' && (
-                          <div>
-                            <h4 className="text-sm font-semibold text-foreground mb-2">Intuition</h4>
-                            <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">{approach.intuition}</p>
-                          </div>
-                        )}
-                        {approach.algorithm != null && approach.algorithm !== '' && (
-                          <div>
-                            <h4 className="text-sm font-semibold text-foreground mb-2">Algorithm</h4>
-                            <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">{approach.algorithm}</p>
-                          </div>
-                        )}
-                        {(() => {
-                          const codeByLang = {
-                            python: approach.code_python || approach.code,
-                            javascript: approach.code_javascript,
-                            java: approach.code_java,
-                            cpp: approach.code_cpp,
-                            c: approach.code_c,
-                          };
-                          const availableLangs = ['python', 'javascript', 'java', 'cpp', 'c'].filter((l) => codeByLang[l]);
-                          const displayCode = availableLangs.length ? (codeByLang[solutionCodeLang] || codeByLang.python) : null;
-                          return displayCode != null && displayCode !== '' ? (
-                            <div>
-                              <Collapsible
-                                open={solutionCodeOpen[idx] !== false}
-                                onOpenChange={(open) => setSolutionCodeOpen((prev) => ({ ...prev, [idx]: open }))}
-                              >
-                                <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
-                                  <div className="flex items-center gap-2">
-                                    <h4 className="text-sm font-semibold text-foreground">Code</h4>
-                                    {availableLangs.length > 1 && (
-                                      <Select value={solutionCodeLang} onValueChange={setSolutionCodeLang}>
-                                        <SelectTrigger className="w-28 h-7 text-xs">
-                                          <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                          {availableLangs.map((l) => (
-                                            <SelectItem key={l} value={l}>
-                                              {l === 'cpp' ? 'C++' : l === 'c' ? 'C' : l.charAt(0).toUpperCase() + l.slice(1)}
-                                            </SelectItem>
-                                          ))}
-                                        </SelectContent>
-                                      </Select>
-                                    )}
-                                  </div>
-                                  <CollapsibleTrigger asChild>
-                                    <Button variant="ghost" size="sm" className="text-xs text-muted-foreground h-8 gap-1 hover:text-foreground">
-                                      {solutionCodeOpen[idx] !== false ? (
-                                        <><ChevronDown className="w-3.5 h-3.5" /> Collapse</>
+                      <div className="p-4">
+                        {!approachRevealed[idx] ? (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="gap-2 border-border text-foreground hover:bg-muted/30"
+                            onClick={() => setApproachRevealed((prev) => ({ ...prev, [idx]: true }))}
+                          >
+                            <Eye className="w-4 h-4" />
+                            Reveal {approach.title}
+                          </Button>
+                        ) : (
+                          <div className="space-y-5">
+                            {approach.intuition != null && approach.intuition !== '' && (
+                              <div>
+                                <h4 className="text-sm font-semibold text-foreground mb-2">Intuition</h4>
+                                <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">{approach.intuition}</p>
+                              </div>
+                            )}
+                            {approach.algorithm != null && approach.algorithm !== '' && (
+                              <div>
+                                <h4 className="text-sm font-semibold text-foreground mb-2">Algorithm</h4>
+                                <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">{approach.algorithm}</p>
+                              </div>
+                            )}
+                            {(() => {
+                              const codeByLang = {
+                                java: approach.code_java,
+                                python: approach.code_python || approach.code,
+                                cpp: approach.code_cpp,
+                                javascript: approach.code_javascript,
+                                go: approach.code_go,
+                                csharp: approach.code_csharp,
+                                c: approach.code_c,
+                              };
+                              const langOrder = ['python', 'java', 'cpp', 'javascript', 'go', 'csharp', 'c'];
+                              const availableLangs = langOrder.filter((l) => codeByLang[l]);
+                              const allLangs = ['python', 'java', 'cpp', 'javascript', 'go', 'csharp'];
+                              const hasAnyCode = availableLangs.length > 0;
+                              const effectiveLang = allLangs.includes(solutionCodeLang) ? solutionCodeLang : (availableLangs[0] || 'python');
+                              if (!hasAnyCode) return null;
+                              return (
+                                <div>
+                                  <Collapsible
+                                    open={solutionCodeOpen[idx] !== false}
+                                    onOpenChange={(open) => setSolutionCodeOpen((prev) => ({ ...prev, [idx]: open }))}
+                                  >
+                                    <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+                                      <div className="flex items-center gap-2">
+                                        <h4 className="text-sm font-semibold text-foreground">Code</h4>
+                                        <Select
+                                          value={allLangs.includes(solutionCodeLang) ? solutionCodeLang : effectiveLang}
+                                          onValueChange={setSolutionCodeLang}
+                                        >
+                                          <SelectTrigger className="w-28 h-7 text-xs">
+                                            <SelectValue />
+                                          </SelectTrigger>
+                                          <SelectContent>
+                                            {allLangs.map((l) => (
+                                              <SelectItem key={l} value={l}>
+                                                {l === 'cpp' ? 'C++' : l === 'csharp' ? 'C#' : l.charAt(0).toUpperCase() + l.slice(1)}
+                                                {!codeByLang[l] ? ' (—)' : ''}
+                                              </SelectItem>
+                                            ))}
+                                          </SelectContent>
+                                        </Select>
+                                      </div>
+                                      <CollapsibleTrigger asChild>
+                                        <Button variant="ghost" size="sm" className="text-xs text-muted-foreground h-8 gap-1 hover:text-foreground">
+                                          {solutionCodeOpen[idx] !== false ? (
+                                            <><ChevronDown className="w-3.5 h-3.5" /> Collapse</>
+                                          ) : (
+                                            <><ChevronDown className="w-3.5 h-3.5 -rotate-90" /> Expand</>
+                                          )}
+                                        </Button>
+                                      </CollapsibleTrigger>
+                                    </div>
+                                    <CollapsibleContent>
+                                      {codeByLang[solutionCodeLang] && (codeByLang[solutionCodeLang] || '').trim() ? (
+                                        <div className="relative group">
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              const toCopy = normalizeCodeIndent(codeByLang[solutionCodeLang]);
+                                              navigator.clipboard.writeText(toCopy).then(
+                                                () => toast.success('Code copied to clipboard'),
+                                                () => toast.error('Failed to copy')
+                                              );
+                                            }}
+                                            className="absolute top-2 right-2 z-10 p-1.5 rounded-md bg-background/80 border border-border/50 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                                            title="Copy code"
+                                            aria-label="Copy code"
+                                          >
+                                            <Copy className="w-4 h-4" />
+                                          </button>
+                                          <pre className="text-xs font-mono bg-muted/30 border border-border/50 rounded-lg p-4 overflow-x-auto text-left text-foreground/90 pr-12" style={{ whiteSpace: 'pre', margin: 0 }}>
+                                            {normalizeCodeIndent(codeByLang[solutionCodeLang])}
+                                          </pre>
+                                        </div>
                                       ) : (
-                                        <><ChevronDown className="w-3.5 h-3.5 -rotate-90" /> Expand</>
+                                        <p className="text-sm text-muted-foreground py-4 px-2 rounded-lg bg-muted/20 border border-border/50">
+                                          Solution not yet available in {solutionCodeLang === 'cpp' ? 'C++' : solutionCodeLang === 'csharp' ? 'C#' : solutionCodeLang.charAt(0).toUpperCase() + solutionCodeLang.slice(1)}. Choose another language from the dropdown above.
+                                        </p>
                                       )}
-                                    </Button>
-                                  </CollapsibleTrigger>
+                                    </CollapsibleContent>
+                                  </Collapsible>
                                 </div>
-                                <CollapsibleContent>
-                                  <div className="relative group">
-                                    <button
-                                      type="button"
-                                      onClick={() => {
-                                        const toCopy = normalizeCodeIndent(displayCode);
-                                        navigator.clipboard.writeText(toCopy).then(
-                                          () => toast.success('Code copied to clipboard'),
-                                          () => toast.error('Failed to copy')
-                                        );
-                                      }}
-                                      className="absolute top-2 right-2 z-10 p-1.5 rounded-md bg-background/80 border border-border/50 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-                                      title="Copy code"
-                                      aria-label="Copy code"
-                                    >
-                                      <Copy className="w-4 h-4" />
-                                    </button>
-                                    <pre className="text-xs font-mono bg-muted/30 border border-border/50 rounded-lg p-4 overflow-x-auto text-left text-foreground/90 pr-12" style={{ whiteSpace: 'pre', margin: 0 }}>
-                                      {normalizeCodeIndent(displayCode)}
-                                    </pre>
-                                  </div>
-                                </CollapsibleContent>
-                              </Collapsible>
-                            </div>
-                          ) : null;
-                        })()}
-                        {approach.complexity != null && approach.complexity !== '' && (
-                          <div>
-                            <h4 className="text-sm font-semibold text-foreground mb-2">Time & Space Complexity</h4>
-                            <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">{approach.complexity}</p>
-                          </div>
-                        )}
-                        {approach.content != null && approach.content !== '' && (
-                          <div>
-                            <h4 className="text-sm font-semibold text-foreground mb-2">Explanation</h4>
-                            <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">{approach.content}</p>
+                              );
+                            })()}
+                            {(approach.complexity != null && approach.complexity !== '') && (
+                              <div>
+                                <h4 className="text-sm font-semibold text-foreground mb-2">Time & Space Complexity</h4>
+                                <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">{approach.complexity}</p>
+                              </div>
+                            )}
+                            {approach.content != null && approach.content !== '' && (
+                              <div>
+                                <h4 className="text-sm font-semibold text-foreground mb-2">Explanation</h4>
+                                <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">{approach.content}</p>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
                     </div>
                   ))}
 
-                  {/* Common Pitfalls - aligned with card styling */}
+                  {/* 5. Dry Run (premium) */}
+                  {problem.dry_run && (
+                    <div className="rounded-lg border border-border/50 bg-card/30 overflow-hidden">
+                      <h3 className="px-4 py-3 border-b border-border/50 font-semibold text-base text-foreground">
+                        Dry Run
+                      </h3>
+                      <p className="px-4 py-4 text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">
+                        {problem.dry_run}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* 6. Edge Cases (premium) */}
+                  {problem.edge_cases && (
+                    <div className="rounded-lg border border-border/50 bg-card/30 overflow-hidden">
+                      <h3 className="px-4 py-3 border-b border-border/50 font-semibold text-base text-foreground">
+                        Edge Cases
+                      </h3>
+                      <p className="px-4 py-4 text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">
+                        {problem.edge_cases}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* 7. Common Pitfalls */}
                   {problem.common_pitfalls && (
                     <div className="rounded-lg border border-border/50 bg-card/30 overflow-hidden">
                       <h3 className="px-4 py-3 border-b border-border/50 font-semibold text-base text-foreground">
@@ -802,14 +950,50 @@ const ProblemSolvePage = () => {
                       </p>
                     </div>
                   )}
-                </div>
-              ) : problem?.solution ? (
-                <div className="rounded-lg border border-border/50 bg-card/30 overflow-hidden p-4">
-                  <h3 className="font-semibold text-base text-foreground mb-3">Solution</h3>
-                  <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">{problem.solution}</p>
+
+                  {/* 8. Structured pitfalls (premium) */}
+                  {Array.isArray(problem.pitfalls) && problem.pitfalls.length > 0 && (
+                    <div className="rounded-lg border border-border/50 bg-card/30 overflow-hidden">
+                      <h3 className="px-4 py-3 border-b border-border/50 font-semibold text-base text-foreground">
+                        Pitfalls (detailed)
+                      </h3>
+                      <div className="p-4 space-y-4">
+                        {problem.pitfalls.map((p, i) => (
+                          <div key={i} className="rounded-md border border-border/50 bg-muted/20 p-3 space-y-2">
+                            {p.title && <h4 className="text-sm font-semibold text-foreground">{p.title}</h4>}
+                            {p.wrong_example && (
+                              <div>
+                                <span className="text-xs font-medium text-destructive/90">Wrong:</span>
+                                <pre className="mt-1 text-xs font-mono bg-destructive/10 border border-destructive/20 rounded p-2 overflow-x-auto whitespace-pre-wrap">{p.wrong_example}</pre>
+                              </div>
+                            )}
+                            {p.correct_example && (
+                              <div>
+                                <span className="text-xs font-medium text-green-600 dark:text-green-400">Correct:</span>
+                                <pre className="mt-1 text-xs font-mono bg-green-500/10 border border-green-500/20 rounded p-2 overflow-x-auto whitespace-pre-wrap">{p.correct_example}</pre>
+                              </div>
+                            )}
+                            {p.warning && <p className="text-sm text-muted-foreground">{p.warning}</p>}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 9. Interview Tips (premium) */}
+                  {problem.interview_tips && (
+                    <div className="rounded-lg border border-border/50 bg-card/30 overflow-hidden">
+                      <h3 className="px-4 py-3 border-b border-border/50 font-semibold text-base text-foreground">
+                        Interview Tips
+                      </h3>
+                      <p className="px-4 py-4 text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">
+                        {problem.interview_tips}
+                      </p>
+                    </div>
+                  )}
                 </div>
               ) : (
-                <p className="text-muted-foreground text-sm">Solution approach and walkthrough can be added here.</p>
+                <p className="text-muted-foreground text-sm">Solution content will be added in learning order (Brute Force → Better → Optimal). Try the hints or attempt the problem first.</p>
               )}
               </div>
             </TabsContent>
@@ -825,6 +1009,7 @@ const ProblemSolvePage = () => {
                     <SelectItem value="accepted">Accepted</SelectItem>
                     <SelectItem value="wrong_answer">Wrong Answer</SelectItem>
                     <SelectItem value="time_limit_exceeded">Time Limit Exceeded</SelectItem>
+                    <SelectItem value="memory_limit_exceeded">Memory Limit Exceeded</SelectItem>
                     <SelectItem value="runtime_error">Runtime Error</SelectItem>
                     <SelectItem value="compile_error">Compile Error</SelectItem>
                   </SelectContent>
@@ -835,11 +1020,9 @@ const ProblemSolvePage = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All languages</SelectItem>
-                    <SelectItem value="python">Python</SelectItem>
-                    <SelectItem value="javascript">JavaScript</SelectItem>
-                    <SelectItem value="java">Java</SelectItem>
-                    <SelectItem value="cpp">C++</SelectItem>
-                    <SelectItem value="c">C</SelectItem>
+                    {editorLanguageOrder.map((lang) => (
+                      <SelectItem key={lang} value={lang}>{getLanguageLabel(lang)}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -860,9 +1043,9 @@ const ProblemSolvePage = () => {
                       >
                         <div className="flex items-center gap-4 flex-wrap">
                           <span className={`text-sm font-medium ${STATUS_COLORS[sub.status] || 'text-muted-foreground'}`}>
-                            {sub.status?.replace(/_/g, ' ')}
+                            {sub.status?.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
                           </span>
-                          <span className="text-xs text-muted-foreground capitalize">{sub.language}</span>
+                          <span className="text-xs text-muted-foreground">{getLanguageLabel(sub.language)}</span>
                           <span className="text-xs text-muted-foreground">
                             {sub.created_at ? new Date(sub.created_at).toLocaleString() : ''}
                           </span>
@@ -909,14 +1092,14 @@ const ProblemSolvePage = () => {
           </Panel>
           <PanelResizeHandle withHandle className="w-2 bg-border/50 hover:bg-primary/20 transition-colors data-[resize-handle-active]:bg-primary/30 shrink-0" />
           {/* Center Panel - Editor + Test Case + Run/Submit */}
-          <Panel defaultSize={aiPanelOpen ? 33.33 : 60} minSize={25} maxSize={aiPanelOpen ? 50 : 80} className="flex flex-col min-w-0 min-h-0">
+          <Panel defaultSize={aiPanelOpen && aiPanelPosition !== 'console' ? 33.33 : 60} minSize={25} maxSize={aiPanelOpen && aiPanelPosition !== 'console' ? 50 : 80} className="flex flex-col min-w-0 min-h-0">
             <PanelGroup direction="vertical" className="flex-1 min-h-0 flex flex-col">
               <Panel defaultSize={75} minSize={40} className="flex flex-col min-h-0">
           {/* Editor toolbar: Language, Solution tabs, If Else AI, Hint, cursor position */}
           <div className="flex items-center justify-between px-3 py-1.5 border-b border-border/50 bg-card/20 shrink-0 gap-2">
             <div className="flex items-center gap-2 min-w-0">
               <Select
-                value={availableEditorLanguages.includes(language) ? language : (availableEditorLanguages[0] || 'python')}
+                value={availableEditorLanguages.includes(language) ? language : (availableEditorLanguages[0] || 'java')}
                 onValueChange={handleLanguageChange}
                 data-testid="language-selector"
               >
@@ -926,7 +1109,7 @@ const ProblemSolvePage = () => {
                 <SelectContent>
                   {availableEditorLanguages.map((lang) => (
                     <SelectItem key={lang} value={lang}>
-                      {lang === 'cpp' ? 'C++' : lang === 'c' ? 'C' : lang.charAt(0).toUpperCase() + lang.slice(1)}
+                      {getLanguageLabel(lang)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -974,6 +1157,27 @@ const ProblemSolvePage = () => {
                 <IfElseIcon className="w-3.5 h-3.5" />
                 If Else AI
               </Button>
+              <Link
+                to="/coach"
+                state={{
+                  problemId: problem?.id,
+                  problemContext: problem
+                    ? {
+                        title: problem.title,
+                        description: problem.description,
+                        examples_text: (problem.test_cases || []).filter((tc) => !tc.is_hidden).map((tc, i) => `Example ${i + 1}: Input: ${(tc.input || '').slice(0, 200)}\nExpected: ${(tc.expected_output || '').slice(0, 200)}`).join('\n\n'),
+                        difficulty: problem.difficulty || 'medium',
+                        tags: problem.tags || [],
+                        userCode: code,
+                        language,
+                      }
+                    : null,
+                }}
+              >
+                <Button variant="ghost" size="sm" className="h-8 gap-1.5 text-xs font-medium" title="Open full Coach with this problem context">
+                  Open in Coach
+                </Button>
+              </Link>
             </div>
             <span className="text-xs text-muted-foreground font-mono">
               Ln {cursorPos.line}, Col {cursorPos.column}
@@ -987,7 +1191,7 @@ const ProblemSolvePage = () => {
           <div className="flex-1 min-h-0 overflow-hidden" data-testid="code-editor">
             <Editor
               height="100%"
-              language={language === 'python' ? 'python' : language === 'javascript' ? 'javascript' : language === 'java' ? 'java' : language === 'cpp' ? 'cpp' : 'c'}
+              language={language === 'go' ? 'go' : language === 'csharp' ? 'csharp' : language === 'typescript' ? 'typescript' : language === 'python' ? 'python' : language === 'javascript' ? 'javascript' : language === 'java' ? 'java' : language === 'cpp' ? 'cpp' : 'c'}
               value={code}
               onChange={(value) => setCurrentCode(value || '')}
               onMount={(editor) => {
@@ -1025,74 +1229,93 @@ const ProblemSolvePage = () => {
               </div>
               <TabsContent value="testcase" className="mt-0 p-3 space-y-3">
                 <div className="flex items-center gap-2 flex-wrap">
-                  {(problem?.test_cases ?? [])
-                    .filter((tc) => !tc.is_hidden)
-                    .map((_, idx) => (
+                  {visibleTestCases.map((_, idx) => (
+                    <button
+                      key={`p-${idx}`}
+                      type="button"
+                      onClick={() => setActiveTestCaseIndex(idx)}
+                      className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                        idx === activeTestCaseIndex
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-muted/50 text-muted-foreground hover:text-foreground hover:bg-muted/70'
+                      }`}
+                    >
+                      Case {idx + 1}
+                    </button>
+                  ))}
+                  {customTestCases.map((tc, idx) => (
+                    <span
+                      key={tc.id}
+                      className={`relative inline-flex items-center gap-0.5 px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                        visibleTestCases.length + idx === activeTestCaseIndex
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-muted/50 text-muted-foreground hover:text-foreground hover:bg-muted/70'
+                      }`}
+                    >
                       <button
-                        key={idx}
                         type="button"
-                        onClick={() => setActiveTestCaseIndex(idx)}
-                        className={`px-3 py-1 text-sm rounded ${idx === activeTestCaseIndex ? 'bg-primary text-primary-foreground' : 'bg-muted/50 text-muted-foreground hover:text-foreground'}`}
+                        onClick={() => setActiveTestCaseIndex(visibleTestCases.length + idx)}
+                        className="pr-5 text-left min-w-0"
                       >
-                        Case {idx + 1}
+                        Case {visibleTestCases.length + idx + 1}
                       </button>
-                    ))}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCustomTestCases((prev) => prev.filter((_, j) => j !== idx));
+                          setActiveTestCaseIndex((prev) => Math.max(0, Math.min(prev, visibleTestCases.length + customTestCases.length - 2)));
+                        }}
+                        className="absolute top-1/2 right-1 -translate-y-1/2 p-0.5 rounded hover:bg-black/20 hover:dark:bg-white/20"
+                        title="Remove this test case"
+                        aria-label="Remove this test case"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </span>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCustomTestCases((prev) => [...prev, { id: Date.now(), input: '' }]);
+                      setActiveTestCaseIndex(visibleTestCases.length + customTestCases.length);
+                    }}
+                    className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/70 transition-colors"
+                    title="Add custom test case"
+                    aria-label="Add custom test case"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
                 </div>
-                {problem?.test_cases?.filter((tc) => !tc.is_hidden)[activeTestCaseIndex] && (
+                {activeTestCaseIndex < visibleTestCases.length && visibleTestCases[activeTestCaseIndex] && (
                   <div className="space-y-2 text-sm">
                     <div>
                       <span className="text-muted-foreground">Input:</span>
                       <pre className="mt-1 p-2 bg-background/50 rounded font-mono text-xs overflow-x-auto">
-                        {problem.test_cases.filter((tc) => !tc.is_hidden)[activeTestCaseIndex].input}
+                        {visibleTestCases[activeTestCaseIndex].input}
                       </pre>
                     </div>
                     <div>
                       <span className="text-muted-foreground">Expected:</span>
                       <pre className="mt-1 p-2 bg-background/50 rounded font-mono text-xs overflow-x-auto">
-                        {problem.test_cases.filter((tc) => !tc.is_hidden)[activeTestCaseIndex].expected_output}
+                        {visibleTestCases[activeTestCaseIndex].expected_output}
                       </pre>
                     </div>
                   </div>
                 )}
-                {/* Add custom test case — input only; run shows your output; no expected output asked */}
-                <div className="border-t border-border/30 pt-3 space-y-2">
-                  <p className="text-sm font-medium text-muted-foreground">Add custom test case</p>
-                  <p className="text-xs text-muted-foreground">Enter input only. Run will show your output; pass/fail is determined automatically when possible.</p>
-                  <Textarea
-                    placeholder="e.g. 2 7 11 15&#10;9"
-                    value={newTestInput}
-                    onChange={(e) => setNewTestInput(e.target.value)}
-                    className="min-h-[60px] font-mono text-xs bg-background/50 resize-none"
-                    rows={2}
-                  />
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    className="gap-1"
-                    onClick={() => {
-                      if (!newTestInput.trim()) return;
-                      setCustomTestCases((prev) => [...prev, { id: Date.now(), input: newTestInput.trim() }]);
-                      setNewTestInput('');
-                    }}
-                  >
-                    <Plus className="w-4 h-4" />
-                    Add test case
-                  </Button>
-                </div>
-                {customTestCases.length > 0 && (
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium text-muted-foreground">Your test cases ({customTestCases.length})</p>
-                    {customTestCases.map((tc) => (
-                      <div key={tc.id} className="flex items-start gap-2 p-2 bg-background/50 rounded border border-border/30 text-xs">
-                        <div className="flex-1 min-w-0">
-                          <span className="text-muted-foreground">Input:</span> <span className="font-mono break-all whitespace-pre-wrap">{tc.input}</span>
-                        </div>
-                        <Button type="button" variant="ghost" size="icon" className="shrink-0 h-7 w-7 text-muted-foreground hover:text-destructive" onClick={() => setCustomTestCases((prev) => prev.filter((c) => c.id !== tc.id))}>
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    ))}
+                {activeTestCaseIndex >= visibleTestCases.length && customTestCases[activeTestCaseIndex - visibleTestCases.length] && (
+                  <div className="space-y-2 text-sm">
+                    <p className="text-muted-foreground text-xs">Custom input. Run to see your output.</p>
+                    <Textarea
+                      placeholder="e.g. 2 7 11 15&#10;9"
+                      value={customTestCases[activeTestCaseIndex - visibleTestCases.length].input}
+                      onChange={(e) => {
+                        const i = activeTestCaseIndex - visibleTestCases.length;
+                        setCustomTestCases((prev) => prev.map((c, j) => (j === i ? { ...c, input: e.target.value } : c)));
+                      }}
+                      className="min-h-[80px] font-mono text-xs bg-background/50 resize-none"
+                      rows={3}
+                    />
                   </div>
                 )}
                 <Collapsible open={consoleOpen} onOpenChange={setConsoleOpen}>
@@ -1119,7 +1342,7 @@ const ProblemSolvePage = () => {
                         <X className="w-5 h-5 text-red-400" />
                       )}
                       <span className={STATUS_COLORS[result.status] || 'text-muted-foreground'}>
-                        {result.status.replace(/_/g, ' ')}
+                        {result.status.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
                       </span>
                       <span className="text-muted-foreground">
                         {result.result?.passed}/{result.result?.total} passed
@@ -1135,14 +1358,33 @@ const ProblemSolvePage = () => {
                     {result.result?.test_results?.map((tr, idx) => (
                       <div
                         key={idx}
-                        className={`p-2 rounded text-xs border ${
+                        className={`p-3 rounded text-xs border space-y-1.5 ${
                           tr.passed ? 'bg-green-500/10 border-green-500/20' : 'bg-red-500/10 border-red-500/20'
                         }`}
                       >
-                        Case {tr.test_case}: {tr.passed ? 'Passed' : 'Failed'}
-                        {tr.custom && <span className="text-muted-foreground ml-1">(Custom)</span>}
-                        {tr.runtime != null && <span className="ml-2 text-muted-foreground">({tr.runtime} ms)</span>}
-                        {tr.output != null && <div className="mt-1 font-mono break-all">Output: {tr.output}</div>}
+                        <div className="font-medium">
+                          Case {tr.test_case}: {tr.passed ? 'Passed' : 'Failed'}
+                          {tr.custom && <span className="text-muted-foreground ml-1">(Custom)</span>}
+                          {tr.runtime != null && <span className="ml-2 text-muted-foreground">({tr.runtime} ms)</span>}
+                        </div>
+                        {tr.input != null && tr.input !== 'Hidden' && (
+                          <div>
+                            <span className="text-muted-foreground">Input: </span>
+                            <pre className="mt-0.5 font-mono break-all whitespace-pre-wrap bg-background/50 p-1.5 rounded text-[11px]">{tr.input}</pre>
+                          </div>
+                        )}
+                        {tr.expected != null && tr.expected !== 'Hidden' && tr.expected !== '' && (
+                          <div>
+                            <span className="text-muted-foreground">Expected: </span>
+                            <pre className="mt-0.5 font-mono break-all whitespace-pre-wrap bg-background/50 p-1.5 rounded text-[11px]">{tr.expected}</pre>
+                          </div>
+                        )}
+                        {tr.output != null && (
+                          <div>
+                            <span className="text-muted-foreground">Output: </span>
+                            <pre className="mt-0.5 font-mono break-all whitespace-pre-wrap bg-background/50 p-1.5 rounded text-[11px]">{tr.output}</pre>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -1153,6 +1395,24 @@ const ProblemSolvePage = () => {
             </Tabs>
           </div>
               </Panel>
+            {aiPanelPosition === 'console' && aiPanelOpen && (
+              <>
+                <PanelResizeHandle withHandle className="w-full h-2 bg-border/50 hover:bg-primary/20 data-[resize-handle-active]:bg-primary/30" />
+                <Panel defaultSize={35} minSize={15} maxSize={60} className="flex flex-col min-h-0 bg-card/20 border-t border-border/50">
+                  <AICoachPanel
+                    problemId={problemId}
+                    problem={problem}
+                    code={code}
+                    language={language}
+                    submissionStatus={result?.status}
+                    failingTestInfo={result?.result?.test_results?.[0] ? `Expected: ${result.result.test_results[0].expected}\nGot: ${result.result.test_results[0].output}` : undefined}
+                    onClose={() => setAiPanelOpen(false)}
+                    panelPosition={aiPanelPosition}
+                    onMoveTo={setAiPanelPosition}
+                  />
+                </Panel>
+              </>
+            )}
             </PanelGroup>
             {/* Fixed Run/Submit bar — always visible at bottom of editor column */}
             <div className="shrink-0 flex justify-end gap-2 px-3 py-2 border-t border-border/50 bg-background/80">
@@ -1164,7 +1424,7 @@ const ProblemSolvePage = () => {
               </Button>
             </div>
           </Panel>
-          {aiPanelOpen && (
+          {aiPanelPosition === 'right' && aiPanelOpen && (
             <>
               <PanelResizeHandle withHandle className="w-2 bg-border/50 hover:bg-primary/20 transition-colors data-[resize-handle-active]:bg-primary/30 shrink-0" />
               <Panel defaultSize={33.34} minSize={20} maxSize={50} className="flex flex-col min-h-0 bg-card/20 border-l border-border/50">
@@ -1176,6 +1436,8 @@ const ProblemSolvePage = () => {
                   submissionStatus={result?.status}
                   failingTestInfo={result?.result?.test_results?.[0] ? `Expected: ${result.result.test_results[0].expected}\nGot: ${result.result.test_results[0].output}` : undefined}
                   onClose={() => setAiPanelOpen(false)}
+                  panelPosition={aiPanelPosition}
+                  onMoveTo={setAiPanelPosition}
                 />
               </Panel>
             </>

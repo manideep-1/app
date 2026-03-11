@@ -1,0 +1,80 @@
+{
+  "problems_processed": 12,
+  "generated_cells": 2,
+  "skipped_existing_in_state": 0,
+  "total_missing_cells_seen": 14,
+  "failed": [
+    {
+      "title": "Coin Change",
+      "approach": "Optimal (DP)",
+      "language": "csharp",
+      "reason": "generation_failed_or_signature_mismatch"
+    },
+    {
+      "title": "First Bad Version",
+      "approach": "Brute Force",
+      "language": "csharp",
+      "reason": "generation_failed_or_signature_mismatch"
+    },
+    {
+      "title": "Kth Largest Element in an Array",
+      "approach": "Sort",
+      "language": "csharp",
+      "reason": "generation_failed_or_signature_mismatch"
+    },
+    {
+      "title": "Min Stack",
+      "approach": "1. Brute Force",
+      "language": "csharp",
+      "reason": "generation_failed_or_signature_mismatch"
+    },
+    {
+      "title": "Move Zeroes",
+      "approach": "Brute Force",
+      "language": "csharp",
+      "reason": "generation_failed_or_signature_mismatch"
+    },
+    {
+      "title": "Plus One",
+      "approach": "Simulation",
+      "language": "go",
+      "reason": "generation_failed_or_signature_mismatch"
+    },
+    {
+      "title": "Rotate Array",
+      "approach": "Brute Force",
+      "language": "go",
+      "reason": "generation_failed_or_signature_mismatch"
+    },
+    {
+      "title": "Rotate Array",
+      "approach": "Brute Force",
+      "language": "csharp",
+      "reason": "generation_failed_or_signature_mismatch"
+    },
+    {
+      "title": "Search Insert Position",
+      "approach": "Brute Force",
+      "language": "csharp",
+      "reason": "generation_failed_or_signature_mismatch"
+    },
+    {
+      "title": "Squares of a Sorted Array",
+      "approach": "Brute Force",
+      "language": "csharp",
+      "reason": "generation_failed_or_signature_mismatch"
+    },
+    {
+      "title": "Subsets",
+      "approach": "Optimal (Backtracking)",
+      "language": "go",
+      "reason": "generation_failed_or_signature_mismatch"
+    },
+    {
+      "title": "Top K Frequent Elements",
+      "approach": "Optimal (Bucket Sort)",
+      "language": "go",
+      "reason": "generation_failed_or_signature_mismatch"
+    }
+  ]
+}

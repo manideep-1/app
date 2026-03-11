@@ -1,0 +1,32 @@
+{
+  "pattern_recognition": "Bit Manipulation - This problem falls under bit manipulation as it requires reversing the bits of a number. The signals include the need to understand how bits are represented and manipulated at the binary level.",
+  "approaches": [
+    {
+      "title": "Brute Force",
+      "intuition": "Iterate through each bit of the integer, shifting and constructing the reversed number bit by bit.",
+      "algorithm": "Initialize a result variable to 0. For each bit in the input number, shift the result left and add the least significant bit of the input number. Shift the input number right to process the next bit.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public int reverseBits(int n) {\n        int result = 0;\n        for (int i = 0; i < 32; i++) {\n            result <<= 1;\n            result |= (n & 1);\n            n >>= 1;\n        }\n        return result;\n    }\n}",
+      "code_python": "def reverseBits(n: int) -> int:\n    result = 0\n    for i in range(32):\n        result <<= 1\n        result |= (n & 1)\n        n >>= 1\n    return result",
+      "code_cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    int reverseBits(int n) {\n        int result = 0;\n        for (int i = 0; i < 32; i++) {\n            result <<= 1;\n            result |= (n & 1);\n            n >>= 1;\n        }\n        return result;\n    }\n};",
+      "code_javascript": "function reverseBits(n) {\n    let result = 0;\n    for (let i = 0; i < 32; i++) {\n        result <<= 1;\n        result |= (n & 1);\n        n >>= 1;\n    }\n    return result >>> 0;\n}",
+      "code_go": "func reverseBits(n int) int {\n\tresult := 0\n\tfor i := 0; i < 32; i++ {\n\t\tresult <<= 1\n\t\tresult |= n & 1\n\t\tn >>= 1\n\t}\n\treturn result\n}",
+      "code_csharp": "public class Solution {\n    public int reverseBits(int n) {\n        int result = 0;\n        for (int i = 0; i < 32; i++) {\n            result <<= 1;\n            result |= (n & 1);\n            n >>= 1;\n        }\n        return result;\n    }\n}"
+    },
+    {
+      "title": "Optimal Approach",
+      "intuition": "Use a combination of bit manipulation techniques to reverse bits in groups, reducing the number of operations needed.",
+      "algorithm": "Pair bits and swap them, then group them into nibbles, bytes, and finally the full 32-bit integer, applying shifts and masks at each stage.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public int reverseBits(int n) {\n        n = (n >>> 1) & 0x55555555 | (n & 0x55555555) << 1;\n        n = (n >>> 2) & 0x33333333 | (n & 0x33333333) << 2;\n        n = (n >>> 4) & 0x0F0F0F0F | (n & 0x0F0F0F0F) << 4;\n        n = (n >>> 8) & 0x00FF00FF | (n & 0x00FF00FF) << 8;\n        n = (n >>> 16) | (n << 16);\n        return n;\n    }\n}",
+      "code_python": "def reverseBits(n: int) -> int:\n    n = (n >> 1 & 0x55555555) | ((n & 0x55555555) << 1)\n    n = (n >> 2 & 0x33333333) | ((n & 0x33333333) << 2)\n    n = (n >> 4 & 0x0F0F0F0F) | ((n & 0x0F0F0F0F) << 4)\n    n = (n >> 8 & 0x00FF00FF) | ((n & 0x00FF00FF) << 8)\n    n = (n >> 16 & 0x0000FFFF) | ((n & 0x0000FFFF) << 16)\n    return n",
+      "code_cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    int reverseBits(int n) {\n        n = (n >> 1) & 0x55555555 | (n << 1) & 0xAAAAAAAA;\n        n = (n >> 2) & 0x33333333 | (n << 2) & 0xCCCCCCCC;\n        n = (n >> 4) & 0x0F0F0F0F | (n << 4) & 0xF0F0F0F0;\n        n = (n >> 8) & 0x00FF00FF | (n << 8) & 0xFF00FF00;\n        n = (n >> 16) | (n << 16);\n        return n;\n    }\n};",
+      "code_javascript": "function reverseBits(n) {\n    n = (n >>> 1) & 0x55555555 | (n & 0x55555555) << 1;\n    n = (n >>> 2) & 0x33333333 | (n & 0x33333333) << 2;\n    n = (n >>> 4) & 0x0F0F0F0F | (n & 0x0F0F0F0F) << 4;\n    n = (n >>> 8) & 0x00FF00FF | (n & 0x00FF00FF) << 8;\n    n = (n >>> 16) | (n << 16);\n    return n >>> 0;\n}",
+      "code_go": "func reverseBits(n int) int {\n\tn = (n>>16)&0x0000FFFF | (n&0x0000FFFF)<<16\n\tn = (n>>8)&0x00FF00FF | (n&0x00FF00FF)<<8\n\tn = (n>>4)&0x0F0F0F0F | (n&0x0F0F0F0F)<<4\n\tn = (n>>2)&0x33333333 | (n&0x33333333)<<2\n\tn = (n>>1)&0x55555555 | (n&0x55555555)<<1\n\treturn n\n}",
+      "code_csharp": "public class Solution {\n    public int reverseBits(int n) {\n        n = (n >> 16) | (n << 16);\n        n = ((n & 0x00FF00FF) << 8) | ((n & 0xFF00FF00) >> 8);\n        n = ((n & 0x0000FFFF) << 4) | ((n & 0xFFFF0000) >> 4);\n        n = ((n & 0x000000FF) << 2) | ((n & 0xFFFFFF00) >> 2);\n        n = ((n & 0x0000000F) << 1) | ((n & 0xFFFFFFF0) >> 1);\n        return n;\n    }\n}"
+    }
+  ],
+  "dry_run": "For input 13 (binary: 00000000000000000000000000001101), the brute force approach would process each bit: Start with result = 0, for each bit: 1. Shift result left (0 -> 0), add 1 (result = 1), shift input right (13 -> 6). 2. Shift result left (1 -> 2), add 0 (result = 2), shift input right (6 -> 3). 3. Shift result left (2 -> 4), add 1 (result = 5), shift input right (3 -> 1). 4. Shift result left (5 -> 10), add 1 (result = 11), shift input right (1 -> 0). Final result is 11 (binary: 00000000000000000000000000001011).",
+  "edge_cases": "Input of 0 should return 0. Input of 1 should return 2147483648 (binary: 10000000000000000000000000000000). Large inputs should be handled correctly without overflow. Ensure the function works for maximum 32-bit unsigned integer (4294967295).",
+  "common_pitfalls": "1. Forgetting to handle leading zeros in the binary representation can lead to incorrect results. 2. Not considering the unsigned nature of the integer may cause sign issues. 3. Inefficient bit manipulation can lead to performance issues, especially with larger inputs."
+}

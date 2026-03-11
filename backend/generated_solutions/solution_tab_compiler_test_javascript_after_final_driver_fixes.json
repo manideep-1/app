@@ -1,0 +1,435 @@
+{
+  "problems_scanned": 116,
+  "languages": [
+    "javascript"
+  ],
+  "all_approaches": false,
+  "runs_total": 116,
+  "runs_passed": 56,
+  "runs_failed": 60,
+  "missing_code_entries": 0,
+  "signature_rejected": 1,
+  "problems_with_no_visible_tests": 0,
+  "failures": [
+    {
+      "problem_id": "c796c649-19b9-441f-b566-5d6ba016a892",
+      "title": "Add and Search Word",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "6c64f598-831e-42d4-9e9b-0fd7289a2da1",
+      "title": "Binary Tree Level Order Traversal",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "b0474bb7-34df-46d7-bd33-6e102c523dfd",
+      "title": "Clone Graph",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "cadc1493-5d9a-4b6c-bd6d-14fabb93d2b0",
+      "title": "Combination Sum",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "3aa30c83-8537-48ac-81c4-177bb7ebcc7c",
+      "title": "Container With Most Water",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2"
+    },
+    {
+      "problem_id": "e691364f-fd4b-4185-8e20-5936a0f22e81",
+      "title": "Count of Smaller Numbers After Self",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "939319be-d4a1-4468-897a-0fc80555deb2",
+      "title": "Course Schedule",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "2de68f6f-dcb1-4725-a601-00fe0d6bd4d2",
+      "title": "Edit Distance",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "077b5028-8f44-4358-aa6a-214601df06e9",
+      "title": "Evaluate Reverse Polish Notation",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "64e42f09-e4dc-4148-a0d1-d5eef5772e5f",
+      "title": "Find First and Last Position of Element in Sorted Array",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "1517b668-acf0-4a2c-9b93-02056fc7e635",
+      "title": "Find Median from Data Stream",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+    },
+    {
+      "problem_id": "4884dbca-b613-419e-997f-b61dd9db745f",
+      "title": "Find the Duplicate Number",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "5e9dc216-d087-4f7a-abee-2ea59b484a0e",
+      "title": "First Bad Version",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "7e529190-8fb1-43c1-a142-d38fb1461696",
+      "title": "Generate Parentheses",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "19b6c742-a1e0-426e-87ef-2821f5e6ffa0",
+      "title": "Implement Queue using Stacks",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "0b0b0991-a566-43b0-a3bd-b1b26aa989be",
+      "title": "Implement Stack using Queues",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "1bec511a-7ffb-4769-a3e0-f6d0c44b0393",
+      "title": "Implement Trie",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "5bc24bd3-20d7-40b4-a6dd-61f955222b39",
+      "title": "Insert Interval",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "f3b13d73-52c6-4348-829c-1b94105a6aee",
+      "title": "Jump Game II",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2"
+    },
+    {
+      "problem_id": "31b117c4-0bd0-4cbd-a7b1-2e372f92d4c0",
+      "title": "K Closest Points to Origin",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "4ae3377b-aabc-44e7-8b23-987dd5dfb4c6",
+      "title": "Kth Largest Element in an Array",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "52743329-18f4-4d2e-bc89-781e670c4692",
+      "title": "Largest Rectangle in Histogram",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "e936e8dd-832f-403a-888d-79b929fb07c6",
+      "title": "Linked List Cycle",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "f0231f69-2164-4d48-b819-df5ee174f6bb",
+      "title": "Longest Common Subsequence",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "19e4c547-1e8f-422d-bae4-f2656fdd98e3",
+      "title": "Longest Consecutive Sequence",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "abf3a456-a8e9-44fe-bbae-8c69c36d553a",
+      "title": "Longest Increasing Subsequence",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "78f6f2e5-d083-44f7-9c8d-8375587d4d4d",
+      "title": "Longest Repeating Character Replacement",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "6a60aa02-ea6c-41c2-a064-47d6731cc279",
+      "title": "LRU Cache",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "e1c7306b-658a-40b2-8927-6e8ac4fed947",
+      "title": "Maximum Product of Word Lengths",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "090139fe-ef97-4a2d-ac11-9882ecb8ba53",
+      "title": "Maximum XOR of Two Numbers in an Array",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "2d007507-ed5e-4afc-800a-730304cdd13e",
+      "title": "Merge k Sorted Lists",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "5c6cd77b-65a5-4cdf-85fa-3f2cd7faa67e",
+      "title": "Min Stack",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "f7cb6523-ffec-4868-a31e-95ac7d24f123",
+      "title": "Minimum Path Sum",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "b01d74fb-9b9d-440c-88f8-020e31721716",
+      "title": "Minimum Window Substring",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "3dee1118-34b6-477e-b3e6-f561678af14e",
+      "title": "N-Queens",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "6c2ff960-e68c-48e3-b8a2-0354c77e4fc0",
+      "title": "Next Permutation",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "1fc681ae-c727-4b96-a68c-dd5c46e82ec8",
+      "title": "Number of Islands",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "b833a154-a409-41db-bf05-359eed2df012",
+      "title": "Pacific Atlantic Water Flow",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "85380c93-26cd-4904-aaa3-4ab84a8d3d8c",
+      "title": "Partition Equal Subset Sum",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "01a56862-487b-47e9-b9fa-e6da30a3904f",
+      "title": "Partition to K Equal Sum Subsets",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "087d858d-59bd-4087-9c62-cdb006a7254a",
+      "title": "Permutations",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "d72a7ccf-6740-4f21-ace6-9d494f2412f3",
+      "title": "Pow(x, n)",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "26effef2-f295-499e-824b-0687a555958c",
+      "title": "Remove Invalid Parentheses",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "2f2a4711-6748-4b9a-bbfd-d524f43f70a0",
+      "title": "Remove Nth Node From End of List",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "93e09abc-59c4-44b9-a8e2-70f2bbdb1f07",
+      "title": "Reorder List",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "d4ea3bab-39b2-4700-9741-e191ee47dc0b",
+      "title": "Rotate Image",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "00cd43b0-7440-40ee-ba11-723117ac3367",
+      "title": "Search a 2D Matrix",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "b8dacb07-81fe-49df-9e38-f5523180fee5",
+      "title": "Search a 2D Matrix II",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "4d60fa32-bb3a-4715-901d-a0d46e9ba232",
+      "title": "Serialize and Deserialize Binary Tree",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "cb67c56f-232d-4b64-a4a5-ea70592d0b70",
+      "title": "Set Matrix Zeroes",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "a9a842ad-e473-4e8f-b809-c636f4bb4506",
+      "title": "Sliding Window Maximum",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "992f3d16-1971-4cc9-9379-45bf30e1b901",
+      "title": "Spiral Matrix",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "cf13ce6b-904b-47e1-bd95-8c48e7f28088",
+      "title": "Subarray Sum Equals K",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "06602a9a-66d2-409a-a4a2-f5098663aeed",
+      "title": "Subsets",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2"
+    },
+    {
+      "problem_id": "7e0233f9-54ce-4f2b-a307-d0d2123a760b",
+      "title": "Target Sum",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "c2533f91-2c76-400e-a3ad-e083d58ec6ab",
+      "title": "Top K Frequent Elements",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "69884a7b-d8b4-4c37-b04f-6f546dfc2e85",
+      "title": "Trapping Rain Water",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "9d142e89-1858-4133-95cc-19e05849edc7",
+      "title": "Valid Parentheses",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=compile_error passed=0/3"
+    },
+    {
+      "problem_id": "ad08329a-1125-4a7e-8f8d-534cc5de7c89",
+      "title": "Word Break II",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "44e519f9-c6c4-49f3-91bc-d7bd33a763ea",
+      "title": "Word Search II",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    }
+  ]
+}

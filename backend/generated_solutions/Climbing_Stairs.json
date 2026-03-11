@@ -1,0 +1,32 @@
+{
+  "pattern_recognition": "Dynamic Programming - This problem can be recognized as a dynamic programming problem because the number of ways to reach the top can be derived from the number of ways to reach the previous two steps. The signals include overlapping subproblems and optimal substructure.",
+  "approaches": [
+    {
+      "title": "Brute Force",
+      "intuition": "Explore all possible combinations of steps taken to reach the top by recursively trying both 1-step and 2-step moves.",
+      "algorithm": "Use recursion to explore all paths to the top, counting valid paths.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public int climbStairs(int n) {\n        return climb(n);\n    }\n    \n    private int climb(int n) {\n        if (n <= 1) {\n            return 1;\n        }\n        return climb(n - 1) + climb(n - 2);\n    }\n}",
+      "code_python": "def climbStairs(n: int) -> int:\n    def climb(n: int) -> int:\n        if n == 0:\n            return 1\n        if n < 0:\n            return 0\n        return climb(n - 1) + climb(n - 2)\n\n    return climb(n)",
+      "code_cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    int climbStairs(int n) {\n        return climb(n);\n    }\n    \nprivate:\n    int climb(int n) {\n        if (n <= 1) {\n            return 1;\n        }\n        return climb(n - 1) + climb(n - 2);\n    }\n};",
+      "code_javascript": "function climbStairs(n) {\n    function climb(steps) {\n        if (steps > n) return 0;\n        if (steps === n) return 1;\n        return climb(steps + 1) + climb(steps + 2);\n    }\n    return climb(0);\n}",
+      "code_go": "func climbStairs(n int) int {\n\tif n <= 1 {\n\t\treturn 1\n\t}\n\treturn climbStairs(n-1) + climbStairs(n-2)\n}",
+      "code_csharp": "public class Solution {\n    public int climbStairs(int n) {\n        return Climb(n);\n    }\n\n    private int Climb(int n) {\n        if (n <= 1) {\n            return 1;\n        }\n        return Climb(n - 1) + Climb(n - 2);\n    }\n}"
+    },
+    {
+      "title": "Optimal Approach",
+      "intuition": "Utilize dynamic programming to store previously computed results to avoid redundant calculations, leading to a more efficient solution.",
+      "algorithm": "Create an array to store the number of ways to reach each step, filling it iteratively based on the sum of the ways to reach the two preceding steps.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public int climbStairs(int n) {\n        if (n <= 1) return 1;\n        int[] dp = new int[n + 1];\n        dp[0] = 1;\n        dp[1] = 1;\n        for (int i = 2; i <= n; i++) {\n            dp[i] = dp[i - 1] + dp[i - 2];\n        }\n        return dp[n];\n    }\n}",
+      "code_python": "def climbStairs(n: int) -> int:\n    if n <= 1:\n        return 1\n    dp = [0] * (n + 1)\n    dp[0], dp[1] = 1, 1\n    for i in range(2, n + 1):\n        dp[i] = dp[i - 1] + dp[i - 2]\n    return dp[n]",
+      "code_cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    int climbStairs(int n) {\n        if (n <= 1) return 1;\n        vector<int> dp(n + 1);\n        dp[0] = 1;\n        dp[1] = 1;\n        for (int i = 2; i <= n; i++) {\n            dp[i] = dp[i - 1] + dp[i - 2];\n        }\n        return dp[n];\n    }\n};",
+      "code_javascript": "function climbStairs(n) {\n    if (n <= 1) return 1;\n    let dp = new Array(n + 1);\n    dp[0] = 1;\n    dp[1] = 1;\n    for (let i = 2; i <= n; i++) {\n        dp[i] = dp[i - 1] + dp[i - 2];\n    }\n    return dp[n];\n}",
+      "code_go": "func climbStairs(n int) int {\n\tif n <= 1 {\n\t\treturn 1\n\t}\n\tways := make([]int, n+1)\n\tways[0] = 1\n\tways[1] = 1\n\tfor i := 2; i <= n; i++ {\n\t\tways[i] = ways[i-1] + ways[i-2]\n\t}\n\treturn ways[n]\n}",
+      "code_csharp": "public class Solution {\n    public int climbStairs(int n) {\n        if (n <= 1) return 1;\n        int[] dp = new int[n + 1];\n        dp[0] = 1;\n        dp[1] = 1;\n        for (int i = 2; i <= n; i++) {\n            dp[i] = dp[i - 1] + dp[i - 2];\n        }\n        return dp[n];\n    }\n}"
+    }
+  ],
+  "dry_run": "For n = 4, starting from step 0: From step 0, you can go to step 1 (1 way) or step 2 (1 way). From step 1, you can go to step 2 (1 way) or step 3 (1 way). From step 2, you can go to step 3 (1 way) or step 4 (1 way). Continuing this, you find the total ways to reach step 4 is 5: (1,1,1,1), (1,1,2), (1,2,1), (2,1,1), (2,2).",
+  "edge_cases": "n = 0 (no steps), n = 1 (only one way), n = 2 (two ways), large n (to test performance), negative n (invalid input), very large n (to test for overflow).",
+  "common_pitfalls": "1) Forgetting to handle the base cases (e.g., n = 0 or n = 1). 2) Not using memoization in the brute force approach, leading to excessive recomputation. 3) Incorrectly initializing the dynamic programming array, which can lead to wrong results."
+}

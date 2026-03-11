@@ -1,0 +1,228 @@
+{
+  "targets": 45,
+  "fixed": 3,
+  "already_passing": 6,
+  "unresolved_count": 36,
+  "modified_titles": [
+    "Set Matrix Zeroes",
+    "Valid Parentheses"
+  ],
+  "unresolved": [
+    {
+      "title": "Add and Search Word",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2; input='addWord bad addWord dad addWord mad search pad search bad search .ad search b..' expected='false true true true' got='null'"
+    },
+    {
+      "title": "Clone Graph",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2; input='2 1 4 1 3 2 4 3 4 2' expected='2 1 4 1 3 2 4 3 4 2' got='Runtime Error: undefined:1\\n2 1 4 1 3 2 4 3 4 2\\n  ^\\n\\nSyntaxError: Unexpected number in JSON at position 2\\n    at JSON.parse (<anonymous>)\\n    at cloneGraph (/private/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_zxl0x_1s/code.js:4:32)\\n    at Interface.<anonymous> (/private/var/folders/3y'"
+    },
+    {
+      "title": "Clone Graph",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2; input='2 1 4 1 3 2 4 3 4 2' expected='2 1 4 1 3 2 4 3 4 2' got='<__main__.cloneGraph.<locals>.Node object at 0x105039090>'"
+    },
+    {
+      "title": "Clone Graph",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2; input='2 1 4 1 3 2 4 3 4 2' expected='2 1 4 1 3 2 4 3 4 2' got='<__main__.Node object at 0x104c30c10>'"
+    },
+    {
+      "title": "Container With Most Water",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2; input='' expected='0' got=''"
+    },
+    {
+      "title": "Find Median from Data Stream",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+    },
+    {
+      "title": "First Bad Version",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2; input='5\\n4' expected='4' got='Runtime Error: /private/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_r70g15vs/code.js:3\\n        if (isBadVersion(i)) {\\n        ^\\n\\nReferenceError: isBadVersion is not defined\\n    at firstBadVersion (/private/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_r70g15vs/code.js:3:9'"
+    },
+    {
+      "title": "Generate Parentheses",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2; input='3' expected='((()))\\n(()())\\n(())()\\n()(())\\n()()()' got=\"['((()))', '(()())', '(())()', '()(())', '()()()']\""
+    },
+    {
+      "title": "Generate Parentheses",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2; input='3' expected='((()))\\n(()())\\n(())()\\n()(())\\n()()()' got=\"['((()))', '(()())', '(())()', '()(())', '()()()']\""
+    },
+    {
+      "title": "Implement Queue using Stacks",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2; input='push 1 push 2 peek pop' expected='1 1' got=''"
+    },
+    {
+      "title": "Implement Queue using Stacks",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=1/2; input='push 1 push 2 peek pop' expected='1 1' got='Runtime Error: Traceback (most recent call last):\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_1b3g38sg/code.py\", line 48, in <module>\\n    result = implementQueueUsingStacks(data)\\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000'"
+    },
+    {
+      "title": "Implement Queue using Stacks",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=1/2; input='push 1 push 2 peek pop' expected='1 1' got='Runtime Error: Traceback (most recent call last):\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_jzjny3sc/code.py\", line 49, in <module>\\n    result = implementQueueUsingStacks(data)\\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000'"
+    },
+    {
+      "title": "Insert Interval",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2; input='1 3 6 9\\n2 5' expected='1 5 6 9' got='2 5'"
+    },
+    {
+      "title": "Insert Interval",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2; input='1 3 6 9\\n2 5' expected='1 5 6 9' got='Runtime Error: Traceback (most recent call last):\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_01bddp5z/code.py\", line 21, in <module>\\n    result = insert(intervals, newInterval)\\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn'"
+    },
+    {
+      "title": "Insert Interval",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2; input='1 3 6 9\\n2 5' expected='1 5 6 9' got='Runtime Error: Traceback (most recent call last):\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_bh852ots/code.py\", line 33, in <module>\\n    result = insert(intervals, newInterval)\\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn'"
+    },
+    {
+      "title": "Jump Game II",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2; input='' expected='0' got=''"
+    },
+    {
+      "title": "Longest Consecutive Sequence",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2; input='' expected='0' got=''"
+    },
+    {
+      "title": "LRU Cache",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "llm_exception: Connection error."
+    },
+    {
+      "title": "Merge Two Sorted Lists",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "llm_exception: Connection error."
+    },
+    {
+      "title": "Merge Two Sorted Lists",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "llm_exception: Connection error."
+    },
+    {
+      "title": "Min Stack",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "llm_exception: Connection error."
+    },
+    {
+      "title": "Min Stack",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "llm_exception: Connection error."
+    },
+    {
+      "title": "Min Stack",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "llm_exception: Connection error."
+    },
+    {
+      "title": "N-Queens",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "llm_exception: Connection error."
+    },
+    {
+      "title": "N-Queens",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "llm_exception: Connection error."
+    },
+    {
+      "title": "N-Queens II",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2; input='4' expected='2' got='Runtime Error: Traceback (most recent call last):\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_q3jl002x/code.py\", line 25, in <module>\\n    result = nQueensIi(data)\\n             ^^^^^^^^^^^^^^^\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_q3jl002x/code.py'"
+    },
+    {
+      "title": "N-Queens II",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2; input='4' expected='2' got='Runtime Error: Traceback (most recent call last):\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_gcebpjg1/code.py\", line 27, in <module>\\n    result = nQueensIi(data)\\n             ^^^^^^^^^^^^^^^\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_gcebpjg1/code.py'"
+    },
+    {
+      "title": "Remove Invalid Parentheses",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2; input='()())()' expected='(())()\\n()()()' got=\"[ '(())()', '()()()' ]\""
+    },
+    {
+      "title": "Remove Invalid Parentheses",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=wrong_answer passed=1/2; input='()())()' expected='(())()\\n()()()' got=\"['']\""
+    },
+    {
+      "title": "Remove Invalid Parentheses",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=wrong_answer passed=1/2; input='()())()' expected='(())()\\n()()()' got=\"['(())()', '()()()']\""
+    },
+    {
+      "title": "Reverse String",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2; input='h e l l o' expected='o l l e h' got='Runtime Error: Traceback (most recent call last):\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_l9mxt6uk/code.py\", line 13, in <module>\\n    s = list(map(int, data[0].split()))\\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nValueError: invalid literal for int() with base 10: \\'h\\''"
+    },
+    {
+      "title": "Reverse String",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2; input='h e l l o' expected='o l l e h' got='Runtime Error: Traceback (most recent call last):\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_8kpv8ki6/code.py\", line 13, in <module>\\n    s = list(map(int, data[0].split()))\\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nValueError: invalid literal for int() with base 10: \\'h\\''"
+    },
+    {
+      "title": "Serialize and Deserialize Binary Tree",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=time_limit_exceeded passed=0/2; input='1 2 3 null null 4 5' expected='1 2 3 null null 4 5' got='Time Limit Exceeded'"
+    },
+    {
+      "title": "Subsets",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2; input='' expected='[[]]' got=''"
+    },
+    {
+      "title": "Word Break II",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2; input='catsanddog\\ncat cats and dog sand' expected='cats and dog\\ncat sand dog' got=\"['cat sand dog', 'cats and dog']\""
+    },
+    {
+      "title": "Word Break II",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2; input='catsanddog\\ncat cats and dog sand' expected='cats and dog\\ncat sand dog' got=\"['cat sand dog', 'cats and dog']\""
+    }
+  ]
+}

@@ -70,7 +70,7 @@ const LANG_EDITOR = {
 };
 
 const CompilerPage = () => {
-  const { user, loading: authLoading } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [language, setLanguage] = useState('python');
   const [code, setCode] = useState(DEFAULT_CODE.python);
@@ -80,13 +80,6 @@ const CompilerPage = () => {
   const [runtimeMs, setRuntimeMs] = useState(null);
   const [running, setRunning] = useState(false);
 
-  React.useEffect(() => {
-    if (authLoading) return;
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-  }, [user, authLoading, navigate]);
 
   React.useEffect(() => {
     setCode((prev) => {
@@ -96,6 +89,11 @@ const CompilerPage = () => {
   }, [language]);
 
   const handleRun = async () => {
+    if (!user) {
+      toast.error('Please log in to run code');
+      navigate('/login');
+      return;
+    }
     setRunning(true);
     setOutput('');
     setError(null);
@@ -122,14 +120,6 @@ const CompilerPage = () => {
       setRunning(false);
     }
   };
-
-  if (authLoading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground">Loading...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="h-screen bg-background flex flex-col overflow-hidden">

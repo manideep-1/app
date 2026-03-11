@@ -1,0 +1,45 @@
+{
+  "targets": 8,
+  "fixed": 0,
+  "already_passing": 2,
+  "unresolved_count": 6,
+  "modified_titles": [],
+  "unresolved": [
+    {
+      "title": "Add and Search Word",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2; input='addWord bad addWord dad addWord mad search pad search bad search .ad search b..' expected='false true true true' got=''"
+    },
+    {
+      "title": "Add and Search Word",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2; input='addWord bad addWord dad addWord mad search pad search bad search .ad search b..' expected='false true true true' got=''"
+    },
+    {
+      "title": "Add and Search Word",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2; input='addWord bad addWord dad addWord mad search pad search bad search .ad search b..' expected='false true true true' got=''"
+    },
+    {
+      "title": "Binary Tree Level Order Traversal",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2; input='3 9 20 null null 15 7' expected='3\\n9 20\\n15 7' got=\"Runtime Error: /private/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_arqywa9h/code.js:34\\n    console.log(result && result.length ? result.join(' ') : '');\\n                                                 ^\\n\\nTypeError: result.join is not a function\\n    at Interface.<anonymous> (/private\""
+    },
+    {
+      "title": "Binary Tree Level Order Traversal",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2; input='3 9 20 null null 15 7' expected='3\\n9 20\\n15 7' got='3 9 20 15 7'"
+    },
+    {
+      "title": "Binary Tree Level Order Traversal",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2; input='3 9 20 null null 15 7' expected='3\\n9 20\\n15 7' got='3 9 20 15 7'"
+    }
+  ]
+}

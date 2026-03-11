@@ -77,6 +77,7 @@ const ProblemsPage = () => {
   const [sortOrder, setSortOrder] = useState('asc'); // 'asc' | 'desc'
   const [shuffledIds, setShuffledIds] = useState(null);
   const [starredIds, setStarredIds] = useState(() => new Set(getStarredIds()));
+  const [assignedMap, setAssignedMap] = useState({});
   const [deletingProgress, setDeletingProgress] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const { user, loading: authLoading, logout } = useAuth();
@@ -97,19 +98,20 @@ const ProblemsPage = () => {
 
   useEffect(() => {
     if (authLoading) return;
-    if (!user) {
-      navigate('/login');
-      return;
-    }
     fetchProblems();
-    fetchProgress();
     fetchMeta();
+    if (user) {
+      fetchProgress();
+      fetchAssignedMap();
+    } else {
+      setAssignedMap({});
+    }
   }, [user, authLoading]);
 
   useEffect(() => {
-    if (!user || authLoading) return;
+    if (authLoading) return;
     fetchProblems();
-  }, [difficulty, tag, company, user, authLoading]);
+  }, [difficulty, tag, company, authLoading]);
 
   useEffect(() => {
     setShuffledIds(null);
@@ -131,6 +133,15 @@ const ProblemsPage = () => {
       setProgress(res.data);
     } catch {
       setProgress(null);
+    }
+  };
+
+  const fetchAssignedMap = async () => {
+    try {
+      const res = await api.get('coach/my-plan/assigned-map');
+      setAssignedMap(res.data?.assigned || {});
+    } catch {
+      setAssignedMap({});
     }
   };
 
@@ -285,10 +296,21 @@ const ProblemsPage = () => {
               </span>
             </Link>
             <div className="flex items-center gap-4">
+              <Link to="/my-plan" data-testid="nav-my-plan-link">
+                <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                  My Plan
+                </Button>
+              </Link>
               <Link to="/dashboard" data-testid="nav-dashboard-link">
                 <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
                   <User className="w-4 h-4 mr-2" />
                   {user?.username}
+                </Button>
+              </Link>
+              <Link to="/coach" data-testid="nav-coach-link">
+                <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                  <IfElseIcon className="w-4 h-4 mr-2" />
+                  If Else Coach
                 </Button>
               </Link>
               <Button
@@ -456,7 +478,7 @@ const ProblemsPage = () => {
           </Button>
         </div>
 
-        {/* About modal (NeetCode-style) */}
+        {/* About modal */}
         <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-card border-border">
             <DialogHeader>
@@ -467,17 +489,17 @@ const ProblemsPage = () => {
                 Hi, we created If Else to make coding interview prep easier!
               </p>
               <ul className="list-disc list-inside space-y-2 pl-2">
-                <li>The <strong className="text-foreground">Blind 75</strong> is a popular list of algorithm practice problems.</li>
-                <li>We added more problems to build a beginner-friendly list you can practice with hints and solutions.</li>
-                <li>Each problem includes multiple <strong className="text-foreground">solution approaches</strong> (brute force, optimal) with code in Python, JavaScript, and more.</li>
-                <li>Get stuck? Use <strong className="text-foreground">If Else AI</strong> for progressive hints, code review, and debug help.</li>
+                <li>We offer a <strong className="text-foreground">curated list</strong> of algorithm &amp; data structure problems, beginner-friendly and organized by topic.</li>
+                <li>Each problem includes <strong className="text-foreground">multiple solution approaches</strong> (e.g. brute force, optimal) with code in Python, JavaScript, Java, C++, and C.</li>
+                <li>Use built-in <strong className="text-foreground">hints and solutions</strong> when you need a nudge or want to compare your approach.</li>
+                <li>Get stuck? Use <strong className="text-foreground">If Else AI</strong> for progressive hints, code review, and debug help—without giving away the answer.</li>
               </ul>
               <p>See below for more details.</p>
               <div className="rounded-lg overflow-hidden border border-border/50 bg-muted/20">
                 <iframe
                   title="How to Get Good at Algorithms & Data Structures"
                   className="w-full aspect-video"
-                  src="https://www.youtube.com/embed/RBSGKlAvoiM"
+                  src="https://www.youtube.com/embed/7U4nLbPe82M"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 />
@@ -527,7 +549,14 @@ const ProblemsPage = () => {
           </div>
         ) : problemsToShow.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">No problems match your filters</p>
+            {allProblems.length === 0 ? (
+              <>
+                <p className="text-muted-foreground font-medium">No problems available</p>
+                <p className="text-muted-foreground text-sm mt-1">The problem list is empty. If you run the app locally, seed the database (e.g. run the backend seed script).</p>
+              </>
+            ) : (
+              <p className="text-muted-foreground">No problems match your filters</p>
+            )}
           </div>
         ) : tag !== 'all' ? (
           <div className="space-y-4" data-testid="problems-list">
@@ -562,6 +591,7 @@ const ProblemsPage = () => {
                       const isSolved = solvedSet.has(problem.id);
                       const isAttempted = attemptedSet.has(problem.id);
                       const isStarred = starredIds.has(problem.id);
+                      const assigned = assignedMap?.[problem.id];
                       return (
                         <tr
                           key={problem.id}
@@ -591,6 +621,11 @@ const ProblemsPage = () => {
                               {problem.title}
                               <ExternalLink className="w-3.5 h-3.5 opacity-70" />
                             </Link>
+                            {assigned ? (
+                              <span className="ml-2 inline-flex items-center rounded-full border border-primary/40 bg-primary/10 px-2 py-0.5 text-[11px] text-primary">
+                                Day {assigned.day}
+                              </span>
+                            ) : null}
                           </td>
                           <td className="px-4 py-3 text-center">
                             <span
@@ -650,6 +685,7 @@ const ProblemsPage = () => {
                           const isSolved = solvedSet.has(problem.id);
                           const isAttempted = attemptedSet.has(problem.id);
                           const isStarred = starredIds.has(problem.id);
+                          const assigned = assignedMap?.[problem.id];
                           const diff = problem.difficulty ?? 'easy';
                           return (
                             <tr
@@ -680,6 +716,11 @@ const ProblemsPage = () => {
                                   {problem.title}
                                   <ExternalLink className="w-3.5 h-3.5 opacity-70" />
                                 </Link>
+                                {assigned ? (
+                                  <span className="ml-2 inline-flex items-center rounded-full border border-primary/40 bg-primary/10 px-2 py-0.5 text-[11px] text-primary">
+                                    Day {assigned.day}
+                                  </span>
+                                ) : null}
                               </td>
                               <td className="px-4 py-3 text-center">
                                 <span

@@ -1,0 +1,27 @@
+---
+description: Starters and drivers must be metadata-driven and consistent across languages. Users implement only the solution function; platform handles I/O.
+globs: backend/seed_starters.py, backend/seed_problems_top100.py, backend/starter_template_generator.py, backend/problem_metadata_registry.py
+---
+
+# Starter templates — metadata-driven
+
+## Rule
+
+- **Function signature** (name, parameters, return type) must match the problem and be consistent across Python, JavaScript, Java, C++, C.
+- **Users implement only the solution function.** They do NOT read input or print output; the platform driver does that.
+- **Java**: Non-static method in `class Solution`; driver is `public class Main` in the same file (Main.java).
+- **C++**: `class Solution` with method; driver is `int main()` in the same file.
+
+## When adding or changing a problem
+
+1. **Prefer the registry**: Add or update `problem_metadata_registry.REGISTRY` with (function_name, return_type, parameters, input_spec). Then starters and drivers for all languages are generated from `starter_template_generator`.
+2. **If not in registry**: Use `STARTERS` in seed_starters.py with explicit (starter_py, driver_py, starter_js, driver_js). Ensure function name and parameters match the problem (e.g. Two Sum II → `twoSum(int[] numbers, int target)` returning 1-indexed indices).
+3. **Never**: Wrong function name (e.g. `twoSumIiInputArrayIsSorted`), missing parameters (e.g. no `target`), wrong return type, or static method in Java when a class Solution is used.
+
+## Admin create problem
+
+- Sending `function_metadata` in the create payload triggers automatic generation of starter_code_* and driver_code_* for all languages. Prefer this over pasting manual templates.
+
+## Docs
+
+- See `docs/STARTER_TEMPLATES.md` for schema, type mapping, and flow.

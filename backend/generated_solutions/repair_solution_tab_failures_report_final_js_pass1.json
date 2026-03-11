@@ -1,0 +1,95 @@
+{
+  "targets": 15,
+  "fixed": 1,
+  "already_passing": 0,
+  "unresolved_count": 14,
+  "modified_titles": [
+    "Valid Parentheses"
+  ],
+  "unresolved": [
+    {
+      "title": "Add and Search Word",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2; input='addWord bad addWord dad addWord mad search pad search bad search .ad search b..' expected='false true true true' got='null'"
+    },
+    {
+      "title": "Clone Graph",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2; input='2 1 4 1 3 2 4 3 4 2' expected='2 1 4 1 3 2 4 3 4 2' got='{ val: 1, neighbors: [] }'"
+    },
+    {
+      "title": "Container With Most Water",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2; input='' expected='0' got=''"
+    },
+    {
+      "title": "Find Median from Data Stream",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+    },
+    {
+      "title": "First Bad Version",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2; input='5\\n4' expected='4' got='Runtime Error: /private/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_e7iib1c9/code.js:3\\n        if (isBadVersion(i)) {\\n        ^\\n\\nReferenceError: isBadVersion is not defined\\n    at firstBadVersion (/private/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_e7iib1c9/code.js:3:9'"
+    },
+    {
+      "title": "Implement Queue using Stacks",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2; input='push 1 push 2 peek pop' expected='1 1' got='NaN NaN'"
+    },
+    {
+      "title": "Insert Interval",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2; input='1 3 6 9\\n2 5' expected='1 5 6 9' got=\"Runtime Error: /private/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_1fgwp66_/code.js:29\\n    if (result && result.length) { result.forEach(row => console.log(row.join(' '))); }\\n                                                                         ^\\n\\nTypeError: row.join is not a func\""
+    },
+    {
+      "title": "Jump Game II",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2; input='' expected='0' got=''"
+    },
+    {
+      "title": "Longest Consecutive Sequence",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2; input='' expected='0' got=''"
+    },
+    {
+      "title": "LRU Cache",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2; input='2\\nput 1 1 put 2 2 get 1 put 3 3 get 2 get 3' expected='1 -1 3' got='[ 0 ]'"
+    },
+    {
+      "title": "Min Stack",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2; input='push -2 push 0 push -3 getMin pop top getMin' expected='-3 0 -2' got='NaN NaN'"
+    },
+    {
+      "title": "Remove Invalid Parentheses",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2; input='()())()' expected='(())()\\n()()()' got=\"[ '(())()', '()()()' ]\""
+    },
+    {
+      "title": "Serialize and Deserialize Binary Tree",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=time_limit_exceeded passed=0/2; input='1 2 3 null null 4 5' expected='1 2 3 null null 4 5' got='Time Limit Exceeded'"
+    },
+    {
+      "title": "Subsets",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2; input='' expected='[[]]' got=''"
+    }
+  ]
+}

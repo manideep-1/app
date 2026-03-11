@@ -1,0 +1,32 @@
+{
+  "pattern_recognition": "This problem falls under the category of 'Two Pointers' and 'Hashing'. It signals the need to find pairs in an array that meet a specific condition (sum to a target). The presence of a unique solution indicates that we can leverage data structures for efficient lookups.",
+  "approaches": [
+    {
+      "title": "Brute Force",
+      "intuition": "Check every possible pair of numbers to see if they sum to the target.",
+      "algorithm": "Iterate through each element and for each element, iterate through the rest of the elements to find a pair that sums to the target.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        for (int i = 0; i < nums.length; i++) {\n            for (int j = i + 1; j < nums.length; j++) {\n                if (nums[i] + nums[j] == target) {\n                    return new int[] { i, j };\n                }\n            }\n        }\n        return new int[0];\n    }\n}",
+      "code_python": "from typing import List\n\ndef twoSum(nums: List[int], target: int) -> List[int]:\n    n = len(nums)\n    for i in range(n):\n        for j in range(i + 1, n):\n            if nums[i] + nums[j] == target:\n                return [i, j]\n    return []",
+      "code_cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> twoSum(const vector<int>& nums, int target) {\n        for (size_t i = 0; i < nums.size(); ++i) {\n            for (size_t j = i + 1; j < nums.size(); ++j) {\n                if (nums[i] + nums[j] == target) {\n                    return {static_cast<int>(i), static_cast<int>(j)};\n                }\n            }\n        }\n        return {};\n    }\n};",
+      "code_javascript": "function twoSum(nums, target) {\n    for (let i = 0; i < nums.length; i++) {\n        for (let j = i + 1; j < nums.length; j++) {\n            if (nums[i] + nums[j] === target) {\n                return [i, j];\n            }\n        }\n    }\n    return [];\n}",
+      "code_go": "func twoSum(nums []int, target int) []int {\n\tfor i := 0; i < len(nums); i++ {\n\t\tfor j := i + 1; j < len(nums); j++ {\n\t\t\tif nums[i]+nums[j] == target {\n\t\t\t\treturn []int{i, j}\n\t\t\t}\n\t\t}\n\t}\n\treturn nil\n}",
+      "code_csharp": "public class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        for (int i = 0; i < nums.Length; i++) {\n            for (int j = i + 1; j < nums.Length; j++) {\n                if (nums[i] + nums[j] == target) {\n                    return new int[] { i, j };\n                }\n            }\n        }\n        return new int[0];\n    }\n}"
+    },
+    {
+      "title": "Optimal Approach",
+      "intuition": "Use a hash map to store the numbers and their indices, allowing for O(1) average time complexity lookups.",
+      "algorithm": "Iterate through the array, for each number, calculate the complement (target - number) and check if it exists in the hash map. If it does, return the indices.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        HashMap<Integer, Integer> map = new HashMap<>();\n        for (int i = 0; i < nums.length; i++) {\n            int complement = target - nums[i];\n            if (map.containsKey(complement)) {\n                return new int[] { map.get(complement), i };\n            }\n            map.put(nums[i], i);\n        }\n        return new int[0];\n    }\n}",
+      "code_python": "from typing import List\n\ndef twoSum(nums: List[int], target: int) -> List[int]:\n    num_map = {}\n    for index, num in enumerate(nums):\n        complement = target - num\n        if complement in num_map:\n            return [num_map[complement], index]\n        num_map[num] = index\n    return []",
+      "code_cpp": "#include <vector>\n#include <string>\n#include <unordered_map>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> twoSum(const vector<int>& nums, int target) {\n        unordered_map<int, int> numMap;\n        for (int i = 0; i < nums.size(); i++) {\n            int complement = target - nums[i];\n            if (numMap.find(complement) != numMap.end()) {\n                return {numMap[complement], i};\n            }\n            numMap[nums[i]] = i;\n        }\n        return {};\n    }\n};",
+      "code_javascript": "function twoSum(nums, target) {\n    const map = new Map();\n    for (let i = 0; i < nums.length; i++) {\n        const complement = target - nums[i];\n        if (map.has(complement)) {\n            return [map.get(complement), i];\n        }\n        map.set(nums[i], i);\n    }\n    return [];\n}",
+      "code_go": "func twoSum(nums []int, target int) []int {\n    numMap := make(map[int]int)\n    for i, num := range nums {\n        complement := target - num\n        if index, found := numMap[complement]; found {\n            return []int{index, i}\n        }\n        numMap[num] = i\n    }\n    return nil\n}",
+      "code_csharp": "public class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        Dictionary<int, int> numMap = new Dictionary<int, int>();\n        for (int i = 0; i < nums.Length; i++) {\n            int complement = target - nums[i];\n            if (numMap.ContainsKey(complement)) {\n                return new int[] { numMap[complement], i };\n            }\n            numMap[nums[i]] = i;\n        }\n        return new int[0];\n    }\n}"
+    }
+  ],
+  "dry_run": "For input nums = [2, 7, 11, 15] and target = 9: Start with an empty hash map. Iterate through nums: 2 is added to the map. Next, 7 is checked; its complement (2) is found in the map. Return indices [0, 1].",
+  "edge_cases": "Consider scenarios like an empty input array, an array with a single element, duplicates that can form valid pairs, very large input sizes (up to 10^4), and potential overflow issues with large integers.",
+  "common_pitfalls": "Common mistakes include: 1) Not checking for the same element being used twice, which is not allowed. 2) Failing to handle negative numbers correctly. 3) Overlooking the need for a hash map for efficient lookups, leading to a brute force solution that is too slow."
+}

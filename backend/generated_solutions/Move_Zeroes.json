@@ -1,0 +1,32 @@
+{
+  "pattern_recognition": "Array Manipulation, In-place Modification; the problem requires rearranging elements without using extra space, which signals the need for efficient traversal and swapping techniques.",
+  "approaches": [
+    {
+      "title": "Brute Force",
+      "intuition": "Iterate through the array, collect non-zero elements, and then append zeros to the end.",
+      "algorithm": "1. Create a new array to hold non-zero elements. 2. Traverse the original array and add non-zero elements to the new array. 3. Fill the remaining positions in the new array with zeros. 4. Copy the new array back to the original.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public void moveZeroes(int[] nums) {\n        int[] result = new int[nums.length];\n        int index = 0;\n\n        for (int num : nums) {\n            if (num != 0) {\n                result[index++] = num;\n            }\n        }\n\n        while (index < result.length) {\n            result[index++] = 0;\n        }\n\n        for (int i = 0; i < nums.length; i++) {\n            nums[i] = result[i];\n        }\n    }\n}",
+      "code_python": "from typing import List\n\ndef moveZeroes(nums: List[int]) -> None:\n    non_zero = [num for num in nums if num != 0]\n    zero_count = len(nums) - len(non_zero)\n    nums[:] = non_zero + [0] * zero_count",
+      "code_cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    void moveZeroes(vector<int>& nums) {\n        vector<int> nonZeroElements;\n        for (int num : nums) {\n            if (num != 0) {\n                nonZeroElements.push_back(num);\n            }\n        }\n        nonZeroElements.resize(nums.size(), 0);\n        nums = nonZeroElements;\n    }\n};",
+      "code_javascript": "function moveZeroes(nums) {\n    let nonZeroes = [];\n    for (let i = 0; i < nums.length; i++) {\n        if (nums[i] !== 0) {\n            nonZeroes.push(nums[i]);\n        }\n    }\n    for (let i = 0; i < nums.length; i++) {\n        nums[i] = i < nonZeroes.length ? nonZeroes[i] : 0;\n    }\n    return;\n}",
+      "code_go": "func moveZeroes(nums []int) {\n    nonZero := []int{}\n    for _, num := range nums {\n        if num != 0 {\n            nonZero = append(nonZero, num)\n        }\n    }\n    for i := 0; i < len(nums); i++ {\n        if i < len(nonZero) {\n            nums[i] = nonZero[i]\n        } else {\n            nums[i] = 0\n        }\n    }\n}",
+      "code_csharp": "public class Solution {\n    public void moveZeroes(int[] nums) {\n        int[] result = new int[nums.Length];\n        int index = 0;\n\n        for (int i = 0; i < nums.Length; i++) {\n            if (nums[i] != 0) {\n                result[index] = nums[i];\n                index++;\n            }\n        }\n\n        for (int i = index; i < result.Length; i++) {\n            result[i] = 0;\n        }\n\n        for (int i = 0; i < nums.Length; i++) {\n            nums[i] = result[i];\n        }\n    }\n}"
+    },
+    {
+      "title": "Optimal Approach",
+      "intuition": "Use two pointers to rearrange the elements in-place, minimizing space usage and maintaining order.",
+      "algorithm": "1. Initialize a pointer for the position of the last non-zero element. 2. Traverse the array; whenever a non-zero is found, swap it with the element at the last non-zero position pointer. 3. Increment the pointer after each swap. 4. Continue until the end of the array.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public void moveZeroes(int[] nums) {\n        int lastNonZeroPosition = 0;\n        for (int i = 0; i < nums.length; i++) {\n            if (nums[i] != 0) {\n                // Swap the elements\n                int temp = nums[i];\n                nums[i] = nums[lastNonZeroPosition];\n                nums[lastNonZeroPosition] = temp;\n                lastNonZeroPosition++;\n            }\n        }\n    }\n}",
+      "code_python": "from typing import List\n\ndef moveZeroes(nums: List[int]) -> None:\n    last_non_zero_index = 0\n    for i in range(len(nums)):\n        if nums[i] != 0:\n            nums[last_non_zero_index], nums[i] = nums[i], nums[last_non_zero_index]\n            last_non_zero_index += 1",
+      "code_cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    void moveZeroes(vector<int>& nums) {\n        int lastNonZeroIndex = 0;\n        for (int i = 0; i < nums.size(); i++) {\n            if (nums[i] != 0) {\n                swap(nums[i], nums[lastNonZeroIndex]);\n                lastNonZeroIndex++;\n            }\n        }\n    }\n};",
+      "code_javascript": "function moveZeroes(nums) {\n    let lastNonZeroPosition = 0;\n    for (let i = 0; i < nums.length; i++) {\n        if (nums[i] !== 0) {\n            [nums[lastNonZeroPosition], nums[i]] = [nums[i], nums[lastNonZeroPosition]];\n            lastNonZeroPosition++;\n        }\n    }\n    return;\n}",
+      "code_go": "func moveZeroes(nums []int) {\n    lastNonZeroPos := 0\n    for i := 0; i < len(nums); i++ {\n        if nums[i] != 0 {\n            nums[lastNonZeroPos], nums[i] = nums[i], nums[lastNonZeroPos]\n            lastNonZeroPos++\n        }\n    }\n}",
+      "code_csharp": "public class Solution {\n    public void moveZeroes(int[] nums) {\n        int lastNonZeroPosition = 0;\n        for (int i = 0; i < nums.Length; i++) {\n            if (nums[i] != 0) {\n                // Swap the elements\n                int temp = nums[i];\n                nums[i] = nums[lastNonZeroPosition];\n                nums[lastNonZeroPosition] = temp;\n                lastNonZeroPosition++;\n            }\n        }\n    }\n}"
+    }
+  ],
+  "dry_run": "For the input [0, 1, 0, 3, 12]: Start with a pointer at the beginning. First, encounter 0 (skip), then 1 (swap with 0), array becomes [1, 0, 0, 3, 12]. Next, 0 (skip), then 3 (swap with 0), array becomes [1, 3, 0, 0, 12]. Finally, 12 (swap with 0), resulting in [1, 3, 12, 0, 0].",
+  "edge_cases": "Empty input results in no action. A single element array remains unchanged. Duplicates like [0, 0, 0] yield no change. Large inputs should be handled efficiently without exceeding memory limits.",
+  "common_pitfalls": "1. Forgetting to maintain the order of non-zero elements can lead to incorrect outputs. 2. Using extra space unnecessarily when an in-place solution is required. 3. Not handling edge cases like all zeros or a single non-zero element properly."
+}

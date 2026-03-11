@@ -1,69 +1,102 @@
 """
-Supplemental code_java, code_cpp, code_c for solution approaches.
-Key: (problem_title, approach_title_lower) -> {code_java?, code_cpp?, code_c?}.
-Every approach should have real code in all 5 languages (no placeholders).
+Supplemental code_java, code_cpp, code_c, code_go, code_csharp for solution approaches.
+Key: (problem_title, approach_title_lower) -> {code_java?, code_cpp?, code_c?, code_go?, code_csharp?}.
+Every approach should have real code in all supported languages (no placeholders).
 """
 
 def _key(problem: str, approach_title: str) -> tuple:
     return (problem.strip(), (approach_title or "").strip().lower())
 
-# (problem_title, approach_title_lower) -> {code_java, code_cpp, code_c}
+# (problem_title, approach_title_lower) -> {code_java, code_cpp, code_c, code_go, code_csharp}
 MULTILANG = {
+    # Two Sum (keys match SOLUTIONS approach titles: "Brute Force", "Optimal (Hash Map)")
+    ("Two Sum", "brute force"): {
+        "code_go": "func twoSum(nums []int, target int) []int {\n\tfor i := 0; i < len(nums); i++ {\n\t\tfor j := i + 1; j < len(nums); j++ {\n\t\t\tif nums[i]+nums[j] == target { return []int{i, j} }\n\t\t}\n\t}\n\treturn nil\n}",
+        "code_csharp": "public int[] TwoSum(int[] nums, int target) {\n    for (int i = 0; i < nums.Length; i++)\n        for (int j = i + 1; j < nums.Length; j++)\n            if (nums[i] + nums[j] == target) return new int[] { i, j };\n    return new int[0];\n}",
+    },
+    ("Two Sum", "optimal (hash map)"): {
+        "code_go": "func twoSum(nums []int, target int) []int {\n\tseen := make(map[int]int)\n\tfor i, n := range nums {\n\t\tneed := target - n\n\t\tif j, ok := seen[need]; ok { return []int{j, i} }\n\t\tseen[n] = i\n\t}\n\treturn nil\n}",
+        "code_csharp": "public int[] TwoSum(int[] nums, int target) {\n    var seen = new Dictionary<int, int>();\n    for (int i = 0; i < nums.Length; i++) {\n        int need = target - nums[i];\n        if (seen.ContainsKey(need)) return new int[] { seen[need], i };\n        seen[nums[i]] = i;\n    }\n    return new int[0];\n}",
+    },
     ("Two Sum", "1. brute force"): {
         "code_c": "int* twoSum(int* nums, int n, int target, int* returnSize) {\n    *returnSize = 2;\n    int* out = (int*)malloc(2 * sizeof(int));\n    for (int i = 0; i < n; i++)\n        for (int j = i + 1; j < n; j++)\n            if (nums[i] + nums[j] == target) { out[0] = i; out[1] = j; return out; }\n    return out;\n}",
+        "code_go": "func twoSum(nums []int, target int) []int {\n\tfor i := 0; i < len(nums); i++ {\n\t\tfor j := i + 1; j < len(nums); j++ {\n\t\t\tif nums[i]+nums[j] == target { return []int{i, j} }\n\t\t}\n\t}\n\treturn nil\n}",
+        "code_csharp": "public int[] twoSum(int[] nums, int target) {\n    for (int i = 0; i < nums.Length; i++)\n        for (int j = i + 1; j < nums.Length; j++)\n            if (nums[i] + nums[j] == target) return new int[] { i, j };\n    return new int[0];\n}",
     },
     ("Two Sum", "2. optimal (hash map)"): {
         "code_c": "int* twoSum(int* nums, int n, int target, int* returnSize) {\n    *returnSize = 2;\n    int* out = (int*)malloc(2 * sizeof(int));\n    for (int i = 0; i < n; i++) {\n        int need = target - nums[i];\n        for (int j = 0; j < i; j++) if (nums[j] == need) { out[0] = j; out[1] = i; return out; }\n    }\n    return out;\n}",
+        "code_go": "func twoSum(nums []int, target int) []int {\n\tseen := make(map[int]int)\n\tfor i, n := range nums {\n\t\tneed := target - n\n\t\tif j, ok := seen[need]; ok { return []int{j, i} }\n\t\tseen[n] = i\n\t}\n\treturn nil\n}",
+        "code_csharp": "public int[] twoSum(int[] nums, int target) {\n    var seen = new Dictionary<int, int>();\n    for (int i = 0; i < nums.Length; i++) {\n        int need = target - nums[i];\n        if (seen.ContainsKey(need)) return new int[] { seen[need], i };\n        seen[nums[i]] = i;\n    }\n    return new int[0];\n}",
     },
     ("Valid Palindrome", "brute force"): {
         "code_java": "public boolean isPalindrome(String s) {\n    StringBuilder sb = new StringBuilder();\n    for (char c : s.toCharArray()) if (Character.isLetterOrDigit(c)) sb.append(Character.toLowerCase(c));\n    String t = sb.toString();\n    return t.equals(new StringBuilder(t).reverse().toString());\n}",
         "code_cpp": "bool isPalindrome(string s) {\n    string t;\n    for (char c : s) if (isalnum(c)) t += tolower(c);\n    string r = t; reverse(r.begin(), r.end());\n    return t == r;\n}",
         "code_c": "bool isPalindrome(char* s) {\n    char t[200001]; int len = 0;\n    for (; *s; s++) if (isalnum((unsigned char)*s)) t[len++] = tolower((unsigned char)*s);\n    t[len] = '\\0';\n    for (int i = 0, j = len-1; i < j; i++, j--) if (t[i] != t[j]) return false;\n    return true;\n}",
+        "code_go": "func isPalindrome(s string) bool {\n\tvar b []byte\n\tfor _, c := range s {\n\t\tif unicode.IsLetter(c) || unicode.IsDigit(c) {\n\t\t\tb = append(b, byte(unicode.ToLower(c)))\n\t\t}\n\t}\n\tfor i, j := 0, len(b)-1; i < j; i, j = i+1, j-1 {\n\t\tif b[i] != b[j] { return false }\n\t}\n\treturn true\n}",
+        "code_csharp": "public bool IsPalindrome(string s) {\n    var sb = new System.Text.StringBuilder();\n    foreach (char c in s)\n        if (char.IsLetterOrDigit(c)) sb.Append(char.ToLower(c));\n    var t = sb.ToString();\n    for (int i = 0, j = t.Length - 1; i < j; i++, j--)\n        if (t[i] != t[j]) return false;\n    return true;\n}",
     },
     ("Valid Palindrome", "optimal (two pointers)"): {
         "code_java": "public boolean isPalindrome(String s) {\n    int i = 0, j = s.length() - 1;\n    while (i < j) {\n        if (!Character.isLetterOrDigit(s.charAt(i))) { i++; continue; }\n        if (!Character.isLetterOrDigit(s.charAt(j))) { j--; continue; }\n        if (Character.toLowerCase(s.charAt(i)) != Character.toLowerCase(s.charAt(j))) return false;\n        i++; j--;\n    }\n    return true;\n}",
         "code_cpp": "bool isPalindrome(string s) {\n    int i = 0, j = s.size() - 1;\n    while (i < j) {\n        if (!isalnum(s[i])) { i++; continue; }\n        if (!isalnum(s[j])) { j--; continue; }\n        if (tolower(s[i]) != tolower(s[j])) return false;\n        i++; j--;\n    }\n    return true;\n}",
         "code_c": "bool isPalindrome(char* s) {\n    int i = 0, j = strlen(s) - 1;\n    while (i < j) {\n        if (!isalnum((unsigned char)s[i])) { i++; continue; }\n        if (!isalnum((unsigned char)s[j])) { j--; continue; }\n        if (tolower((unsigned char)s[i]) != tolower((unsigned char)s[j])) return false;\n        i++; j--;\n    }\n    return true;\n}",
+        "code_go": "func isPalindrome(s string) bool {\n\tfor i, j := 0, len(s)-1; i < j; {\n\t\tif !unicode.IsLetter(rune(s[i])) && !unicode.IsDigit(rune(s[i])) { i++; continue }\n\t\tif !unicode.IsLetter(rune(s[j])) && !unicode.IsDigit(rune(s[j])) { j--; continue }\n\t\tif unicode.ToLower(rune(s[i])) != unicode.ToLower(rune(s[j])) { return false }\n\t\ti++; j--\n\t}\n\treturn true\n}",
+        "code_csharp": "public bool IsPalindrome(string s) {\n    int i = 0, j = s.Length - 1;\n    while (i < j) {\n        if (!char.IsLetterOrDigit(s[i])) { i++; continue; }\n        if (!char.IsLetterOrDigit(s[j])) { j--; continue; }\n        if (char.ToLower(s[i]) != char.ToLower(s[j])) return false;\n        i++; j--;\n    }\n    return true;\n}",
     },
     ("Product of Array Except Self", "brute force"): {
         "code_java": "public int[] productExceptSelf(int[] nums) {\n    int n = nums.length;\n    int[] out = new int[n];\n    for (int i = 0; i < n; i++) {\n        int p = 1;\n        for (int j = 0; j < n; j++) if (i != j) p *= nums[j];\n        out[i] = p;\n    }\n    return out;\n}",
         "code_cpp": "vector<int> productExceptSelf(vector<int>& nums) {\n    int n = nums.size();\n    vector<int> out(n);\n    for (int i = 0; i < n; i++) {\n        int p = 1;\n        for (int j = 0; j < n; j++) if (i != j) p *= nums[j];\n        out[i] = p;\n    }\n    return out;\n}",
         "code_c": "int* productExceptSelf(int* nums, int n, int* returnSize) {\n    *returnSize = n;\n    int* out = (int*)malloc(n * sizeof(int));\n    for (int i = 0; i < n; i++) {\n        int p = 1;\n        for (int j = 0; j < n; j++) if (i != j) p *= nums[j];\n        out[i] = p;\n    }\n    return out;\n}",
+        "code_go": "func productExceptSelf(nums []int) []int {\n\tn := len(nums)\n\tout := make([]int, n)\n\tfor i := 0; i < n; i++ {\n\t\tp := 1\n\t\tfor j := 0; j < n; j++ { if j != i { p *= nums[j] } }\n\t\tout[i] = p\n\t}\n\treturn out\n}",
+        "code_csharp": "public int[] ProductExceptSelf(int[] nums) {\n    int n = nums.Length;\n    var out_ = new int[n];\n    for (int i = 0; i < n; i++) {\n        int p = 1;\n        for (int j = 0; j < n; j++) if (j != i) p *= nums[j];\n        out_[i] = p;\n    }\n    return out_;\n}",
     },
     ("Product of Array Except Self", "optimal (prefix × suffix)"): {
         "code_java": "public int[] productExceptSelf(int[] nums) {\n    int n = nums.length;\n    int[] out = new int[n];\n    int p = 1;\n    for (int i = 0; i < n; i++) { out[i] = p; p *= nums[i]; }\n    p = 1;\n    for (int i = n - 1; i >= 0; i--) { out[i] *= p; p *= nums[i]; }\n    return out;\n}",
         "code_cpp": "vector<int> productExceptSelf(vector<int>& nums) {\n    int n = nums.size();\n    vector<int> out(n);\n    int p = 1;\n    for (int i = 0; i < n; i++) { out[i] = p; p *= nums[i]; }\n    p = 1;\n    for (int i = n - 1; i >= 0; i--) { out[i] *= p; p *= nums[i]; }\n    return out;\n}",
         "code_c": "int* productExceptSelf(int* nums, int n, int* returnSize) {\n    *returnSize = n;\n    int* out = (int*)malloc(n * sizeof(int));\n    int p = 1;\n    for (int i = 0; i < n; i++) { out[i] = p; p *= nums[i]; }\n    p = 1;\n    for (int i = n - 1; i >= 0; i--) { out[i] *= p; p *= nums[i]; }\n    return out;\n}",
+        "code_go": "func productExceptSelf(nums []int) []int {\n\tn := len(nums)\n\tout := make([]int, n)\n\tp := 1\n\tfor i := 0; i < n; i++ { out[i] = p; p *= nums[i] }\n\tp = 1\n\tfor i := n - 1; i >= 0; i-- { out[i] *= p; p *= nums[i] }\n\treturn out\n}",
+        "code_csharp": "public int[] ProductExceptSelf(int[] nums) {\n    int n = nums.Length;\n    var out_ = new int[n];\n    int p = 1;\n    for (int i = 0; i < n; i++) { out_[i] = p; p *= nums[i]; }\n    p = 1;\n    for (int i = n - 1; i >= 0; i--) { out_[i] *= p; p *= nums[i]; }\n    return out_;\n}",
     },
     ("3Sum", "brute force"): {
         "code_java": "public List<List<Integer>> threeSum(int[] nums) {\n    Arrays.sort(nums);\n    Set<List<Integer>> set = new HashSet<>();\n    int n = nums.length;\n    for (int i = 0; i < n; i++)\n        for (int j = i+1; j < n; j++)\n            for (int k = j+1; k < n; k++)\n                if (nums[i]+nums[j]+nums[k] == 0)\n                    set.add(Arrays.asList(nums[i], nums[j], nums[k]));\n    return new ArrayList<>(set);\n}",
         "code_cpp": "vector<vector<int>> threeSum(vector<int>& nums) {\n    sort(nums.begin(), nums.end());\n    set<vector<int>> st;\n    int n = nums.size();\n    for (int i = 0; i < n; i++)\n        for (int j = i+1; j < n; j++)\n            for (int k = j+1; k < n; k++)\n                if (nums[i]+nums[j]+nums[k] == 0)\n                    st.insert({nums[i], nums[j], nums[k]});\n    return vector<vector<int>>(st.begin(), st.end());\n}",
         "code_c": "int cmp(const void* a, const void* b) { return *(int*)a - *(int*)b; }\nint** threeSum(int* nums, int n, int* returnSize, int** returnColumnSizes) {\n    qsort(nums, n, sizeof(int), cmp);\n    int** res = (int**)malloc(20000*sizeof(int*));\n    int sz = 0;\n    for (int i = 0; i < n; i++)\n        for (int j = i+1; j < n; j++)\n            for (int k = j+1; k < n; k++)\n                if (nums[i]+nums[j]+nums[k] == 0) {\n                    res[sz] = (int*)malloc(3*sizeof(int));\n                    res[sz][0]=nums[i]; res[sz][1]=nums[j]; res[sz][2]=nums[k];\n                    sz++;\n                }\n    *returnSize = sz;\n    *returnColumnSizes = (int*)malloc(sz*sizeof(int));\n    for (int i = 0; i < sz; i++) (*returnColumnSizes)[i] = 3;\n    return res;\n}",
+        "code_go": "func threeSum(nums []int) [][]int {\n\tsort.Ints(nums)\n\tseen := make(map[[3]int]bool)\n\tvar res [][]int\n\tfor i := 0; i < len(nums); i++ {\n\t\tfor j := i + 1; j < len(nums); j++ {\n\t\t\tfor k := j + 1; k < len(nums); k++ {\n\t\t\t\tif nums[i]+nums[j]+nums[k] == 0 {\n\t\t\t\t\tkey := [3]int{nums[i], nums[j], nums[k]}\n\t\t\t\t\tif !seen[key] { seen[key] = true; res = append(res, []int{nums[i], nums[j], nums[k]}) }\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\treturn res\n}",
+        "code_csharp": "public IList<IList<int>> ThreeSum(int[] nums) {\n    Array.Sort(nums);\n    var set = new HashSet<string>();\n    var res = new List<IList<int>>();\n    for (int i = 0; i < nums.Length; i++)\n        for (int j = i + 1; j < nums.Length; j++)\n            for (int k = j + 1; k < nums.Length; k++)\n                if (nums[i] + nums[j] + nums[k] == 0) {\n                    var key = string.Join(\",\", new[] { nums[i], nums[j], nums[k] });\n                    if (set.Add(key)) res.Add(new List<int> { nums[i], nums[j], nums[k] });\n                }\n    return res;\n}",
     },
     ("3Sum", "optimal (sort + two pointers)"): {
         "code_java": "public List<List<Integer>> threeSum(int[] nums) {\n    Arrays.sort(nums);\n    List<List<Integer>> res = new ArrayList<>();\n    for (int i = 0; i < nums.length; i++) {\n        if (i > 0 && nums[i] == nums[i-1]) continue;\n        int l = i+1, r = nums.length - 1;\n        while (l < r) {\n            int s = nums[i] + nums[l] + nums[r];\n            if (s == 0) { res.add(Arrays.asList(nums[i], nums[l], nums[r])); l++; while (l < r && nums[l] == nums[l-1]) l++; }\n            else if (s < 0) l++; else r--;\n        }\n    }\n    return res;\n}",
         "code_cpp": "vector<vector<int>> threeSum(vector<int>& nums) {\n    sort(nums.begin(), nums.end());\n    vector<vector<int>> res;\n    for (int i = 0; i < (int)nums.size(); i++) {\n        if (i && nums[i] == nums[i-1]) continue;\n        int l = i+1, r = nums.size() - 1;\n        while (l < r) {\n            int s = nums[i] + nums[l] + nums[r];\n            if (s == 0) { res.push_back({nums[i], nums[l], nums[r]}); l++; while (l < r && nums[l] == nums[l-1]) l++; }\n            else if (s < 0) l++; else r--;\n        }\n    }\n    return res;\n}",
         "code_c": "int cmp(const void* a, const void* b) { return *(int*)a - *(int*)b; }\nint** threeSum(int* nums, int n, int* returnSize, int** returnColumnSizes) {\n    qsort(nums, n, sizeof(int), cmp);\n    int** res = (int**)malloc(20000*sizeof(int*));\n    int sz = 0;\n    for (int i = 0; i < n; i++) {\n        if (i > 0 && nums[i] == nums[i-1]) continue;\n        int l = i+1, r = n-1;\n        while (l < r) {\n            int s = nums[i] + nums[l] + nums[r];\n            if (s == 0) {\n                res[sz] = (int*)malloc(3*sizeof(int));\n                res[sz][0]=nums[i]; res[sz][1]=nums[l]; res[sz][2]=nums[r]; sz++;\n                l++; while (l < r && nums[l] == nums[l-1]) l++;\n            } else if (s < 0) l++; else r--;\n        }\n    }\n    *returnSize = sz;\n    *returnColumnSizes = (int*)malloc(sz*sizeof(int));\n    for (int i = 0; i < sz; i++) (*returnColumnSizes)[i] = 3;\n    return res;\n}",
+        "code_go": "func threeSum(nums []int) [][]int {\n\tsort.Ints(nums)\n\tvar res [][]int\n\tfor i := 0; i < len(nums); i++ {\n\t\tif i > 0 && nums[i] == nums[i-1] { continue }\n\t\tl, r := i+1, len(nums)-1\n\t\tfor l < r {\n\t\t\ts := nums[i] + nums[l] + nums[r]\n\t\t\tif s == 0 { res = append(res, []int{nums[i], nums[l], nums[r]}); l++; for l < r && nums[l] == nums[l-1] { l++ } }\n\t\t\telse if s < 0 { l++ } else { r-- }\n\t\t}\n\t}\n\treturn res\n}",
+        "code_csharp": "public IList<IList<int>> ThreeSum(int[] nums) {\n    Array.Sort(nums);\n    var res = new List<IList<int>>();\n    for (int i = 0; i < nums.Length; i++) {\n        if (i > 0 && nums[i] == nums[i-1]) continue;\n        int l = i + 1, r = nums.Length - 1;\n        while (l < r) {\n            int s = nums[i] + nums[l] + nums[r];\n            if (s == 0) { res.Add(new List<int> { nums[i], nums[l], nums[r] }); l++; while (l < r && nums[l] == nums[l-1]) l++; }\n            else if (s < 0) l++; else r--;\n        }\n    }\n    return res;\n}",
     },
     ("Maximum Product Subarray", "brute force"): {
         "code_java": "public int maxProduct(int[] nums) {\n    int best = nums[0];\n    for (int i = 0; i < nums.length; i++) {\n        int p = 1;\n        for (int j = i; j < nums.length; j++) { p *= nums[j]; best = Math.max(best, p); }\n    }\n    return best;\n}",
         "code_cpp": "int maxProduct(vector<int>& nums) {\n    int best = nums[0];\n    for (int i = 0; i < (int)nums.size(); i++) {\n        int p = 1;\n        for (int j = i; j < (int)nums.size(); j++) { p *= nums[j]; best = max(best, p); }\n    }\n    return best;\n}",
         "code_c": "int maxProduct(int* nums, int n) {\n    int best = nums[0];\n    for (int i = 0; i < n; i++) {\n        int p = 1;\n        for (int j = i; j < n; j++) { p *= nums[j]; if (p > best) best = p; }\n    }\n    return best;\n}",
+        "code_go": "func maxProduct(nums []int) int {\n\tbest := nums[0]\n\tfor i := 0; i < len(nums); i++ {\n\t\tp := 1\n\t\tfor j := i; j < len(nums); j++ { p *= nums[j]; if p > best { best = p } }\n\t}\n\treturn best\n}",
+        "code_csharp": "public int MaxProduct(int[] nums) {\n    int best = nums[0];\n    for (int i = 0; i < nums.Length; i++) {\n        int p = 1;\n        for (int j = i; j < nums.Length; j++) { p *= nums[j]; best = Math.Max(best, p); }\n    }\n    return best;\n}",
     },
     ("Maximum Product Subarray", "optimal (track max and min)"): {
         "code_java": "public int maxProduct(int[] nums) {\n    int curMax = nums[0], curMin = nums[0], best = nums[0];\n    for (int i = 1; i < nums.length; i++) {\n        int x = nums[i], a = curMax * x, b = curMin * x;\n        curMax = Math.max(x, Math.max(a, b));\n        curMin = Math.min(x, Math.min(a, b));\n        best = Math.max(best, curMax);\n    }\n    return best;\n}",
         "code_cpp": "int maxProduct(vector<int>& nums) {\n    int curMax = nums[0], curMin = nums[0], best = nums[0];\n    for (int i = 1; i < (int)nums.size(); i++) {\n        int x = nums[i], a = curMax * x, b = curMin * x;\n        curMax = max(x, max(a, b));\n        curMin = min(x, min(a, b));\n        best = max(best, curMax);\n    }\n    return best;\n}",
         "code_c": "int maxProduct(int* nums, int n) {\n    int curMax = nums[0], curMin = nums[0], best = nums[0];\n    for (int i = 1; i < n; i++) {\n        int x = nums[i], a = curMax*x, b = curMin*x;\n        curMax = (x > a && x > b) ? x : (a > b ? a : b);\n        curMin = (x < a && x < b) ? x : (a < b ? a : b);\n        if (curMax > best) best = curMax;\n    }\n    return best;\n}",
+        "code_go": "func maxProduct(nums []int) int {\n\tcurMax, curMin, best := nums[0], nums[0], nums[0]\n\tfor i := 1; i < len(nums); i++ {\n\t\tx, a, b := nums[i], curMax*nums[i], curMin*nums[i]\n\t\tif x > a { curMax = x } else { curMax = a }; if b > curMax { curMax = b }\n\t\tif x < a { curMin = x } else { curMin = a }; if b < curMin { curMin = b }\n\t\tif curMax > best { best = curMax }\n\t}\n\treturn best\n}",
+        "code_csharp": "public int MaxProduct(int[] nums) {\n    int curMax = nums[0], curMin = nums[0], best = nums[0];\n    for (int i = 1; i < nums.Length; i++) {\n        int x = nums[i], a = curMax * x, b = curMin * x;\n        curMax = Math.Max(x, Math.Max(a, b));\n        curMin = Math.Min(x, Math.Min(a, b));\n        best = Math.Max(best, curMax);\n    }\n    return best;\n}",
     },
     ("Container With Most Water", "brute force"): {
         "code_java": "public int maxArea(int[] height) {\n    int best = 0;\n    for (int i = 0; i < height.length; i++)\n        for (int j = i+1; j < height.length; j++)\n            best = Math.max(best, Math.min(height[i], height[j]) * (j - i));\n    return best;\n}",
         "code_cpp": "int maxArea(vector<int>& height) {\n    int best = 0;\n    for (int i = 0; i < (int)height.size(); i++)\n        for (int j = i+1; j < (int)height.size(); j++)\n            best = max(best, min(height[i], height[j]) * (j - i));\n    return best;\n}",
         "code_c": "int maxArea(int* height, int n) {\n    int best = 0;\n    for (int i = 0; i < n; i++)\n        for (int j = i+1; j < n; j++) {\n            int area = (height[i] < height[j] ? height[i] : height[j]) * (j - i);\n            if (area > best) best = area;\n        }\n    return best;\n}",
+        "code_go": "func maxArea(height []int) int {\n\tbest := 0\n\tfor i := 0; i < len(height); i++ {\n\t\tfor j := i + 1; j < len(height); j++ {\n\t\t\tarea := height[i]; if height[j] < area { area = height[j] }\n\t\t\tarea *= (j - i); if area > best { best = area }\n\t\t}\n\t}\n\treturn best\n}",
+        "code_csharp": "public int MaxArea(int[] height) {\n    int best = 0;\n    for (int i = 0; i < height.Length; i++)\n        for (int j = i + 1; j < height.Length; j++)\n            best = Math.Max(best, Math.Min(height[i], height[j]) * (j - i));\n    return best;\n}",
     },
     ("Container With Most Water", "optimal (two pointers)"): {
         "code_java": "public int maxArea(int[] height) {\n    int l = 0, r = height.length - 1, best = 0;\n    while (l < r) {\n        best = Math.max(best, Math.min(height[l], height[r]) * (r - l));\n        if (height[l] < height[r]) l++; else r--;\n    }\n    return best;\n}",
         "code_cpp": "int maxArea(vector<int>& height) {\n    int l = 0, r = height.size() - 1, best = 0;\n    while (l < r) {\n        best = max(best, min(height[l], height[r]) * (r - l));\n        if (height[l] < height[r]) l++; else r--;\n    }\n    return best;\n}",
         "code_c": "int maxArea(int* height, int n) {\n    int l = 0, r = n - 1, best = 0;\n    while (l < r) {\n        int area = (height[l] < height[r] ? height[l] : height[r]) * (r - l);\n        if (area > best) best = area;\n        if (height[l] < height[r]) l++; else r--;\n    }\n    return best;\n}",
+        "code_go": "func maxArea(height []int) int {\n\tl, r, best := 0, len(height)-1, 0\n\tfor l < r {\n\t\tarea := height[l]; if height[r] < area { area = height[r] }; area *= (r - l)\n\t\tif area > best { best = area }\n\t\tif height[l] < height[r] { l++ } else { r-- }\n\t}\n\treturn best\n}",
+        "code_csharp": "public int MaxArea(int[] height) {\n    int l = 0, r = height.Length - 1, best = 0;\n    while (l < r) {\n        best = Math.Max(best, Math.Min(height[l], height[r]) * (r - l));\n        if (height[l] < height[r]) l++; else r--;\n    }\n    return best;\n}",
     },
     ("Longest Substring Without Repeating Characters", "brute force"): {
         "code_java": "public int lengthOfLongestSubstring(String s) {\n    int best = 0;\n    for (int i = 0; i < s.length(); i++)\n        for (int j = i + 1; j <= s.length(); j++) {\n            Set<Character> set = new HashSet<>();\n            boolean ok = true;\n            for (int k = i; k < j && ok; k++) if (!set.add(s.charAt(k))) ok = false;\n            if (ok) best = Math.max(best, j - i);\n        }\n    return best;\n}",
@@ -89,11 +122,15 @@ MULTILANG = {
         "code_java": "public int climbStairs(int n) {\n    if (n <= 2) return n;\n    return climbStairs(n-1) + climbStairs(n-2);\n}",
         "code_cpp": "int climbStairs(int n) {\n    if (n <= 2) return n;\n    return climbStairs(n-1) + climbStairs(n-2);\n}",
         "code_c": "int climbStairs(int n) {\n    if (n <= 2) return n;\n    return climbStairs(n-1) + climbStairs(n-2);\n}",
+        "code_go": "func climbStairs(n int) int {\n\tif n <= 2 { return n }\n\treturn climbStairs(n-1) + climbStairs(n-2)\n}",
+        "code_csharp": "public int ClimbStairs(int n) {\n    if (n <= 2) return n;\n    return ClimbStairs(n - 1) + ClimbStairs(n - 2);\n}",
     },
     ("Climbing Stairs", "optimal (dp / fibonacci)"): {
         "code_java": "public int climbStairs(int n) {\n    if (n <= 2) return n;\n    int prev = 1, curr = 2;\n    for (int i = 3; i <= n; i++) { int next = prev + curr; prev = curr; curr = next; }\n    return curr;\n}",
         "code_cpp": "int climbStairs(int n) {\n    if (n <= 2) return n;\n    int prev = 1, curr = 2;\n    for (int i = 3; i <= n; i++) { int next = prev + curr; prev = curr; curr = next; }\n    return curr;\n}",
         "code_c": "int climbStairs(int n) {\n    if (n <= 2) return n;\n    int prev = 1, curr = 2;\n    for (int i = 3; i <= n; i++) { int next = prev + curr; prev = curr; curr = next; }\n    return curr;\n}",
+        "code_go": "func climbStairs(n int) int {\n\tif n <= 2 { return n }\n\tprev, curr := 1, 2\n\tfor i := 3; i <= n; i++ { prev, curr = curr, prev+curr }\n\treturn curr\n}",
+        "code_csharp": "public int ClimbStairs(int n) {\n    if (n <= 2) return n;\n    int prev = 1, curr = 2;\n    for (int i = 3; i <= n; i++) { int next = prev + curr; prev = curr; curr = next; }\n    return curr;\n}",
     },
     ("House Robber", "brute force (recursion)"): {
         "code_java": "public int rob(int[] nums) {\n    return rob(nums, nums.length - 1);\n}\nint rob(int[] nums, int i) {\n    if (i < 0) return 0;\n    return Math.max(nums[i] + rob(nums, i-2), rob(nums, i-1));\n}",
@@ -104,6 +141,8 @@ MULTILANG = {
         "code_java": "public int rob(int[] nums) {\n    int prev = 0, curr = 0;\n    for (int x : nums) { int next = Math.max(curr, prev + x); prev = curr; curr = next; }\n    return curr;\n}",
         "code_cpp": "int rob(vector<int>& nums) {\n    int prev = 0, curr = 0;\n    for (int x : nums) { int next = max(curr, prev + x); prev = curr; curr = next; }\n    return curr;\n}",
         "code_c": "int rob(int* nums, int n) {\n    int prev = 0, curr = 0;\n    for (int i = 0; i < n; i++) { int next = (curr > prev + nums[i]) ? curr : prev + nums[i]; prev = curr; curr = next; }\n    return curr;\n}",
+        "code_go": "func rob(nums []int) int {\n\tvar prev, curr int\n\tfor _, x := range nums { next := curr; if prev+x > next { next = prev + x }; prev, curr = curr, next }\n\treturn curr\n}",
+        "code_csharp": "public int Rob(int[] nums) {\n    int prev = 0, curr = 0;\n    foreach (int x in nums) { int next = Math.Max(curr, prev + x); prev = curr; curr = next; }\n    return curr;\n}",
     },
     ("Group Anagrams", "brute force"): {
         "code_java": "public List<List<String>> groupAnagrams(String[] strs) {\n    Map<String, List<String>> map = new HashMap<>();\n    for (String s : strs) {\n        char[] a = s.toCharArray(); Arrays.sort(a);\n        String key = String.valueOf(a);\n        map.computeIfAbsent(key, k -> new ArrayList<>()).add(s);\n    }\n    return new ArrayList<>(map.values());\n}",
@@ -119,61 +158,85 @@ MULTILANG = {
         "code_java": "public int singleNumber(int[] nums) {\n    Map<Integer, Integer> map = new HashMap<>();\n    for (int x : nums) map.put(x, map.getOrDefault(x, 0) + 1);\n    for (int x : nums) if (map.get(x) == 1) return x;\n    return -1;\n}",
         "code_cpp": "int singleNumber(vector<int>& nums) {\n    unordered_map<int, int> m;\n    for (int x : nums) m[x]++;\n    for (int x : nums) if (m[x] == 1) return x;\n    return -1;\n}",
         "code_c": "int singleNumber(int* nums, int n) {\n    int max = nums[0], min = nums[0];\n    for (int i = 0; i < n; i++) { if (nums[i] > max) max = nums[i]; if (nums[i] < min) min = nums[i]; }\n    int range = max - min + 1;\n    int* cnt = (int*)calloc(range, sizeof(int));\n    for (int i = 0; i < n; i++) cnt[nums[i]-min]++;\n    for (int i = 0; i < n; i++) if (cnt[nums[i]-min] == 1) { int r = nums[i]; free(cnt); return r; }\n    return -1;\n}",
+        "code_go": "func singleNumber(nums []int) int {\n\tm := make(map[int]int)\n\tfor _, x := range nums { m[x]++ }\n\tfor _, x := range nums { if m[x] == 1 { return x } }\n\treturn -1\n}",
+        "code_csharp": "public int SingleNumber(int[] nums) {\n    var map = new Dictionary<int, int>();\n    foreach (int x in nums) { if (!map.ContainsKey(x)) map[x] = 0; map[x]++; }\n    foreach (int x in nums) if (map[x] == 1) return x;\n    return -1;\n}",
     },
     ("Single Number", "optimal (xor)"): {
         "code_java": "public int singleNumber(int[] nums) {\n    int res = 0;\n    for (int x : nums) res ^= x;\n    return res;\n}",
         "code_cpp": "int singleNumber(vector<int>& nums) {\n    int res = 0;\n    for (int x : nums) res ^= x;\n    return res;\n}",
         "code_c": "int singleNumber(int* nums, int n) {\n    int res = 0;\n    for (int i = 0; i < n; i++) res ^= nums[i];\n    return res;\n}",
+        "code_go": "func singleNumber(nums []int) int {\n\tres := 0\n\tfor _, x := range nums { res ^= x }\n\treturn res\n}",
+        "code_csharp": "public int SingleNumber(int[] nums) {\n    int res = 0;\n    foreach (int x in nums) res ^= x;\n    return res;\n}",
     },
     ("Number of 1 Bits", "brute force"): {
         "code_java": "public int hammingWeight(int n) {\n    n &= 0xFFFFFFFFL;\n    int c = 0;\n    while (n != 0) { c += n & 1; n >>>= 1; }\n    return c;\n}",
         "code_cpp": "int hammingWeight(uint32_t n) {\n    int c = 0;\n    while (n) { c += n & 1; n >>= 1; }\n    return c;\n}",
         "code_c": "int hammingWeight(uint32_t n) {\n    int c = 0;\n    while (n) { c += n & 1; n >>= 1; }\n    return c;\n}",
+        "code_go": "func hammingWeight(n uint32) int {\n\tc := 0\n\tfor n != 0 { c += int(n & 1); n >>= 1 }\n\treturn c\n}",
+        "code_csharp": "public int HammingWeight(uint n) {\n    int c = 0;\n    while (n != 0) { c += (int)(n & 1); n >>= 1; }\n    return c;\n}",
     },
     ("Number of 1 Bits", "optimal (n & (n-1))"): {
         "code_java": "public int hammingWeight(int n) {\n    n &= 0xFFFFFFFFL;\n    int c = 0;\n    while (n != 0) { n &= n - 1; c++; }\n    return c;\n}",
         "code_cpp": "int hammingWeight(uint32_t n) {\n    int c = 0;\n    while (n) { n &= n - 1; c++; }\n    return c;\n}",
         "code_c": "int hammingWeight(uint32_t n) {\n    int c = 0;\n    while (n) { n &= n - 1; c++; }\n    return c;\n}",
+        "code_go": "func hammingWeight(n uint32) int {\n\tc := 0\n\tfor n != 0 { n &= n - 1; c++ }\n\treturn c\n}",
+        "code_csharp": "public int HammingWeight(uint n) {\n    int c = 0;\n    while (n != 0) { n &= n - 1; c++; }\n    return c;\n}",
     },
     ("Reverse Bits", "brute force"): {
         "code_java": "public int reverseBits(int n) {\n    int res = 0;\n    for (int i = 0; i < 32; i++) { res = (res << 1) | (n & 1); n >>>= 1; }\n    return res;\n}",
         "code_cpp": "uint32_t reverseBits(uint32_t n) {\n    uint32_t res = 0;\n    for (int i = 0; i < 32; i++) { res = (res << 1) | (n & 1); n >>= 1; }\n    return res;\n}",
         "code_c": "uint32_t reverseBits(uint32_t n) {\n    uint32_t res = 0;\n    for (int i = 0; i < 32; i++) { res = (res << 1) | (n & 1); n >>= 1; }\n    return res;\n}",
+        "code_go": "func reverseBits(n uint32) uint32 {\n\tvar res uint32\n\tfor i := 0; i < 32; i++ { res = (res << 1) | (n & 1); n >>= 1 }\n\treturn res\n}",
+        "code_csharp": "public uint ReverseBits(uint n) {\n    uint res = 0;\n    for (int i = 0; i < 32; i++) { res = (res << 1) | (n & 1); n >>= 1; }\n    return res;\n}",
     },
     ("Reverse Bits", "optimal (same)"): {
         "code_java": "public int reverseBits(int n) {\n    int res = 0;\n    for (int i = 0; i < 32; i++) { res = (res << 1) | (n & 1); n >>>= 1; }\n    return res;\n}",
         "code_cpp": "uint32_t reverseBits(uint32_t n) {\n    uint32_t res = 0;\n    for (int i = 0; i < 32; i++) { res = (res << 1) | (n & 1); n >>= 1; }\n    return res;\n}",
         "code_c": "uint32_t reverseBits(uint32_t n) {\n    uint32_t res = 0;\n    for (int i = 0; i < 32; i++) { res = (res << 1) | (n & 1); n >>= 1; }\n    return res;\n}",
+        "code_go": "func reverseBits(n uint32) uint32 {\n\tvar res uint32\n\tfor i := 0; i < 32; i++ { res = (res << 1) | (n & 1); n >>= 1 }\n\treturn res\n}",
+        "code_csharp": "public uint ReverseBits(uint n) {\n    uint res = 0;\n    for (int i = 0; i < 32; i++) { res = (res << 1) | (n & 1); n >>= 1; }\n    return res;\n}",
     },
     ("Missing Number", "brute force (sort)"): {
         "code_java": "public int missingNumber(int[] nums) {\n    Arrays.sort(nums);\n    for (int i = 0; i < nums.length; i++) if (nums[i] != i) return i;\n    return nums.length;\n}",
         "code_cpp": "int missingNumber(vector<int>& nums) {\n    sort(nums.begin(), nums.end());\n    for (int i = 0; i < (int)nums.size(); i++) if (nums[i] != i) return i;\n    return nums.size();\n}",
         "code_c": "int cmp(const void* a, const void* b) { return *(int*)a - *(int*)b; }\nint missingNumber(int* nums, int n) {\n    qsort(nums, n, sizeof(int), cmp);\n    for (int i = 0; i < n; i++) if (nums[i] != i) return i;\n    return n;\n}",
+        "code_go": "func missingNumber(nums []int) int {\n\tsort.Ints(nums)\n\tfor i := range nums { if nums[i] != i { return i } }\n\treturn len(nums)\n}",
+        "code_csharp": "public int MissingNumber(int[] nums) {\n    Array.Sort(nums);\n    for (int i = 0; i < nums.Length; i++) if (nums[i] != i) return i;\n    return nums.Length;\n}",
     },
     ("Missing Number", "optimal (sum or xor)"): {
         "code_java": "public int missingNumber(int[] nums) {\n    int n = nums.length;\n    int sum = n * (n + 1) / 2;\n    for (int x : nums) sum -= x;\n    return sum;\n}",
         "code_cpp": "int missingNumber(vector<int>& nums) {\n    int n = nums.size();\n    int sum = n * (n + 1) / 2;\n    for (int x : nums) sum -= x;\n    return sum;\n}",
         "code_c": "int missingNumber(int* nums, int n) {\n    int sum = n * (n + 1) / 2;\n    for (int i = 0; i < n; i++) sum -= nums[i];\n    return sum;\n}",
+        "code_go": "func missingNumber(nums []int) int {\n\tn := len(nums)\n\tsum := n * (n + 1) / 2\n\tfor _, x := range nums { sum -= x }\n\treturn sum\n}",
+        "code_csharp": "public int MissingNumber(int[] nums) {\n    int n = nums.Length;\n    int sum = n * (n + 1) / 2;\n    foreach (int x in nums) sum -= x;\n    return sum;\n}",
     },
     ("Remove Duplicates from Sorted Array", "brute force"): {
         "code_java": "public int removeDuplicates(int[] nums) {\n    Set<Integer> seen = new HashSet<>();\n    List<Integer> out = new ArrayList<>();\n    for (int x : nums) if (seen.add(x)) out.add(x);\n    for (int i = 0; i < out.size(); i++) nums[i] = out.get(i);\n    return out.size();\n}",
         "code_cpp": "int removeDuplicates(vector<int>& nums) {\n    set<int> seen;\n    vector<int> out;\n    for (int x : nums) if (seen.insert(x).second) out.push_back(x);\n    for (int i = 0; i < (int)out.size(); i++) nums[i] = out[i];\n    return out.size();\n}",
         "code_c": "int removeDuplicates(int* nums, int n) {\n    if (n == 0) return 0;\n    int out[30000], sz = 0, prev = nums[0] - 1;\n    for (int i = 0; i < n; i++) if (nums[i] != prev) { prev = nums[i]; out[sz++] = nums[i]; }\n    for (int i = 0; i < sz; i++) nums[i] = out[i];\n    return sz;\n}",
+        "code_go": "func removeDuplicates(nums []int) int {\n\tseen := make(map[int]bool)\n\tvar out []int\n\tfor _, x := range nums { if !seen[x] { seen[x] = true; out = append(out, x) } }\n\tfor i := range out { nums[i] = out[i] }\n\treturn len(out)\n}",
+        "code_csharp": "public int RemoveDuplicates(int[] nums) {\n    var seen = new HashSet<int>();\n    var out_ = new List<int>();\n    foreach (int x in nums) if (seen.Add(x)) out_.Add(x);\n    for (int i = 0; i < out_.Count; i++) nums[i] = out_[i];\n    return out_.Count;\n}",
     },
     ("Remove Duplicates from Sorted Array", "optimal (two pointers in-place)"): {
         "code_java": "public int removeDuplicates(int[] nums) {\n    if (nums.length == 0) return 0;\n    int w = 1;\n    for (int i = 1; i < nums.length; i++) if (nums[i] != nums[w-1]) nums[w++] = nums[i];\n    return w;\n}",
         "code_cpp": "int removeDuplicates(vector<int>& nums) {\n    if (nums.empty()) return 0;\n    int w = 1;\n    for (int i = 1; i < (int)nums.size(); i++) if (nums[i] != nums[w-1]) nums[w++] = nums[i];\n    return w;\n}",
         "code_c": "int removeDuplicates(int* nums, int n) {\n    if (n == 0) return 0;\n    int w = 1;\n    for (int i = 1; i < n; i++) if (nums[i] != nums[w-1]) nums[w++] = nums[i];\n    return w;\n}",
+        "code_go": "func removeDuplicates(nums []int) int {\n\tif len(nums) == 0 { return 0 }\n\tw := 1\n\tfor i := 1; i < len(nums); i++ { if nums[i] != nums[w-1] { nums[w] = nums[i]; w++ } }\n\treturn w\n}",
+        "code_csharp": "public int RemoveDuplicates(int[] nums) {\n    if (nums.Length == 0) return 0;\n    int w = 1;\n    for (int i = 1; i < nums.Length; i++) if (nums[i] != nums[w-1]) nums[w++] = nums[i];\n    return w;\n}",
     },
     ("Sort Colors", "brute force (sort)"): {
         "code_java": "public void sortColors(int[] nums) {\n    Arrays.sort(nums);\n}",
         "code_cpp": "void sortColors(vector<int>& nums) {\n    sort(nums.begin(), nums.end());\n}",
         "code_c": "int cmp(const void* a, const void* b) { return *(int*)a - *(int*)b; }\nvoid sortColors(int* nums, int n) {\n    qsort(nums, n, sizeof(int), cmp);\n}",
+        "code_go": "func sortColors(nums []int) {\n\tsort.Ints(nums)\n}",
+        "code_csharp": "public void SortColors(int[] nums) {\n    Array.Sort(nums);\n}",
     },
     ("Sort Colors", "optimal (dutch national flag)"): {
         "code_java": "public void sortColors(int[] nums) {\n    int lo = 0, mid = 0, hi = nums.length - 1;\n    while (mid <= hi) {\n        if (nums[mid] == 0) { int t = nums[lo]; nums[lo++] = nums[mid]; nums[mid++] = t; }\n        else if (nums[mid] == 2) { int t = nums[hi]; nums[hi--] = nums[mid]; nums[mid] = t; }\n        else mid++;\n    }\n}",
         "code_cpp": "void sortColors(vector<int>& nums) {\n    int lo = 0, mid = 0, hi = nums.size() - 1;\n    while (mid <= hi) {\n        if (nums[mid] == 0) swap(nums[lo++], nums[mid++]);\n        else if (nums[mid] == 2) swap(nums[mid], nums[hi--]);\n        else mid++;\n    }\n}",
         "code_c": "void sortColors(int* nums, int n) {\n    int lo = 0, mid = 0, hi = n - 1;\n    while (mid <= hi) {\n        if (nums[mid] == 0) { int t = nums[lo]; nums[lo++] = nums[mid]; nums[mid++] = t; }\n        else if (nums[mid] == 2) { int t = nums[hi]; nums[hi--] = nums[mid]; nums[mid] = t; }\n        else mid++;\n    }\n}",
+        "code_go": "func sortColors(nums []int) {\n\tlo, mid, hi := 0, 0, len(nums)-1\n\tfor mid <= hi {\n\t\tif nums[mid] == 0 { nums[lo], nums[mid] = nums[mid], nums[lo]; lo++; mid++ }\n\t\telse if nums[mid] == 2 { nums[mid], nums[hi] = nums[hi], nums[mid]; hi-- }\n\t\telse { mid++ }\n\t}\n}",
+        "code_csharp": "public void SortColors(int[] nums) {\n    int lo = 0, mid = 0, hi = nums.Length - 1;\n    while (mid <= hi) {\n        if (nums[mid] == 0) { int t = nums[lo]; nums[lo++] = nums[mid]; nums[mid++] = t; }\n        else if (nums[mid] == 2) { int t = nums[hi]; nums[hi--] = nums[mid]; nums[mid] = t; }\n        else mid++;\n    }\n}",
     },
     ("Search in Rotated Sorted Array", "brute force"): {
         "code_java": "public int search(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++) if (nums[i] == target) return i;\n    return -1;\n}",
@@ -189,11 +252,15 @@ MULTILANG = {
         "code_java": "public int findMin(int[] nums) {\n    int min = nums[0];\n    for (int x : nums) if (x < min) min = x;\n    return min;\n}",
         "code_cpp": "int findMin(vector<int>& nums) {\n    int m = nums[0];\n    for (int x : nums) if (x < m) m = x;\n    return m;\n}",
         "code_c": "int findMin(int* nums, int n) {\n    int m = nums[0];\n    for (int i = 0; i < n; i++) if (nums[i] < m) m = nums[i];\n    return m;\n}",
+        "code_go": "func findMin(nums []int) int {\n\tm := nums[0]\n\tfor _, x := range nums { if x < m { m = x } }\n\treturn m\n}",
+        "code_csharp": "public int findMin(int[] nums) {\n    int m = nums[0];\n    foreach (int x in nums) if (x < m) m = x;\n    return m;\n}",
     },
     ("Find Minimum in Rotated Sorted Array", "optimal (binary search)"): {
         "code_java": "public int findMin(int[] nums) {\n    int lo = 0, hi = nums.length - 1;\n    while (lo < hi) {\n        int mid = (lo + hi) / 2;\n        if (nums[mid] > nums[hi]) lo = mid + 1; else hi = mid;\n    }\n    return nums[lo];\n}",
         "code_cpp": "int findMin(vector<int>& nums) {\n    int lo = 0, hi = nums.size() - 1;\n    while (lo < hi) {\n        int mid = (lo + hi) / 2;\n        if (nums[mid] > nums[hi]) lo = mid + 1; else hi = mid;\n    }\n    return nums[lo];\n}",
         "code_c": "int findMin(int* nums, int n) {\n    int lo = 0, hi = n - 1;\n    while (lo < hi) {\n        int mid = (lo + hi) / 2;\n        if (nums[mid] > nums[hi]) lo = mid + 1; else hi = mid;\n    }\n    return nums[lo];\n}",
+        "code_go": "func findMin(nums []int) int {\n\tlo, hi := 0, len(nums)-1\n\tfor lo < hi {\n\t\tmid := (lo + hi) / 2\n\t\tif nums[mid] > nums[hi] { lo = mid + 1 } else { hi = mid }\n\t}\n\treturn nums[lo]\n}",
+        "code_csharp": "public int findMin(int[] nums) {\n    int lo = 0, hi = nums.Length - 1;\n    while (lo < hi) {\n        int mid = (lo + hi) / 2;\n        if (nums[mid] > nums[hi]) lo = mid + 1; else hi = mid;\n    }\n    return nums[lo];\n}",
     },
     ("Longest Consecutive Sequence", "brute force (sort)"): {
         "code_java": "public int longestConsecutive(int[] nums) {\n    if (nums.length == 0) return 0;\n    Arrays.sort(nums);\n    int cur = 1, best = 1;\n    for (int i = 1; i < nums.length; i++) {\n        if (nums[i] == nums[i-1] + 1) cur++;\n        else if (nums[i] != nums[i-1]) cur = 1;\n        best = Math.max(best, cur);\n    }\n    return best;\n}",
@@ -339,11 +406,23 @@ MULTILANG = {
 
 try:
     from solution_code_multilang_extra import MULTILANG_EXTRA
-    MULTILANG.update(MULTILANG_EXTRA)
+    for _k, _v in MULTILANG_EXTRA.items():
+        _base = dict(MULTILANG.get(_k, {}))
+        _base.update(_v or {})
+        MULTILANG[_k] = _base
+except ImportError:
+    pass
+
+try:
+    from solution_code_multilang_autogen import MULTILANG_AUTOGEN
+    for _k, _v in MULTILANG_AUTOGEN.items():
+        _base = dict(MULTILANG.get(_k, {}))
+        _base.update(_v or {})
+        MULTILANG[_k] = _base
 except ImportError:
     pass
 
 def get_multilang(problem_title: str, approach_title: str) -> dict:
-    """Return dict with code_java, code_cpp, code_c for this problem/approach (real code only)."""
+    """Return dict with code_java, code_cpp, code_c, code_go, code_csharp for this problem/approach (real code only)."""
     k = _key(problem_title, approach_title)
     return dict(MULTILANG.get(k, {}))

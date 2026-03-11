@@ -12,27 +12,41 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =============================================================================
+   THEME TOKENS (single source of truth – do not add pink)
+   Primary: Blue. Success: Green. Warning: Amber. Error/Destructive: Red.
+   Neutral: Gray scale. Dark mode: VS Code / GitHub style.
+   ============================================================================= */
 @layer base {
   :root {
+    /* Base surfaces (dark) */
     --background: 224 71% 4%;
     --foreground: 213 31% 91%;
     --card: 222 47% 11%;
     --card-foreground: 214 32% 91%;
     --popover: 224 71% 4%;
     --popover-foreground: 215 20.2% 65.1%;
-    --primary: 243 75% 59%;
+    /* Primary: blue (#2563eb family) */
+    --primary: 217 91% 60%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 322 81% 60%;
+    /* Secondary: neutral slate (no pink) */
+    --secondary: 215 20% 28%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217 33% 17%;
     --muted-foreground: 215 20.2% 65.1%;
+    /* Accent: teal (developer-friendly) */
     --accent: 189 94% 43%;
     --accent-foreground: 222 47% 11%;
+    /* Destructive: red */
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
+    /* Semantic (for future use: badges, alerts) */
+    --success: 142 71% 45%;
+    --warning: 38 92% 50%;
+    /* Borders & input */
     --border: 217 33% 17%;
     --input: 217 33% 17%;
-    --ring: 243 75% 59%;
+    --ring: 217 91% 60%;
     --radius: 0.5rem;
   }
 }

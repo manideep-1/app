@@ -1,0 +1,4130 @@
+{
+  "summary": {
+    "generated_at": "2026-03-06T13:40:41.861011+00:00",
+    "reports": {
+      "python_first": {
+        "path": "/Users/manideep.laxmishetty/Downloads/learning/app/backend/generated_solutions/solution_tab_compiler_test_python.json",
+        "runs_total": 116,
+        "runs_passed": 42,
+        "runs_failed": 74,
+        "problems_scanned": 116,
+        "all_approaches": false,
+        "languages": [
+          "python"
+        ]
+      },
+      "python_all_approaches": {
+        "path": "/Users/manideep.laxmishetty/Downloads/learning/app/backend/generated_solutions/solution_tab_compiler_test_python_all_approaches.json",
+        "runs_total": 232,
+        "runs_passed": 87,
+        "runs_failed": 145,
+        "problems_scanned": 116,
+        "all_approaches": true,
+        "languages": [
+          "python"
+        ]
+      },
+      "javascript_first": {
+        "path": "/Users/manideep.laxmishetty/Downloads/learning/app/backend/generated_solutions/solution_tab_compiler_test_javascript.json",
+        "runs_total": 116,
+        "runs_passed": 47,
+        "runs_failed": 69,
+        "problems_scanned": 116,
+        "all_approaches": false,
+        "languages": [
+          "javascript"
+        ]
+      }
+    },
+    "problem_totals": {
+      "problems_in_catalog": 116,
+      "problems_with_any_failure": 77,
+      "problems_passing_all_selected_suites": 39,
+      "problems_failed_all_selected_suites": 68
+    }
+  },
+  "problems": [
+    {
+      "problem_id": "c796c649-19b9-441f-b566-5d6ba016a892",
+      "title": "Add and Search Word",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 2
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 2
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "fc679878-6d45-4197-8df4-186407fcba90",
+      "title": "Binary Search",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem.",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+        }
+      ]
+    },
+    {
+      "problem_id": "6c64f598-831e-42d4-9e9b-0fd7289a2da1",
+      "title": "Binary Tree Level Order Traversal",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "e5181b55-47eb-482b-9ca8-bdce75bb5dd7",
+      "title": "Binary Tree Maximum Path Sum",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "b0474bb7-34df-46d7-bd33-6e102c523dfd",
+      "title": "Clone Graph",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "cadc1493-5d9a-4b6c-bd6d-14fabb93d2b0",
+      "title": "Combination Sum",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "e691364f-fd4b-4185-8e20-5936a0f22e81",
+      "title": "Count of Smaller Numbers After Self",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=1/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=1/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "939319be-d4a1-4468-897a-0fc80555deb2",
+      "title": "Course Schedule",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=1/2",
+          "count": 3
+        },
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "2de68f6f-dcb1-4725-a601-00fe0d6bd4d2",
+      "title": "Edit Distance",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "077b5028-8f44-4358-aa6a-214601df06e9",
+      "title": "Evaluate Reverse Polish Notation",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "64e42f09-e4dc-4148-a0d1-d5eef5772e5f",
+      "title": "Find First and Last Position of Element in Sorted Array",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "1517b668-acf0-4a2c-9b93-02056fc7e635",
+      "title": "Find Median from Data Stream",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem.",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+        }
+      ]
+    },
+    {
+      "problem_id": "5e9dc216-d087-4f7a-abee-2ea59b484a0e",
+      "title": "First Bad Version",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 2
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 2
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "7e529190-8fb1-43c1-a142-d38fb1461696",
+      "title": "Generate Parentheses",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "2eabd6dd-4cc6-4d93-9b2a-05945ea1a3ad",
+      "title": "Group Anagrams",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=1/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=1/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=1/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=1/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=1/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "19b6c742-a1e0-426e-87ef-2821f5e6ffa0",
+      "title": "Implement Queue using Stacks",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "0b0b0991-a566-43b0-a3bd-b1b26aa989be",
+      "title": "Implement Stack using Queues",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "1bec511a-7ffb-4769-a3e0-f6d0c44b0393",
+      "title": "Implement Trie",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "5bc24bd3-20d7-40b4-a6dd-61f955222b39",
+      "title": "Insert Interval",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "dcd45660-c6aa-4aeb-8d15-76b90a67712d",
+      "title": "Invert Binary Tree",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "31b117c4-0bd0-4cbd-a7b1-2e372f92d4c0",
+      "title": "K Closest Points to Origin",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "4ae3377b-aabc-44e7-8b23-987dd5dfb4c6",
+      "title": "Kth Largest Element in an Array",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 2
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 2
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "6a60aa02-ea6c-41c2-a064-47d6731cc279",
+      "title": "LRU Cache",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "9b214fef-bcda-440a-bedf-bd94b7c37059",
+      "title": "Letter Combinations of a Phone Number",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "e936e8dd-832f-403a-888d-79b929fb07c6",
+      "title": "Linked List Cycle",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "f0231f69-2164-4d48-b819-df5ee174f6bb",
+      "title": "Longest Common Subsequence",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "78f6f2e5-d083-44f7-9c8d-8375587d4d4d",
+      "title": "Longest Repeating Character Replacement",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "3f911a9a-cf8d-423a-91d3-4f3a8cb13d90",
+      "title": "Lowest Common Ancestor of a BST",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "e9522157-c391-4ad7-8b7f-df80425f5324",
+      "title": "Maximum Depth of Binary Tree",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "e1c7306b-658a-40b2-8927-6e8ac4fed947",
+      "title": "Maximum Product of Word Lengths",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "f1b24dc1-6a8a-4c1b-aeee-0da5a79fdd62",
+      "title": "Merge Intervals",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "2d007507-ed5e-4afc-800a-730304cdd13e",
+      "title": "Merge k Sorted Lists",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "5c6cd77b-65a5-4cdf-85fa-3f2cd7faa67e",
+      "title": "Min Stack",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem.",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "f7cb6523-ffec-4868-a31e-95ac7d24f123",
+      "title": "Minimum Path Sum",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "b01d74fb-9b9d-440c-88f8-020e31721716",
+      "title": "Minimum Window Substring",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "72f91794-1503-46b9-ae26-0c481fad1bb5",
+      "title": "Move Zeroes",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=1/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "3dee1118-34b6-477e-b3e6-f561678af14e",
+      "title": "N-Queens",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "6c2ff960-e68c-48e3-b8a2-0354c77e4fc0",
+      "title": "Next Permutation",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "1fc681ae-c727-4b96-a68c-dd5c46e82ec8",
+      "title": "Number of Islands",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "b833a154-a409-41db-bf05-359eed2df012",
+      "title": "Pacific Atlantic Water Flow",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "01a56862-487b-47e9-b9fa-e6da30a3904f",
+      "title": "Partition to K Equal Sum Subsets",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "eab91e62-ed66-40ce-a631-d19aca6c4f3f",
+      "title": "Pascal's Triangle",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "087d858d-59bd-4087-9c62-cdb006a7254a",
+      "title": "Permutations",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "d72a7ccf-6740-4f21-ace6-9d494f2412f3",
+      "title": "Pow(x, n)",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "26effef2-f295-499e-824b-0687a555958c",
+      "title": "Remove Invalid Parentheses",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "2f2a4711-6748-4b9a-bbfd-d524f43f70a0",
+      "title": "Remove Nth Node From End of List",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "93e09abc-59c4-44b9-a8e2-70f2bbdb1f07",
+      "title": "Reorder List",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "d0c3ccab-5a80-4599-8f62-edec25110edc",
+      "title": "Reverse String",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "e0b3ea3d-5cd1-4265-9069-ab4800b88a72",
+      "title": "Rotate Array",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "d4ea3bab-39b2-4700-9741-e191ee47dc0b",
+      "title": "Rotate Image",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "00cd43b0-7440-40ee-ba11-723117ac3367",
+      "title": "Search a 2D Matrix",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "b8dacb07-81fe-49df-9e38-f5523180fee5",
+      "title": "Search a 2D Matrix II",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "410e6e52-00d2-435a-9ae9-0c7ffa268640",
+      "title": "Search in Rotated Sorted Array",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem.",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+        }
+      ]
+    },
+    {
+      "problem_id": "4d60fa32-bb3a-4715-901d-a0d46e9ba232",
+      "title": "Serialize and Deserialize Binary Tree",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "cb67c56f-232d-4b64-a4a5-ea70592d0b70",
+      "title": "Set Matrix Zeroes",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "88afc9ff-9b8f-4e50-b853-ff1f1249a8cb",
+      "title": "Sort Colors",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=1/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "992f3d16-1971-4cc9-9379-45bf30e1b901",
+      "title": "Spiral Matrix",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "06602a9a-66d2-409a-a4a2-f5098663aeed",
+      "title": "Subsets",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "96c043a8-c272-4b13-b5eb-f7d00cf97ba7",
+      "title": "Symmetric Tree",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "7e0233f9-54ce-4f2b-a307-d0d2123a760b",
+      "title": "Target Sum",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "c2533f91-2c76-400e-a3ad-e083d58ec6ab",
+      "title": "Top K Frequent Elements",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 2
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 2
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "a36a7f95-68c1-4d18-9046-dd4b2c233fbd",
+      "title": "Word Break",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "ad08329a-1125-4a7e-8f8d-534cc5de7c89",
+      "title": "Word Break II",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "44e519f9-c6c4-49f3-91bc-d7bd33a763ea",
+      "title": "Word Search II",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 4,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 4
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "b009e6d0-99e4-4bda-87a3-d740e3034186",
+      "title": "3Sum",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 1,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 3,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=1/2",
+          "count": 3
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=1/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "19e4c547-1e8f-422d-bae4-f2656fdd98e3",
+      "title": "Longest Consecutive Sequence",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 1,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 3,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=1/2",
+          "count": 3
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=1/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "a04ed0ca-0ad2-4245-8526-9dc4ba4f6eb7",
+      "title": "Merge Two Sorted Lists",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 3,
+      "failed_any_suite": true,
+      "failed_all_suites": false,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=1/3",
+          "count": 3
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=1/3"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=1/3"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=1/3"
+        }
+      ]
+    },
+    {
+      "problem_id": "023e2725-3825-4be9-8a8b-dc37d5eb3676",
+      "title": "Reverse Linked List",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 3,
+      "failed_any_suite": true,
+      "failed_all_suites": false,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "b297b283-9a3b-454b-b617-c64a3fb2cc52",
+      "title": "Same Tree",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 3,
+      "failed_any_suite": true,
+      "failed_all_suites": false,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "a9a842ad-e473-4e8f-b809-c636f4bb4506",
+      "title": "Sliding Window Maximum",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 1,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 3,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 2
+        },
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "cf13ce6b-904b-47e1-bd95-8c48e7f28088",
+      "title": "Subarray Sum Equals K",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 3,
+      "failed_any_suite": true,
+      "failed_all_suites": false,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "9d142e89-1858-4133-95cc-19e05849edc7",
+      "title": "Valid Parentheses",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 1,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 3,
+      "failed_any_suite": true,
+      "failed_all_suites": true,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=2/3",
+          "count": 2
+        },
+        {
+          "reason": "status=compile_error passed=0/3",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=2/3"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=2/3"
+        },
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=compile_error passed=0/3"
+        }
+      ]
+    },
+    {
+      "problem_id": "93053423-0245-4ab5-b9b0-c754e7d08d47",
+      "title": "Validate Binary Search Tree",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 2,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 3,
+      "failed_any_suite": true,
+      "failed_all_suites": false,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=0/2",
+          "count": 3
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "69884a7b-d8b4-4c37-b04f-6f546dfc2e85",
+      "title": "Trapping Rain Water",
+      "python_first_failed": true,
+      "python_first_failure_count": 1,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 1,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 2,
+      "failed_any_suite": true,
+      "failed_all_suites": false,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 2
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_first",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        },
+        {
+          "suite": "python_all_approaches",
+          "approach": "Brute Force",
+          "language": "python",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "4884dbca-b613-419e-997f-b61dd9db745f",
+      "title": "Find the Duplicate Number",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 1,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 1,
+      "failed_any_suite": true,
+      "failed_all_suites": false,
+      "top_reasons": [
+        {
+          "reason": "status=runtime_error passed=1/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=runtime_error passed=1/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "2d872e31-7502-48a7-b986-d6d144a29ea5",
+      "title": "Longest Palindromic Substring",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": true,
+      "python_all_approaches_failure_count": 1,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 1,
+      "failed_any_suite": true,
+      "failed_all_suites": false,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=1/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "python_all_approaches",
+          "approach": "Optimal Approach",
+          "language": "python",
+          "reason": "status=wrong_answer passed=1/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "373542d3-542c-4259-b370-3da39cef079c",
+      "title": "Palindromic Substrings",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": true,
+      "javascript_first_failure_count": 1,
+      "total_failure_records": 1,
+      "failed_any_suite": true,
+      "failed_all_suites": false,
+      "top_reasons": [
+        {
+          "reason": "status=wrong_answer passed=0/2",
+          "count": 1
+        }
+      ],
+      "sample_failures": [
+        {
+          "suite": "javascript_first",
+          "approach": "Brute Force",
+          "language": "javascript",
+          "reason": "status=wrong_answer passed=0/2"
+        }
+      ]
+    },
+    {
+      "problem_id": "26a3bd18-5d62-4cc5-a5ed-85a4354bb023",
+      "title": "Best Time to Buy and Sell Stock",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "2dc7c0ec-fcf1-4683-966a-e00361ca7b38",
+      "title": "Climbing Stairs",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "d280ff47-9070-4b22-b88f-f5f8de5584d7",
+      "title": "Coin Change",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "3aa30c83-8537-48ac-81c4-177bb7ebcc7c",
+      "title": "Container With Most Water",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "60032ab9-6362-40eb-9828-edf9279c3d0f",
+      "title": "Contains Duplicate",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "1b05ab16-738b-4f3e-ad92-7e6ebd50560e",
+      "title": "Continuous Subarray Sum",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "624b0ddc-849b-4cf0-b309-6b29c8ccff71",
+      "title": "Count Primes",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "722cefbf-60ff-4e4b-b21b-40aaebb44f4f",
+      "title": "Decode Ways",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "01a180d9-f247-494e-b780-df83ce7d71cd",
+      "title": "Find Minimum in Rotated Sorted Array",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "2ec65e83-e819-4b81-842e-3e316c5f2187",
+      "title": "Happy Number",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "d60146a7-a752-4026-8242-48ff6e937023",
+      "title": "House Robber",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "5f906726-61a2-4883-89e4-aae4e3e0a11a",
+      "title": "Isomorphic Strings",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "1c53c334-9571-4c6e-bbf1-ba88af61de36",
+      "title": "Jump Game",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "f3b13d73-52c6-4348-829c-1b94105a6aee",
+      "title": "Jump Game II",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "52743329-18f4-4d2e-bc89-781e670c4692",
+      "title": "Largest Rectangle in Histogram",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "abf3a456-a8e9-44fe-bbae-8c69c36d553a",
+      "title": "Longest Increasing Subsequence",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "e161eeae-6ffa-4f35-91e1-7b7dd59d7859",
+      "title": "Longest Substring Without Repeating Characters",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "7d2ef76e-b192-4823-887f-fb2c6cd84320",
+      "title": "Maximum Product Subarray",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "4d783229-70c7-4c14-8f10-914be7dda4d4",
+      "title": "Maximum Subarray",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "090139fe-ef97-4a2d-ac11-9882ecb8ba53",
+      "title": "Maximum XOR of Two Numbers in an Array",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "193f540c-1148-4a40-b244-c83684a3b648",
+      "title": "Missing Number",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "74b77fe8-cee0-444d-8c52-bb94b0bb472c",
+      "title": "N-Queens II",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "abbf6b6f-1f8e-4d99-a7e9-46ada9680246",
+      "title": "Number of 1 Bits",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "85380c93-26cd-4904-aaa3-4ab84a8d3d8c",
+      "title": "Partition Equal Subset Sum",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "cad7c709-8ef6-40a0-9053-2e5ae3653c0f",
+      "title": "Plus One",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "7d8850be-798c-4251-a096-d3416e730ebc",
+      "title": "Product of Array Except Self",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "83cd256c-18f2-46e0-be5d-df4499765280",
+      "title": "Remove Duplicates from Sorted Array",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "14dd971f-cf3a-4064-8efb-1d72f493f4ef",
+      "title": "Reverse Bits",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "c1ba7ac2-daa7-4063-ad0f-f91e56935d6d",
+      "title": "Reverse Words in a String",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "584dfb30-ab96-4326-b5e5-138f21bf63c6",
+      "title": "Search Insert Position",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "bd514ba2-9ed6-4b54-8c38-f7ac38b7f058",
+      "title": "Single Number",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "5de31722-981f-4b7d-822f-94a17e9b6a7f",
+      "title": "Sqrt(x)",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "e840ccc1-186a-4a8b-a99e-2ee7b08f620b",
+      "title": "Squares of a Sorted Array",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "b4a7e827-0f87-4483-b7b0-f3c58ecf7dfd",
+      "title": "Two Sum",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "77037ef0-dd09-4ba2-b5ad-d38120338ac0",
+      "title": "Two Sum II - Input Array Is Sorted",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "42d9839f-83b5-4592-9ab6-b882c35e3589",
+      "title": "Unique Binary Search Trees",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "84eb7d84-066a-4f2c-ac8d-f97a72680eb7",
+      "title": "Unique Paths",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "ef0abfa3-a1b6-452c-a786-3aab9639a5e7",
+      "title": "Valid Anagram",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    },
+    {
+      "problem_id": "d07cb20d-e6e5-403e-ac81-b6f79864a235",
+      "title": "Valid Palindrome",
+      "python_first_failed": false,
+      "python_first_failure_count": 0,
+      "python_all_approaches_failed": false,
+      "python_all_approaches_failure_count": 0,
+      "javascript_first_failed": false,
+      "javascript_first_failure_count": 0,
+      "total_failure_records": 0,
+      "failed_any_suite": false,
+      "failed_all_suites": false,
+      "top_reasons": [],
+      "sample_failures": []
+    }
+  ]
+}

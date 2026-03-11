@@ -47,6 +47,8 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        success: 'hsl(var(--success))',
+        warning: 'hsl(var(--warning))',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -58,8 +60,8 @@ module.exports = {
       },
       keyframes: {
         glow: {
-          '0%': { boxShadow: '0 0 20px rgba(99, 102, 241, 0.5)' },
-          '100%': { boxShadow: '0 0 30px rgba(236, 72, 153, 0.5)' },
+          '0%': { boxShadow: '0 0 20px rgba(37, 99, 235, 0.4)' },
+          '100%': { boxShadow: '0 0 30px rgba(37, 99, 235, 0.6)' },
         },
       },
     },

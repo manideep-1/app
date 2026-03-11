@@ -1,0 +1,32 @@
+{
+  "pattern_recognition": "This problem falls under the category of sorting algorithms, specifically dealing with a limited range of values (0, 1, 2). The signals for using a specialized sorting technique arise from the fact that we only have three distinct values to sort, allowing for more efficient algorithms than general-purpose sorting methods.",
+  "approaches": [
+    {
+      "title": "Brute Force",
+      "intuition": "Use a general-purpose sorting algorithm like quicksort or mergesort to sort the array.",
+      "algorithm": "Sort the array using a built-in sorting function or a standard sorting algorithm.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public void sortColors(int[] nums) {\n        java.util.Arrays.sort(nums);\n        return;\n    }\n}",
+      "code_python": "from typing import List\n\ndef sortColors(nums: List[int]) -> None:\n    nums.sort()",
+      "code_cpp": "#include <vector>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    void sortColors(vector<int>& nums) {\n        sort(nums.begin(), nums.end());\n        return;\n    }\n};",
+      "code_javascript": "function sortColors(nums) {\n    nums.sort((a, b) => a - b);\n    return;\n}",
+      "code_go": "package main\n\nimport \"sort\"\n\nfunc sortColors(nums []int) {\n\tsort.Ints(nums)\n}",
+      "code_csharp": "public class Solution {\n    public void sortColors(int[] nums) {\n        Array.Sort(nums);\n        return;\n    }\n}"
+    },
+    {
+      "title": "Optimal Approach",
+      "intuition": "Utilize the Dutch National Flag algorithm to sort the colors in a single pass with constant space.",
+      "algorithm": "Maintain three pointers to partition the array into three sections for 0s, 1s, and 2s.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public void sortColors(int[] nums) {\n        int low = 0, mid = 0, high = nums.length - 1;\n        \n        while (mid <= high) {\n            if (nums[mid] == 0) {\n                swap(nums, low, mid);\n                low++;\n                mid++;\n            } else if (nums[mid] == 1) {\n                mid++;\n            } else {\n                swap(nums, mid, high);\n                high--;\n            }\n        }\n    }\n    \n    private void swap(int[] nums, int i, int j) {\n        int temp = nums[i];\n        nums[i] = nums[j];\n        nums[j] = temp;\n    }\n}",
+      "code_python": "from typing import List\n\ndef sortColors(nums: List[int]) -> None:\n    low, mid, high = 0, 0, len(nums) - 1\n    \n    while mid <= high:\n        if nums[mid] == 0:\n            nums[low], nums[mid] = nums[mid], nums[low]\n            low += 1\n            mid += 1\n        elif nums[mid] == 1:\n            mid += 1\n        else:\n            nums[mid], nums[high] = nums[high], nums[mid]\n            high -= 1",
+      "code_cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    void sortColors(vector<int>& nums) {\n        int low = 0, mid = 0, high = nums.size() - 1;\n        while (mid <= high) {\n            if (nums[mid] == 0) {\n                swap(nums[low], nums[mid]);\n                low++;\n                mid++;\n            } else if (nums[mid] == 1) {\n                mid++;\n            } else {\n                swap(nums[mid], nums[high]);\n                high--;\n            }\n        }\n    }\n};",
+      "code_javascript": "function sortColors(nums) {\n    let low = 0, mid = 0, high = nums.length - 1;\n\n    while (mid <= high) {\n        if (nums[mid] === 0) {\n            [nums[low], nums[mid]] = [nums[mid], nums[low]];\n            low++;\n            mid++;\n        } else if (nums[mid] === 1) {\n            mid++;\n        } else {\n            [nums[mid], nums[high]] = [nums[high], nums[mid]];\n            high--;\n        }\n    }\n    return;\n}",
+      "code_go": "func sortColors(nums []int) {\n    low, mid, high := 0, 0, len(nums)-1\n    for mid <= high {\n        switch nums[mid] {\n        case 0:\n            nums[low], nums[mid] = nums[mid], nums[low]\n            low++\n            mid++\n        case 1:\n            mid++\n        case 2:\n            nums[mid], nums[high] = nums[high], nums[mid]\n            high--\n        }\n    }\n}",
+      "code_csharp": "public class Solution {\n    public void sortColors(int[] nums) {\n        int low = 0, mid = 0, high = nums.Length - 1;\n\n        while (mid <= high) {\n            if (nums[mid] == 0) {\n                Swap(nums, low, mid);\n                low++;\n                mid++;\n            } else if (nums[mid] == 1) {\n                mid++;\n            } else {\n                Swap(nums, mid, high);\n                high--;\n            }\n        }\n    }\n\n    private void Swap(int[] nums, int i, int j) {\n        int temp = nums[i];\n        nums[i] = nums[j];\n        nums[j] = temp;\n    }\n}"
+    }
+  ],
+  "dry_run": "Given the input array [2, 0, 2, 1, 1, 0]: Start with three pointers: low = 0, mid = 0, high = 5. Iterate through the array: If nums[mid] is 0, swap with nums[low] and increment both low and mid. If nums[mid] is 1, just increment mid. If nums[mid] is 2, swap with nums[high] and decrement high. Continue until mid exceeds high. The sorted array will be [0, 0, 1, 1, 2, 2].",
+  "edge_cases": "An empty input array should return an empty array. A single element array (e.g., [1]) should return the same array. Arrays with duplicates (e.g., [0, 0, 1, 1, 2, 2]) should be handled correctly. Large input arrays should be sorted efficiently without performance degradation.",
+  "common_pitfalls": "Common mistakes include: 1) Not maintaining the correct pointers leading to incorrect swaps. 2) Failing to handle the case where mid pointer exceeds high, causing an infinite loop. 3) Using a sorting algorithm that does not operate in-place, resulting in additional space usage."
+}

@@ -1,0 +1,32 @@
+{
+  "pattern_recognition": "This problem falls under the category of searching and mathematical operations. It signals the need for efficient computation of square roots without using built-in functions, requiring an understanding of numerical methods or iterative approaches.",
+  "approaches": [
+    {
+      "title": "Brute Force",
+      "intuition": "Iterate from 0 to x and check for the largest integer whose square is less than or equal to x.",
+      "algorithm": "Start from 0, incrementally check squares until exceeding x.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public int mySqrt(int x) {\n        if (x < 0) return -1; // Handle negative input\n        int i = 0;\n        while (i * i <= x) {\n            i++;\n        }\n        return i - 1;\n    }\n}",
+      "code_python": "def mySqrt(x: int) -> int:\n    if x < 0:\n        return -1  # Invalid input for negative numbers\n    if x == 0 or x == 1:\n        return x\n    for i in range(x + 1):\n        if i * i > x:\n            return i - 1\n    return 0",
+      "code_cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    int mySqrt(int x) {\n        if (x < 0) return -1; // Handle negative input\n        int i = 0;\n        while (i * i <= x) {\n            i++;\n        }\n        return i - 1;\n    }\n};",
+      "code_javascript": "function mySqrt(x) {\n    let i = 0;\n    while (i * i <= x) {\n        i++;\n    }\n    return i - 1;\n}",
+      "code_go": "func mySqrt(x int) int {\n\tif x < 0 {\n\t\treturn -1 // Handle negative input\n\t}\n\tfor i := 0; i*i <= x; i++ {\n\t\tif (i+1)*(i+1) > x {\n\t\t\treturn i\n\t\t}\n\t}\n\treturn 0\n}",
+      "code_csharp": "public class Solution {\n    public int mySqrt(int x) {\n        if (x < 0) return -1; // Handle negative input\n        int i = 0;\n        while (i * i <= x) {\n            i++;\n        }\n        return i - 1;\n    }\n}"
+    },
+    {
+      "title": "Optimal Approach",
+      "intuition": "Use binary search to efficiently find the integer square root by narrowing down the range of possible values.",
+      "algorithm": "Set low to 0 and high to x. While low is less than or equal to high, calculate mid and check if mid squared is equal to x, less than x, or greater than x to adjust the search range.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public int mySqrt(int x) {\n        if (x < 2) return x;\n        int low = 0, high = x, mid;\n        while (low <= high) {\n            mid = low + (high - low) / 2;\n            long midSquared = (long) mid * mid;\n            if (midSquared == x) {\n                return mid;\n            } else if (midSquared < x) {\n                low = mid + 1;\n            } else {\n                high = mid - 1;\n            }\n        }\n        return high;\n    }\n}",
+      "code_python": "def mySqrt(x: int) -> int:\n    if x < 2:\n        return x\n    low, high = 0, x\n    while low <= high:\n        mid = (low + high) // 2\n        mid_squared = mid * mid\n        if mid_squared == x:\n            return mid\n        elif mid_squared < x:\n            low = mid + 1\n        else:\n            high = mid - 1\n    return high",
+      "code_cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    int mySqrt(int x) {\n        if (x < 2) return x;\n        int low = 2, high = x / 2, mid;\n        while (low <= high) {\n            mid = low + (high - low) / 2;\n            long long midSquared = (long long)mid * mid;\n            if (midSquared == x) {\n                return mid;\n            } else if (midSquared < x) {\n                low = mid + 1;\n            } else {\n                high = mid - 1;\n            }\n        }\n        return high;\n    }\n};",
+      "code_javascript": "function mySqrt(x) {\n    if (x < 0) return -1; // Handle negative input\n    if (x === 0 || x === 1) return x; // Handle 0 and 1\n\n    let low = 0, high = x, result = 0;\n\n    while (low <= high) {\n        const mid = Math.floor((low + high) / 2);\n        const midSquared = mid * mid;\n\n        if (midSquared === x) {\n            return mid;\n        } else if (midSquared < x) {\n            result = mid; // Update result to mid\n            low = mid + 1; // Search in the right half\n        } else {\n            high = mid - 1; // Search in the left half\n        }\n    }\n\n    return result; // Return the largest integer whose square is less than or equal to x\n}",
+      "code_go": "func mySqrt(x int) int {\n    if x < 2 {\n        return x\n    }\n    low, high := 0, x\n    for low <= high {\n        mid := low + (high-low)/2\n        midSquared := mid * mid\n        if midSquared == x {\n            return mid\n        } else if midSquared < x {\n            low = mid + 1\n        } else {\n            high = mid - 1\n        }\n    }\n    return high\n}",
+      "code_csharp": "public class Solution {\n    public int mySqrt(int x) {\n        if (x < 2) return x;\n        int low = 0, high = x, mid;\n        while (low <= high) {\n            mid = low + (high - low) / 2;\n            long midSquared = (long)mid * mid;\n            if (midSquared == x) {\n                return mid;\n            } else if (midSquared < x) {\n                low = mid + 1;\n            } else {\n                high = mid - 1;\n            }\n        }\n        return high;\n    }\n}"
+    }
+  ],
+  "dry_run": "For x = 8: In the brute force approach, start from 0, check 0^2=0, 1^2=1, 2^2=4, 3^2=9. The largest integer whose square is <= 8 is 2. In the optimal approach, set low=0, high=8. Calculate mid=4, check 4^2=16 (too high), adjust high to 3. Next, mid=1, check 1^2=1 (too low), adjust low to 2. Finally, mid=2, check 2^2=4 (too low), adjust low to 3. Mid=3, check 3^2=9 (too high), adjust high to 2. The result is 2.",
+  "edge_cases": "Input of 0 should return 0. Input of 1 should return 1. Large inputs like 1,000,000 should be handled efficiently. Ensure no negative inputs are processed as the problem specifies non-negative integers.",
+  "common_pitfalls": "Common mistakes include: 1) Not handling the case for x = 0 correctly, which should return 0. 2) Using floating-point arithmetic instead of integer operations, leading to precision errors. 3) Failing to account for the case where x is a perfect square, which should return the exact integer square root."
+}
