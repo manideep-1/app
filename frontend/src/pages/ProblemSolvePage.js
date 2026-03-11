@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/utils/api';
@@ -71,6 +71,8 @@ function getProblemFunctionName(problem) {
   return titleToFunctionName(problem.title);
 }
 
+const EDITOR_LANGUAGE_ORDER = ['java', 'python', 'javascript', 'cpp', 'c', 'go', 'csharp', 'typescript'];
+
 const ProblemSolvePage = () => {
   const { problemId } = useParams();
   const { user, loading: authLoading } = useAuth();
@@ -123,7 +125,7 @@ const ProblemSolvePage = () => {
   const draftSaveTimeoutRef = useRef(null);
   const DRAFT_KEY = (id) => `ifelse_draft_${id}`;
 
-  const loadDraft = (pid) => {
+  const loadDraft = useCallback((pid) => {
     try {
       const raw = localStorage.getItem(DRAFT_KEY(pid));
       if (!raw) return null;
@@ -131,9 +133,9 @@ const ProblemSolvePage = () => {
       if (data && typeof data.code === 'string') return data;
     } catch (_) { /* ignore */ }
     return null;
-  };
+  }, []);
 
-  const saveDraft = (pid, codeVal, langVal, tabsVal) => {
+  const saveDraft = useCallback((pid, codeVal, langVal, tabsVal) => {
     if (!pid) return;
     try {
       const payload = {
@@ -143,102 +145,9 @@ const ProblemSolvePage = () => {
       };
       localStorage.setItem(DRAFT_KEY(pid), JSON.stringify(payload));
     } catch (_) { /* ignore */ }
-  };
-
-  useEffect(() => {
-    if (authLoading) return;
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-    fetchProblem();
-    setSolutionCodeOpen({});
-    setApproachRevealed({});
-  }, [problemId, user, authLoading]);
-
-  // Fetch which runtimes are available on the server (so we only offer runnable languages)
-  useEffect(() => {
-    api.get('/runtimes')
-      .then((res) => setRuntimes(res.data || {}))
-      .catch(() => setRuntimes({}));
   }, []);
 
-  // Show all supported languages so user can write in any of them; Run will show a message if runtime is unavailable.
-  const editorLanguageOrder = ['java', 'python', 'javascript', 'cpp', 'c', 'go', 'csharp', 'typescript'];
-  const LANGUAGE_LABELS = { java: 'Java', python: 'Python', javascript: 'JavaScript', cpp: 'C++', c: 'C', go: 'Go', csharp: 'C#', typescript: 'TypeScript' };
-  const availableEditorLanguages = editorLanguageOrder;
-  const isRuntimeAvailable = (lang) => runtimes && runtimes[lang] === true;
-  useEffect(() => {
-    if (!runtimes || typeof runtimes !== 'object') return;
-    // Only auto-switch if current language is invalid (e.g. from old storage)
-    if (!editorLanguageOrder.includes(language)) {
-      setLanguage(editorLanguageOrder[0] || 'java');
-    }
-  }, [runtimes, language]);
-  const getLanguageLabel = (lang) => LANGUAGE_LABELS[lang] || (lang ? lang.charAt(0).toUpperCase() + lang.slice(1) : '');
-
-  const visibleTestCases = (problem?.test_cases ?? []).filter((tc) => !tc.is_hidden);
-  const totalCaseCount = visibleTestCases.length + customTestCases.length;
-  useEffect(() => {
-    if (activeTestCaseIndex >= totalCaseCount && totalCaseCount > 0) {
-      setActiveTestCaseIndex(Math.max(0, totalCaseCount - 1));
-    }
-  }, [totalCaseCount, activeTestCaseIndex]);
-
-  useEffect(() => {
-    if (problemId && user) fetchSubmissions();
-  }, [problemId, user, submissionFilterStatus, submissionFilterLanguage]);
-
-  // Persist code draft to localStorage (debounced) so refresh keeps the code
-  useEffect(() => {
-    if (!problemId || !problem) return;
-    if (draftSaveTimeoutRef.current) clearTimeout(draftSaveTimeoutRef.current);
-    draftSaveTimeoutRef.current = setTimeout(() => {
-      saveDraft(problemId, code, language, solutionTabs);
-      draftSaveTimeoutRef.current = null;
-    }, 500);
-    return () => {
-      if (draftSaveTimeoutRef.current) clearTimeout(draftSaveTimeoutRef.current);
-    };
-  }, [problemId, problem, code, language, solutionTabs]);
-
-  // Timer/Stopwatch tick
-  useEffect(() => {
-    if (!timerRunning) return;
-    timerIntervalRef.current = setInterval(() => {
-      setTimerSeconds((s) => {
-        if (timerMode === 'timer') {
-          if (s <= 0) {
-            if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
-            return 0;
-          }
-          return s - 1;
-        }
-        return s + 1;
-      });
-    }, 1000);
-    return () => {
-      if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
-    };
-  }, [timerRunning, timerMode]);
-
-  const fetchSubmissions = async () => {
-    if (!problemId) return;
-    setSubmissionsLoading(true);
-    try {
-      const params = { problem_id: problemId };
-      if (submissionFilterStatus) params.status = submissionFilterStatus;
-      if (submissionFilterLanguage) params.language = submissionFilterLanguage;
-      const res = await api.get('/submissions', { params });
-      setSubmissions(res.data || []);
-    } catch {
-      setSubmissions([]);
-    } finally {
-      setSubmissionsLoading(false);
-    }
-  };
-
-  const fetchProblem = async () => {
+  const fetchProblem = useCallback(async () => {
     try {
       setHintsRevealedCount(0);
       const response = await api.get(`/problems/${problemId}`);
@@ -250,7 +159,6 @@ const ProblemSolvePage = () => {
       } catch {
         setRelatedProblems([]);
       }
-      // Contract: when server sends function_metadata, starters are metadata-generated; use as-is. Otherwise align with title-derived name.
       const fnName = getProblemFunctionName(p);
       const hasMetadata = p.function_metadata && typeof p.function_metadata === 'object' && p.function_metadata.function_name;
       const starters = {
@@ -284,7 +192,99 @@ const ProblemSolvePage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [problemId, navigate, language, loadDraft]);
+
+  const fetchSubmissions = useCallback(async () => {
+    if (!problemId) return;
+    setSubmissionsLoading(true);
+    try {
+      const params = { problem_id: problemId };
+      if (submissionFilterStatus) params.status = submissionFilterStatus;
+      if (submissionFilterLanguage) params.language = submissionFilterLanguage;
+      const res = await api.get('/submissions', { params });
+      setSubmissions(res.data || []);
+    } catch {
+      setSubmissions([]);
+    } finally {
+      setSubmissionsLoading(false);
+    }
+  }, [problemId, submissionFilterStatus, submissionFilterLanguage]);
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    fetchProblem();
+    setSolutionCodeOpen({});
+    setApproachRevealed({});
+  }, [problemId, user, authLoading, fetchProblem, navigate]);
+
+  // Fetch which runtimes are available on the server (so we only offer runnable languages)
+  useEffect(() => {
+    api.get('/runtimes')
+      .then((res) => setRuntimes(res.data || {}))
+      .catch(() => setRuntimes({}));
+  }, []);
+
+  // Show all supported languages so user can write in any of them; Run will show a message if runtime is unavailable.
+  const LANGUAGE_LABELS = { java: 'Java', python: 'Python', javascript: 'JavaScript', cpp: 'C++', c: 'C', go: 'Go', csharp: 'C#', typescript: 'TypeScript' };
+  const availableEditorLanguages = EDITOR_LANGUAGE_ORDER;
+  const isRuntimeAvailable = (lang) => runtimes && runtimes[lang] === true;
+  useEffect(() => {
+    if (!runtimes || typeof runtimes !== 'object') return;
+    // Only auto-switch if current language is invalid (e.g. from old storage)
+    if (!EDITOR_LANGUAGE_ORDER.includes(language)) {
+      setLanguage(EDITOR_LANGUAGE_ORDER[0] || 'java');
+    }
+  }, [runtimes, language]);
+  const getLanguageLabel = (lang) => LANGUAGE_LABELS[lang] || (lang ? lang.charAt(0).toUpperCase() + lang.slice(1) : '');
+
+  const visibleTestCases = (problem?.test_cases ?? []).filter((tc) => !tc.is_hidden);
+  const totalCaseCount = visibleTestCases.length + customTestCases.length;
+  useEffect(() => {
+    if (activeTestCaseIndex >= totalCaseCount && totalCaseCount > 0) {
+      setActiveTestCaseIndex(Math.max(0, totalCaseCount - 1));
+    }
+  }, [totalCaseCount, activeTestCaseIndex]);
+
+  useEffect(() => {
+    if (problemId && user) fetchSubmissions();
+  }, [problemId, user, submissionFilterStatus, submissionFilterLanguage, fetchSubmissions]);
+
+  // Persist code draft to localStorage (debounced) so refresh keeps the code
+  useEffect(() => {
+    if (!problemId || !problem) return;
+    if (draftSaveTimeoutRef.current) clearTimeout(draftSaveTimeoutRef.current);
+    draftSaveTimeoutRef.current = setTimeout(() => {
+      saveDraft(problemId, code, language, solutionTabs);
+      draftSaveTimeoutRef.current = null;
+    }, 500);
+    return () => {
+      if (draftSaveTimeoutRef.current) clearTimeout(draftSaveTimeoutRef.current);
+    };
+  }, [problemId, problem, code, language, solutionTabs, saveDraft]);
+
+  // Timer/Stopwatch tick
+  useEffect(() => {
+    if (!timerRunning) return;
+    timerIntervalRef.current = setInterval(() => {
+      setTimerSeconds((s) => {
+        if (timerMode === 'timer') {
+          if (s <= 0) {
+            if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+            return 0;
+          }
+          return s - 1;
+        }
+        return s + 1;
+      });
+    }, 1000);
+    return () => {
+      if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+    };
+  }, [timerRunning, timerMode]);
 
   const getStarterCode = (lang) => {
     if (!problem) return '';
