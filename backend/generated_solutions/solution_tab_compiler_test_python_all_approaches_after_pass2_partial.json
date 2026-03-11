@@ -1,0 +1,267 @@
+{
+  "problems_scanned": 116,
+  "languages": [
+    "python"
+  ],
+  "all_approaches": true,
+  "runs_total": 232,
+  "runs_passed": 196,
+  "runs_failed": 36,
+  "missing_code_entries": 0,
+  "signature_rejected": 2,
+  "problems_with_no_visible_tests": 0,
+  "failures": [
+    {
+      "problem_id": "b0474bb7-34df-46d7-bd33-6e102c523dfd",
+      "title": "Clone Graph",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "b0474bb7-34df-46d7-bd33-6e102c523dfd",
+      "title": "Clone Graph",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "7e529190-8fb1-43c1-a142-d38fb1461696",
+      "title": "Generate Parentheses",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "7e529190-8fb1-43c1-a142-d38fb1461696",
+      "title": "Generate Parentheses",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "19b6c742-a1e0-426e-87ef-2821f5e6ffa0",
+      "title": "Implement Queue using Stacks",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=wrong_answer passed=1/2"
+    },
+    {
+      "problem_id": "19b6c742-a1e0-426e-87ef-2821f5e6ffa0",
+      "title": "Implement Queue using Stacks",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=wrong_answer passed=1/2"
+    },
+    {
+      "problem_id": "5bc24bd3-20d7-40b4-a6dd-61f955222b39",
+      "title": "Insert Interval",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "5bc24bd3-20d7-40b4-a6dd-61f955222b39",
+      "title": "Insert Interval",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "6a60aa02-ea6c-41c2-a064-47d6731cc279",
+      "title": "LRU Cache",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=wrong_answer passed=1/2"
+    },
+    {
+      "problem_id": "6a60aa02-ea6c-41c2-a064-47d6731cc279",
+      "title": "LRU Cache",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=wrong_answer passed=1/2"
+    },
+    {
+      "problem_id": "a04ed0ca-0ad2-4245-8526-9dc4ba4f6eb7",
+      "title": "Merge Two Sorted Lists",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=1/3"
+    },
+    {
+      "problem_id": "a04ed0ca-0ad2-4245-8526-9dc4ba4f6eb7",
+      "title": "Merge Two Sorted Lists",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=1/3"
+    },
+    {
+      "problem_id": "5c6cd77b-65a5-4cdf-85fa-3f2cd7faa67e",
+      "title": "Min Stack",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+    },
+    {
+      "problem_id": "5c6cd77b-65a5-4cdf-85fa-3f2cd7faa67e",
+      "title": "Min Stack",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+    },
+    {
+      "problem_id": "3dee1118-34b6-477e-b3e6-f561678af14e",
+      "title": "N-Queens",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "3dee1118-34b6-477e-b3e6-f561678af14e",
+      "title": "N-Queens",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "74b77fe8-cee0-444d-8c52-bb94b0bb472c",
+      "title": "N-Queens II",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "74b77fe8-cee0-444d-8c52-bb94b0bb472c",
+      "title": "N-Queens II",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "b833a154-a409-41db-bf05-359eed2df012",
+      "title": "Pacific Atlantic Water Flow",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "b833a154-a409-41db-bf05-359eed2df012",
+      "title": "Pacific Atlantic Water Flow",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "26effef2-f295-499e-824b-0687a555958c",
+      "title": "Remove Invalid Parentheses",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=wrong_answer passed=1/2"
+    },
+    {
+      "problem_id": "26effef2-f295-499e-824b-0687a555958c",
+      "title": "Remove Invalid Parentheses",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=wrong_answer passed=1/2"
+    },
+    {
+      "problem_id": "d0c3ccab-5a80-4599-8f62-edec25110edc",
+      "title": "Reverse String",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "d0c3ccab-5a80-4599-8f62-edec25110edc",
+      "title": "Reverse String",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "cb67c56f-232d-4b64-a4a5-ea70592d0b70",
+      "title": "Set Matrix Zeroes",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "cb67c56f-232d-4b64-a4a5-ea70592d0b70",
+      "title": "Set Matrix Zeroes",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "06602a9a-66d2-409a-a4a2-f5098663aeed",
+      "title": "Subsets",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=wrong_answer passed=1/2"
+    },
+    {
+      "problem_id": "06602a9a-66d2-409a-a4a2-f5098663aeed",
+      "title": "Subsets",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=wrong_answer passed=1/2"
+    },
+    {
+      "problem_id": "69884a7b-d8b4-4c37-b04f-6f546dfc2e85",
+      "title": "Trapping Rain Water",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "69884a7b-d8b4-4c37-b04f-6f546dfc2e85",
+      "title": "Trapping Rain Water",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "42d9839f-83b5-4592-9ab6-b882c35e3589",
+      "title": "Unique Binary Search Trees",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "42d9839f-83b5-4592-9ab6-b882c35e3589",
+      "title": "Unique Binary Search Trees",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "ad08329a-1125-4a7e-8f8d-534cc5de7c89",
+      "title": "Word Break II",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "ad08329a-1125-4a7e-8f8d-534cc5de7c89",
+      "title": "Word Break II",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "44e519f9-c6c4-49f3-91bc-d7bd33a763ea",
+      "title": "Word Search II",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "44e519f9-c6c4-49f3-91bc-d7bd33a763ea",
+      "title": "Word Search II",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2"
+    }
+  ]
+}

@@ -167,7 +167,7 @@ const RegisterPage = () => {
               </div>
               <Button
                 type="submit"
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300"
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all duration-300"
                 disabled={loading}
                 data-testid="register-send-otp-btn"
               >
@@ -218,7 +218,7 @@ const RegisterPage = () => {
               </div>
               <Button
                 type="submit"
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300"
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all duration-300"
                 disabled={loading || otp.length !== OTP_LENGTH}
                 data-testid="register-verify-btn"
               >

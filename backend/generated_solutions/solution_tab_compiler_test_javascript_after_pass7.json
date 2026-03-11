@@ -1,0 +1,120 @@
+{
+  "problems_scanned": 116,
+  "languages": [
+    "javascript"
+  ],
+  "all_approaches": false,
+  "runs_total": 116,
+  "runs_passed": 101,
+  "runs_failed": 15,
+  "missing_code_entries": 0,
+  "signature_rejected": 1,
+  "problems_with_no_visible_tests": 0,
+  "failures": [
+    {
+      "problem_id": "c796c649-19b9-441f-b566-5d6ba016a892",
+      "title": "Add and Search Word",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "b0474bb7-34df-46d7-bd33-6e102c523dfd",
+      "title": "Clone Graph",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "3aa30c83-8537-48ac-81c4-177bb7ebcc7c",
+      "title": "Container With Most Water",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2"
+    },
+    {
+      "problem_id": "1517b668-acf0-4a2c-9b93-02056fc7e635",
+      "title": "Find Median from Data Stream",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+    },
+    {
+      "problem_id": "5e9dc216-d087-4f7a-abee-2ea59b484a0e",
+      "title": "First Bad Version",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "19b6c742-a1e0-426e-87ef-2821f5e6ffa0",
+      "title": "Implement Queue using Stacks",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "5bc24bd3-20d7-40b4-a6dd-61f955222b39",
+      "title": "Insert Interval",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "f3b13d73-52c6-4348-829c-1b94105a6aee",
+      "title": "Jump Game II",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2"
+    },
+    {
+      "problem_id": "19e4c547-1e8f-422d-bae4-f2656fdd98e3",
+      "title": "Longest Consecutive Sequence",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "6a60aa02-ea6c-41c2-a064-47d6731cc279",
+      "title": "LRU Cache",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "5c6cd77b-65a5-4cdf-85fa-3f2cd7faa67e",
+      "title": "Min Stack",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "26effef2-f295-499e-824b-0687a555958c",
+      "title": "Remove Invalid Parentheses",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "4d60fa32-bb3a-4715-901d-a0d46e9ba232",
+      "title": "Serialize and Deserialize Binary Tree",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2"
+    },
+    {
+      "problem_id": "06602a9a-66d2-409a-a4a2-f5098663aeed",
+      "title": "Subsets",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2"
+    },
+    {
+      "problem_id": "9d142e89-1858-4133-95cc-19e05849edc7",
+      "title": "Valid Parentheses",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=compile_error passed=0/3"
+    }
+  ]
+}

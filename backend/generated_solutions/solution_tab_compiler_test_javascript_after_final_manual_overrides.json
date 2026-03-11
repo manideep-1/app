@@ -1,0 +1,29 @@
+{
+  "problems_scanned": 116,
+  "languages": [
+    "javascript"
+  ],
+  "all_approaches": false,
+  "runs_total": 116,
+  "runs_passed": 114,
+  "runs_failed": 2,
+  "missing_code_entries": 0,
+  "signature_rejected": 1,
+  "problems_with_no_visible_tests": 0,
+  "failures": [
+    {
+      "problem_id": "1517b668-acf0-4a2c-9b93-02056fc7e635",
+      "title": "Find Median from Data Stream",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "signature rejected: Function signature does not match problem definition. Ensure your code defines the required function with the exact name and parameter order from the problem."
+    },
+    {
+      "problem_id": "9d142e89-1858-4133-95cc-19e05849edc7",
+      "title": "Valid Parentheses",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=compile_error passed=0/3"
+    }
+  ]
+}

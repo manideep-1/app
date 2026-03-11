@@ -42,9 +42,38 @@ def sanitize_code_for_llm(code: str) -> str:
 
 def looks_like_injection(user_message: str) -> bool:
     """Heuristic: does the user message look like prompt injection or solution extraction?"""
-    if not user_message or len(user_message) > 2000:
+    if not user_message or not isinstance(user_message, str):
         return True
-    return bool(INJECTION_RE.search(user_message))
+    msg = user_message.strip()
+    if not msg:
+        return True
+    # Allow long legitimate coaching questions. Very large payloads are still treated as abuse.
+    if len(msg) > MAX_USER_MESSAGE_LEN * 3:
+        return True
+    return bool(INJECTION_RE.search(msg))
+
+
+# Pattern: start of a line that looks like a function/class definition (common in leaked solution code)
+_CODE_START_RE = re.compile(
+    r"\n\s*(def\s+\w+\s*\(|class\s+\w+|function\s+\w+\s*\(|public\s+\w+.*\s+\w+\s*\(|int\s+\w+\s*\()",
+    re.IGNORECASE,
+)
+
+
+def strip_code_blocks_from_hint(response: str) -> str:
+    """Remove all markdown code blocks and raw solution code from a hint."""
+    if not response or not isinstance(response, str):
+        return response
+    # Remove ```...``` blocks (with optional language tag)
+    out = re.sub(r"```[\w]*\s*\n.*?```", "", response, flags=re.DOTALL)
+    # If there is raw code (e.g. "def threeSum(nums):" without backticks), truncate before it
+    match = _CODE_START_RE.search(out)
+    if match:
+        out = out[: match.start()].strip()
+    out = re.sub(r"\n{3,}", "\n\n", out.strip())
+    if len(out) < 20:
+        return "Consider the technique suggested above and try implementing it yourself."
+    return out
 
 
 def ensure_no_solution_leak(response: str, problem_title: str) -> str:

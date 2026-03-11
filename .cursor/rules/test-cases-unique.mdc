@@ -1,0 +1,30 @@
+---
+description: Enforce unique test cases for all problems. No duplicates within or across problems.
+globs: backend/seed_db.py, backend/seed_problems_top100.py, backend/**/seed_*.py
+---
+
+# Test case uniqueness — system rule
+
+## Objective
+
+- **Within a problem:** No two test cases (visible or hidden) may have the same `(input, expected_output)` after normalization (trim, collapse whitespace).
+- **Across problems:** Avoid reusing the exact same test case in multiple problems; prefer distinct inputs/outputs per problem.
+
+## When editing problems or seed data
+
+1. **Never add duplicate test cases.** Before adding a new case, ensure its normalized (input, expected_output) is not already present in that problem.
+2. **Examples (visible):** Provide 2–3 examples, all different, with increasing complexity (e.g. small → edge → larger).
+3. **Hidden cases:** Prefer variety: normal, edge, min boundary, max boundary, worst-case. Do not duplicate any visible or other hidden case.
+4. **After changing seed files:** Run from backend: `python scripts/detect_duplicate_test_cases.py` to report duplicates. Then run `python seed_db.py` to apply deduplication and min visible/hidden rules.
+
+## Implementation (already in codebase)
+
+- `backend/test_case_validation.py`: `normalize_tc_input_output`, `tc_hash`, `validate_no_duplicates_within_problem`, `deduplicate_test_cases`.
+- `backend/seed_db.py`: Before saving, runs `deduplicate_test_cases`, then `ensure_min_visible_test_cases`, then `ensure_min_hidden_test_cases`. Both visible and hidden pipelines prefer distinct (input, output) when adding cases.
+- `backend/scripts/detect_duplicate_test_cases.py`: Scans DB and reports within-problem and across-problem duplicates.
+- Admin API `POST /problems`: Rejects create if duplicate test cases are present (400 with detail).
+
+## If you add new seed problems
+
+- Use unique inputs and expected outputs for every test case.
+- Run `python scripts/detect_duplicate_test_cases.py` after seeding to confirm no duplicates.

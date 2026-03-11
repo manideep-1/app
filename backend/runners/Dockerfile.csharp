@@ -1,0 +1,19 @@
+# C# runner - no host dependency (pre-restore so run works with --network=none)
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+
+RUN useradd -m -u 10000 -s /bin/sh runner
+WORKDIR /app
+RUN echo '<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework></PropertyGroup></Project>' > App.csproj \
+    && echo 'class P { static void Main() {} }' > Program.cs \
+    && dotnet restore && rm Program.cs
+RUN chown -R runner:runner /app
+WORKDIR /workspace
+
+RUN dotnet --version
+
+COPY run_csharp.sh /run_csharp.sh
+RUN chmod +x /run_csharp.sh && chown runner:runner /run_csharp.sh
+
+USER runner
+# Program.cs mounted at /workspace; script copies to /app and runs
+ENTRYPOINT ["/run_csharp.sh"]

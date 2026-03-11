@@ -1,0 +1,14 @@
+{
+  "problems_scanned": 116,
+  "languages": [
+    "javascript"
+  ],
+  "all_approaches": false,
+  "runs_total": 116,
+  "runs_passed": 116,
+  "runs_failed": 0,
+  "missing_code_entries": 0,
+  "signature_rejected": 0,
+  "problems_with_no_visible_tests": 0,
+  "failures": []
+}

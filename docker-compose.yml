@@ -1,4 +1,4 @@
-# ifelse - backend + MongoDB for local/production-like runs
+# ifelse - backend + MongoDB + containerized code runners (no host PATH)
 services:
   mongodb:
     image: mongo:7
@@ -12,6 +12,56 @@ services:
       timeout: 5s
       retries: 5
 
+  # Runner images: built so backend can run code in them via `docker run`. Exit immediately when "started".
+  runner-python:
+    build:
+      context: ./backend/runners
+      dockerfile: Dockerfile.python
+    image: ifelse-runner-python
+    entrypoint: ["true"]
+  runner-java:
+    build:
+      context: ./backend/runners
+      dockerfile: Dockerfile.java
+    image: ifelse-runner-java
+    entrypoint: ["true"]
+  runner-cpp:
+    build:
+      context: ./backend/runners
+      dockerfile: Dockerfile.cpp
+    image: ifelse-runner-cpp
+    entrypoint: ["true"]
+  runner-c:
+    build:
+      context: ./backend/runners
+      dockerfile: Dockerfile.c
+    image: ifelse-runner-c
+    entrypoint: ["true"]
+  runner-javascript:
+    build:
+      context: ./backend/runners
+      dockerfile: Dockerfile.javascript
+    image: ifelse-runner-javascript
+    entrypoint: ["true"]
+  runner-go:
+    build:
+      context: ./backend/runners
+      dockerfile: Dockerfile.go
+    image: ifelse-runner-go
+    entrypoint: ["true"]
+  runner-csharp:
+    build:
+      context: ./backend/runners
+      dockerfile: Dockerfile.csharp
+    image: ifelse-runner-csharp
+    entrypoint: ["true"]
+  runner-typescript:
+    build:
+      context: ./backend/runners
+      dockerfile: Dockerfile.typescript
+    image: ifelse-runner-typescript
+    entrypoint: ["true"]
+
   backend:
     build:
       context: ./backend
@@ -22,10 +72,37 @@ services:
       MONGO_URL: mongodb://mongodb:27017
       DB_NAME: ifelse_db
       JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
-      CORS_ORIGINS: "*"
+      # Use explicit origins when frontend uses credentials (required for auth). * is rejected by browsers.
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
+      # Shared volume so runner containers can see code written by the backend (required when backend runs in Docker)
+      RUNNER_WORKSPACE: /runner_workspace
+      RUNNER_VOLUME: ifelse_runner_workspace
+      # Optional: AI Coach. Set OPENAI_API_KEY in a .env file in the project root (do not commit the key).
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ifelse_runner_workspace:/runner_workspace
     depends_on:
       mongodb:
         condition: service_healthy
+      runner-python:
+        condition: service_started
+      runner-java:
+        condition: service_started
+      runner-cpp:
+        condition: service_started
+      runner-c:
+        condition: service_started
+      runner-javascript:
+        condition: service_started
+      runner-go:
+        condition: service_started
+      runner-csharp:
+        condition: service_started
+      runner-typescript:
+        condition: service_started
+    # Backend uses Docker CLI to run runner-* images for code execution (no host Java/Python/etc)
 
 volumes:
   mongodb_data:
+  ifelse_runner_workspace:

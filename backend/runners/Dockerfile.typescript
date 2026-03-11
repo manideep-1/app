@@ -1,0 +1,11 @@
+# TypeScript runner - no host dependency (ts-node)
+FROM node:20-slim
+
+RUN useradd -m -u 10000 -s /bin/sh runner
+WORKDIR /workspace
+
+RUN npm install -g ts-node typescript && npx ts-node --version
+
+USER runner
+# Code mounted at /workspace/code.ts; driver wraps stdin; run with ts-node
+CMD ["npx", "ts-node", "/workspace/code.ts"]

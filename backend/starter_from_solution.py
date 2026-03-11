@@ -6,11 +6,38 @@ solutions attached.
 import re
 
 
+def _python_class_to_starter(code: str) -> str | None:
+    """Extract class and method signatures; return class skeleton with pass in each method."""
+    if not code or not isinstance(code, str):
+        return None
+    code = code.strip()
+    # Match class Name: at start (optional leading import/comment lines)
+    m = re.search(r"^class\s+(\w+)\s*:", code, re.MULTILINE)
+    if not m:
+        return None
+    class_name = m.group(1)
+    # Find all method definitions (def method_name(...):) inside the class (indented)
+    method_pattern = re.compile(r"^(\s+)def\s+(\w+)\s*\([^)]*\)\s*(?:->[^:]+)?\s*:", re.MULTILINE)
+    methods = []
+    for match in method_pattern.finditer(code):
+        indent, name = match.group(1), match.group(2)
+        if name.startswith("_") and name != "__init__":
+            continue
+        sig = match.group(0).strip()
+        methods.append("    " + sig + "\n        pass")
+    if not methods:
+        return None
+    return "class " + class_name + ":\n" + "\n\n".join(methods)
+
+
 def _python_solution_to_starter(code: str) -> str | None:
     """Extract first function definition and return signature + pass."""
     if not code or not isinstance(code, str):
         return None
     code = code.strip()
+    # If solution is class-based, return class starter instead
+    if re.match(r"^\s*class\s+\w+\s*:", code):
+        return _python_class_to_starter(code)
     # Match def name(...): or def name(...) -> ...:
     m = re.search(r"^def\s+\w+\s*\([^)]*\)\s*(?:->[^:]+)?\s*:", code, re.MULTILINE)
     if not m:
@@ -30,12 +57,34 @@ def _python_solution_to_starter(code: str) -> str | None:
     return line + "\n    pass"
 
 
-def _javascript_solution_to_starter(code: str) -> str | None:
-    """Extract first function declaration and return signature + empty body."""
+def _javascript_class_to_starter(code: str) -> str | None:
+    """Extract class and method signatures; return class skeleton with empty bodies."""
     if not code or not isinstance(code, str):
         return None
     code = code.strip()
-    # function name(args) { or function name( args ) {
+    m = re.search(r"class\s+(\w+)\s*\{", code)
+    if not m:
+        return None
+    method_pattern = re.compile(r"^\s{2,}(\w+)\s*\([^)]*\)\s*\{", re.MULTILINE)
+    methods = []
+    for match in method_pattern.finditer(code):
+        name = match.group(1)
+        if name == "constructor":
+            methods.append("  constructor() {\n  }")
+        else:
+            methods.append(f"  {name}() {{\n  }}")
+    if not methods:
+        return None
+    return "class " + m.group(1) + " {\n" + "\n\n".join(methods) + "\n}"
+
+
+def _javascript_solution_to_starter(code: str) -> str | None:
+    """Extract first function or class and return signature + empty body."""
+    if not code or not isinstance(code, str):
+        return None
+    code = code.strip()
+    if re.search(r"^\s*class\s+\w+\s*\{", code):
+        return _javascript_class_to_starter(code)
     m = re.search(r"function\s+(\w+)\s*\([^)]*\)\s*\{", code)
     if not m:
         return None

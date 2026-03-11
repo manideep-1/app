@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { GoogleLogin } from '@react-oauth/google';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,8 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const { login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || '/problems';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +26,7 @@ const LoginPage = () => {
     try {
       await login(email, password);
       toast.success('Login successful!');
-      navigate('/problems');
+      navigate(from, { replace: true });
     } catch (error) {
       toast.error(error.response?.data?.detail || 'Login failed');
     } finally {
@@ -38,7 +40,7 @@ const LoginPage = () => {
     try {
       await loginWithGoogle(credentialResponse.credential);
       toast.success('Login successful!');
-      navigate('/problems');
+      navigate(from, { replace: true });
     } catch (error) {
       const msg = error.response?.data?.detail || 'Google sign-in failed';
       toast.error(Array.isArray(msg) ? msg[0]?.msg ?? msg : msg);
@@ -93,7 +95,7 @@ const LoginPage = () => {
             </div>
             <Button
               type="submit"
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300"
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all duration-300"
               disabled={loading}
               data-testid="login-submit-btn"
             >

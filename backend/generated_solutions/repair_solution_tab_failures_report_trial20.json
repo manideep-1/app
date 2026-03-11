@@ -1,0 +1,80 @@
+{
+  "targets": 20,
+  "fixed": 7,
+  "already_passing": 2,
+  "unresolved_count": 11,
+  "modified_titles": [
+    "Binary Tree Level Order Traversal",
+    "Binary Tree Maximum Path Sum",
+    "Combination Sum",
+    "Count of Smaller Numbers After Self"
+  ],
+  "unresolved": [
+    {
+      "title": "Add and Search Word",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=0/2; input='addWord bad addWord dad addWord mad search pad search bad search .ad search b..' expected='false true true true' got=''"
+    },
+    {
+      "title": "Add and Search Word",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=wrong_answer passed=1/2; input='addWord bad addWord dad addWord mad search pad search bad search .ad search b..' expected='false true true true' got='None'"
+    },
+    {
+      "title": "Add and Search Word",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=1/2; input='addWord bad addWord dad addWord mad search pad search bad search .ad search b..' expected='false true true true' got='Runtime Error: Traceback (most recent call last):\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_acfl0q1e/code.py\", line 52, in <module>\\n    result = addAndSearchWord(data)\\n             ^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_ac'"
+    },
+    {
+      "title": "Binary Tree Level Order Traversal",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2; input='3 9 20 null null 15 7' expected='3\\n9 20\\n15 7' got=\"['3', '9 20', '15 7']\""
+    },
+    {
+      "title": "Binary Tree Level Order Traversal",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2; input='3 9 20 null null 15 7' expected='3\\n9 20\\n15 7' got=\"['3', '9 20', '15 7']\""
+    },
+    {
+      "title": "Clone Graph",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=runtime_error passed=0/2; input='2 1 4 1 3 2 4 3 4 2' expected='2 1 4 1 3 2 4 3 4 2' got='Runtime Error: undefined:1\\n2 1 4 1 3 2 4 3 4 2\\n  ^\\n\\nSyntaxError: Unexpected number in JSON at position 2\\n    at JSON.parse (<anonymous>)\\n    at cloneGraph (/private/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_clw8kivf/code.js:3:32)\\n    at Interface.<anonymous> (/private/var/folders/3y'"
+    },
+    {
+      "title": "Clone Graph",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2; input='2 1 4 1 3 2 4 3 4 2' expected='2 1 4 1 3 2 4 3 4 2' got='Runtime Error: Traceback (most recent call last):\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_v15rppih/code.py\", line 29, in <module>\\n    result = cloneGraph(data)\\n             ^^^^^^^^^^^^^^^^\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_v15rppih/code.'"
+    },
+    {
+      "title": "Clone Graph",
+      "approach": "Optimal Approach",
+      "language": "python",
+      "reason": "status=runtime_error passed=0/2; input='2 1 4 1 3 2 4 3 4 2' expected='2 1 4 1 3 2 4 3 4 2' got='Runtime Error: Traceback (most recent call last):\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_pofvw6ey/code.py\", line 29, in <module>\\n    result = cloneGraph(data)\\n             ^^^^^^^^^^^^^^^^\\n  File \"/var/folders/3y/wrw6r_z174ldksxd2j07043c0000gn/T/ifelse_run_pofvw6ey/code.'"
+    },
+    {
+      "title": "Combination Sum",
+      "approach": "Brute Force",
+      "language": "python",
+      "reason": "status=wrong_answer passed=0/2; input='2 3 6 7\\n7' expected='2 2 3\\n7' got=\"['2 2 3', '7']\""
+    },
+    {
+      "title": "Count of Smaller Numbers After Self",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2; input='' expected='[]' got='[ 0 ]'"
+    },
+    {
+      "title": "Course Schedule",
+      "approach": "Brute Force",
+      "language": "javascript",
+      "reason": "status=wrong_answer passed=1/2; input='2\\n1 0 0 1' expected='false' got='true'"
+    }
+  ]
+}

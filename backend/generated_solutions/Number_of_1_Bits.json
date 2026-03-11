@@ -1,0 +1,32 @@
+{
+  "pattern_recognition": "Bit Manipulation, as the problem involves analyzing the binary representation of a number to count specific bits (1s). This signals that we can use techniques that directly manipulate bits for efficiency.",
+  "approaches": [
+    {
+      "title": "Brute Force",
+      "intuition": "Convert the integer to its binary representation and count the number of 1s by iterating through each bit.",
+      "algorithm": "1. Convert the integer to binary. 2. Initialize a counter to 0. 3. Iterate through each character in the binary string. 4. Increment the counter for each '1' found. 5. Return the counter.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public int hammingWeight(int n) {\n        String binaryString = Integer.toBinaryString(n);\n        int count = 0;\n        for (char bit : binaryString.toCharArray()) {\n            if (bit == '1') {\n                count++;\n            }\n        }\n        return count;\n    }\n}",
+      "code_python": "def hammingWeight(n: int) -> int:\n    binary_representation = bin(n)\n    count = 0\n    for bit in binary_representation:\n        if bit == '1':\n            count += 1\n    return count",
+      "code_cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    int hammingWeight(int n) {\n        string binary = bitset<32>(n).to_string();\n        int count = 0;\n        for (char bit : binary) {\n            if (bit == '1') {\n                count++;\n            }\n        }\n        return count;\n    }\n};",
+      "code_javascript": "function hammingWeight(n) {\n    let count = 0;\n    let binaryString = n.toString(2);\n    for (let char of binaryString) {\n        if (char === '1') {\n            count++;\n        }\n    }\n    return count;\n}",
+      "code_go": "func hammingWeight(n int) int {\n\tbinary := strconv.FormatInt(int64(n), 2)\n\tcount := 0\n\tfor _, bit := range binary {\n\t\tif bit == '1' {\n\t\t\tcount++\n\t\t}\n\t}\n\treturn count\n}",
+      "code_csharp": "public class Solution {\n    public int hammingWeight(int n) {\n        string binary = Convert.ToString(n, 2);\n        int count = 0;\n        foreach (char bit in binary) {\n            if (bit == '1') {\n                count++;\n            }\n        }\n        return count;\n    }\n}"
+    },
+    {
+      "title": "Optimal Approach",
+      "intuition": "Use bit manipulation to count the number of 1 bits without converting to a string. This can be achieved using the property that n & (n - 1) removes the lowest set bit.",
+      "algorithm": "1. Initialize a counter to 0. 2. While n is greater than 0, do the following: a. Increment the counter. b. Update n to n & (n - 1). 3. Return the counter.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public int hammingWeight(int n) {\n        int count = 0;\n        while (n > 0) {\n            count++;\n            n &= (n - 1);\n        }\n        return count;\n    }\n}",
+      "code_python": "def hammingWeight(n: int) -> int:\n    count = 0\n    while n > 0:\n        count += 1\n        n &= (n - 1)\n    return count",
+      "code_cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    int hammingWeight(int n) {\n        int count = 0;\n        while (n > 0) {\n            count++;\n            n = n & (n - 1);\n        }\n        return count;\n    }\n};",
+      "code_javascript": "function hammingWeight(n) {\n    let count = 0;\n    while (n > 0) {\n        count++;\n        n &= (n - 1);\n    }\n    return count;\n}",
+      "code_go": "func hammingWeight(n int) int {\n\tcount := 0\n\tfor n > 0 {\n\t\tcount++\n\t\tn = n & (n - 1)\n\t}\n\treturn count\n}",
+      "code_csharp": "public class Solution {\n    public int hammingWeight(int n) {\n        int count = 0;\n        while (n > 0) {\n            count++;\n            n &= (n - 1);\n        }\n        return count;\n    }\n}"
+    }
+  ],
+  "dry_run": "Let's take n = 13 as an example. In binary, 13 is represented as 1101. For the brute force approach, we convert 13 to '1101' and count the 1s: 1 + 1 + 0 + 1 = 3. For the optimal approach, we start with n = 13, counter = 0. First iteration: counter = 1, n becomes 12 (1100). Second iteration: counter = 2, n becomes 8 (1000). Third iteration: counter = 3, n becomes 0 (0000). We stop here and return the counter, which is 3.",
+  "edge_cases": "1. Input of 0 should return 0 since there are no 1 bits. 2. Input of 1 should return 1 since there is one 1 bit. 3. Large inputs like 2^31 - 1 should be handled correctly. 4. Negative inputs are not applicable as the problem states a positive integer.",
+  "common_pitfalls": "1. Forgetting to handle the case of 0, which should return 0. 2. Using string conversion without considering performance implications for large numbers. 3. Misunderstanding the bit manipulation technique and incorrectly counting bits."
+}

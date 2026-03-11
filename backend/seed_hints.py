@@ -1,5 +1,5 @@
 """
-Problem-specific hints (LeetCode-style progressive hints).
+Problem-specific hints ( progressive hints).
 Keys are problem titles; values are lists of hints shown in order.
 """
 

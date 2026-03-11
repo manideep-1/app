@@ -1,0 +1,32 @@
+{
+  "pattern_recognition": "This problem falls under the category of 'Array Manipulation' and 'Hashing'. The key signal is the need to identify duplicates within an array, which often suggests the use of a hash set or similar data structure for efficient lookups.",
+  "approaches": [
+    {
+      "title": "Brute Force",
+      "intuition": "Check every pair of elements to see if any two are the same. This is straightforward but inefficient.",
+      "algorithm": "Iterate through each element and compare it with every other element.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public boolean containsDuplicate(int[] nums) {\n        for (int i = 0; i < nums.length; i++) {\n            for (int j = i + 1; j < nums.length; j++) {\n                if (nums[i] == nums[j]) {\n                    return true;\n                }\n            }\n        }\n        return false;\n    }\n}",
+      "code_python": "from typing import List\n\ndef containsDuplicate(nums: List[int]) -> bool:\n    for i in range(len(nums)):\n        for j in range(i + 1, len(nums)):\n            if nums[i] == nums[j]:\n                return True\n    return False",
+      "code_cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool containsDuplicate(const vector<int>& nums) {\n        for (size_t i = 0; i < nums.size(); ++i) {\n            for (size_t j = i + 1; j < nums.size(); ++j) {\n                if (nums[i] == nums[j]) {\n                    return true;\n                }\n            }\n        }\n        return false;\n    }\n};",
+      "code_javascript": "function containsDuplicate(nums) {\n    for (let i = 0; i < nums.length; i++) {\n        for (let j = i + 1; j < nums.length; j++) {\n            if (nums[i] === nums[j]) {\n                return true;\n            }\n        }\n    }\n    return false;\n}",
+      "code_go": "func containsDuplicate(nums []int) bool {\n\tfor i := 0; i < len(nums); i++ {\n\t\tfor j := i + 1; j < len(nums); j++ {\n\t\t\tif nums[i] == nums[j] {\n\t\t\t\treturn true\n\t\t\t}\n\t\t}\n\t}\n\treturn false\n}",
+      "code_csharp": "public class Solution {\n    public bool containsDuplicate(int[] nums) {\n        for (int i = 0; i < nums.Length; i++) {\n            for (int j = i + 1; j < nums.Length; j++) {\n                if (nums[i] == nums[j]) {\n                    return true;\n                }\n            }\n        }\n        return false;\n    }\n}"
+    },
+    {
+      "title": "Optimal Approach",
+      "intuition": "Utilize a hash set to track seen numbers. If a number is found in the set, it means a duplicate exists.",
+      "algorithm": "Iterate through the array, adding each number to a hash set and checking for existence.",
+      "complexity": "See approach.",
+      "code_java": "class Solution {\n    public boolean containsDuplicate(int[] nums) {\n        HashSet<Integer> seen = new HashSet<>();\n        for (int num : nums) {\n            if (seen.contains(num)) {\n                return true;\n            }\n            seen.add(num);\n        }\n        return false;\n    }\n}",
+      "code_python": "from typing import List\n\ndef containsDuplicate(nums: List[int]) -> bool:\n    seen = set()\n    for num in nums:\n        if num in seen:\n            return True\n        seen.add(num)\n    return False",
+      "code_cpp": "#include <vector>\n#include <string>\n#include <unordered_set>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool containsDuplicate(const vector<int>& nums) {\n        unordered_set<int> seen;\n        for (int num : nums) {\n            if (seen.find(num) != seen.end()) {\n                return true;\n            }\n            seen.insert(num);\n        }\n        return false;\n    }\n};",
+      "code_javascript": "function containsDuplicate(nums) {\n    const seen = new Set();\n    for (let num of nums) {\n        if (seen.has(num)) {\n            return true;\n        }\n        seen.add(num);\n    }\n    return false;\n}",
+      "code_go": "func containsDuplicate(nums []int) bool {\n    seen := make(map[int]struct{})\n    for _, num := range nums {\n        if _, exists := seen[num]; exists {\n            return true\n        }\n        seen[num] = struct{}{}\n    }\n    return false\n}",
+      "code_csharp": "public class Solution {\n    public bool containsDuplicate(int[] nums) {\n        HashSet<int> seen = new HashSet<int>();\n        foreach (int num in nums) {\n            if (seen.Contains(num)) {\n                return true;\n            }\n            seen.Add(num);\n        }\n        return false;\n    }\n}"
+    }
+  ],
+  "dry_run": "For the input [1, 2, 3, 1]: Start with an empty set. Check 1, add it to the set. Check 2, add it to the set. Check 3, add it to the set. Check 1 again, it's already in the set, so return true.",
+  "edge_cases": "An empty input should return false. A single element array should return false. An array with duplicates like [1, 1] should return true. Large inputs should be handled efficiently. Consider integer overflow if using a specific data type.",
+  "common_pitfalls": "1. Not considering the case of an empty array (should return false). 2. Using a nested loop without realizing the inefficiency for large inputs. 3. Forgetting to check for duplicates before adding to the set, leading to incorrect results."
+}

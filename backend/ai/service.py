@@ -5,11 +5,11 @@ import os
 import logging
 import hashlib
 import json
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from collections import OrderedDict
 
 from ai.prompts import PROMPTS
-from ai.safety import sanitize_for_llm, sanitize_code_for_llm, looks_like_injection, ensure_no_solution_leak
+from ai.safety import sanitize_for_llm, sanitize_code_for_llm, looks_like_injection, ensure_no_solution_leak, strip_code_blocks_from_hint
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +18,8 @@ CACHE_MAX_SIZE = 200
 _llm_cache: OrderedDict[str, str] = OrderedDict()
 AI_RESPONSE_TIMEOUT = 12  # seconds
 AI_MAX_RETRIES = 2
+CHAT_HISTORY_MAX_MESSAGES = 14
+CHAT_HISTORY_MESSAGE_MAX_CHARS = 1800
 
 
 def _get_llm_client():
@@ -81,14 +83,61 @@ def _call_llm(system: str, user_message: str, timeout: int = AI_RESPONSE_TIMEOUT
     return _fallback_response(user_message)
 
 
+def _call_llm_with_messages(
+    system: str,
+    messages: List[Dict[str, str]],
+    timeout: int = AI_RESPONSE_TIMEOUT,
+    fallback_user_message: str = "",
+) -> str:
+    """Call LLM with full conversation context (system + chat history)."""
+    client = _get_llm_client()
+    if not client:
+        return _fallback_response(fallback_user_message)
+    for attempt in range(AI_MAX_RETRIES + 1):
+        try:
+            response = client.chat.completions.create(
+                model=os.environ.get("AI_COACH_MODEL", "gpt-4o-mini"),
+                messages=[{"role": "system", "content": system[:20000]}, *messages],
+                max_tokens=1024,
+                temperature=0.35,
+                timeout=timeout,
+            )
+            text = (response.choices[0].message.content or "").strip()
+            if text:
+                return text
+        except Exception as e:
+            logger.warning("LLM call (with history) attempt %s failed: %s", attempt + 1, e)
+            if attempt == AI_MAX_RETRIES:
+                return _fallback_response(fallback_user_message, error=str(e))
+    return _fallback_response(fallback_user_message)
+
+
 def _fallback_response(user_message: str, error: Optional[str] = None) -> str:
     """When AI is unavailable or fails."""
     if error:
         return "The AI coach is temporarily unavailable. Please try again in a moment, or use the built-in hints and solution tab for guidance."
     return (
-        "AI Coach is not configured (set OPENAI_API_KEY or AI_COACH_API_KEY) or the service is busy. "
-        "Use the problem's built-in hints and the Solution tab for step-by-step guidance."
+        "AI Coach is not configured. To enable it: add OPENAI_API_KEY (or AI_COACH_API_KEY) to backend/.env "
+        "(see backend/.env.example). Then restart the backend. You can still use the problem's built-in hints and the Solution tab for guidance."
     )
+
+
+def _normalize_chat_history(chat_history: Optional[List[Dict[str, Any]]]) -> List[Dict[str, str]]:
+    """Sanitize and trim chat history for model context."""
+    normalized: List[Dict[str, str]] = []
+    for item in chat_history or []:
+        if not isinstance(item, dict):
+            continue
+        role = str(item.get("role") or "").strip().lower()
+        if role not in {"user", "assistant"}:
+            continue
+        content = sanitize_for_llm(str(item.get("content") or "")).strip()
+        if not content:
+            continue
+        normalized.append({"role": role, "content": content[:CHAT_HISTORY_MESSAGE_MAX_CHARS]})
+    if len(normalized) > CHAT_HISTORY_MAX_MESSAGES:
+        normalized = normalized[-CHAT_HISTORY_MAX_MESSAGES:]
+    return normalized
 
 
 class AICoachService:
@@ -125,6 +174,7 @@ class AICoachService:
                 return cached
         response = _call_llm(PROMPTS["system_coach"], user_msg)
         response = ensure_no_solution_leak(response, problem_title)
+        response = strip_code_blocks_from_hint(response)
         if self.use_cache:
             _set_cached(key, response)
         return response
@@ -223,6 +273,13 @@ class AICoachService:
         response = _call_llm(PROMPTS["full_solution_system"], user_msg)
         return ensure_no_solution_leak(response, problem_title)
 
+    def coaching_agent_chat(self, user_message: str) -> str:
+        """Personalized DSA / interview prep mentor: goals, diagnosis, plan, continuous coaching. No problem context."""
+        if looks_like_injection(user_message):
+            return "I'm here to help you plan your prep. What's your target timeline or which companies are you aiming for?"
+        safe_msg = sanitize_for_llm(user_message)
+        return _call_llm(PROMPTS["ai_coaching_agent_system"], safe_msg)
+
     def chat(
         self,
         problem_title: str,
@@ -249,3 +306,60 @@ class AICoachService:
         else:
             system = PROMPTS["interview_mode"].format(title=problem_title)
         return _call_llm(system, safe_msg)
+
+    def chat_unified(
+        self,
+        user_message: str,
+        problem_context: Optional[Dict[str, Any]] = None,
+        user_code: Optional[str] = None,
+        language: Optional[str] = None,
+        chat_history: Optional[List[Dict[str, Any]]] = None,
+    ) -> str:
+        """Unified coach: preparation-first mentor with optional problem context."""
+        if looks_like_injection(user_message):
+            return "I'm here to help. What would you like to work on?"
+        safe_msg = sanitize_for_llm(user_message)
+        if user_code and language:
+            safe_msg = f"[User's current code ({language}):]\n```\n{sanitize_code_for_llm(user_code)[:4000]}\n```\n\n[User question:]\n{safe_msg}"
+        continuity_rules = (
+            "Conversation continuity rules:\n"
+            "- Use prior chat turns and avoid asking the same intake questions repeatedly.\n"
+            "- If the user already shared experience, timeline, target company, or daily hours, do not ask them again.\n"
+            "- When enough info is available, give a concrete plan immediately and ask at most one focused follow-up.\n"
+            "- Keep responses practical and concise."
+        )
+        prep_focus_rules = (
+            "Preparation focus rules:\n"
+            "- Default to interview preparation guidance: planning, prioritization, practice sequencing, and mock strategy.\n"
+            "- Provide actionable outputs (day-by-day plan, weekly goals, and measurable checkpoints) when user asks for prep.\n"
+            "- If user asks about a specific coding problem, guide with approach/debugging first; share full solution only when explicitly requested."
+        )
+        if problem_context:
+            title = (problem_context.get("title") or "this problem").strip()
+            description = (problem_context.get("description") or "").strip()[:8000]
+            examples = (problem_context.get("examples_text") or problem_context.get("examples") or "").strip()[:2000]
+            difficulty = problem_context.get("difficulty") or "medium"
+            tags_list = problem_context.get("tags") or []
+            tags_str = ", ".join(tags_list[:10]) if tags_list else "N/A"
+            system = PROMPTS["chat_system_with_problem"].format(
+                title=title,
+                difficulty=difficulty,
+                tags=tags_str,
+                description=description or "No description.",
+                examples=examples or "No examples.",
+            )
+            system = system + "\n\n" + prep_focus_rules + "\n\n" + continuity_rules
+        else:
+            system = PROMPTS["ai_coaching_agent_system"] + "\n\n" + prep_focus_rules + "\n\n" + continuity_rules
+
+        messages = _normalize_chat_history(chat_history)
+        if messages:
+            if messages[-1]["role"] == "user":
+                # Replace stored raw latest user text with enriched message (can include code context).
+                messages[-1] = {"role": "user", "content": safe_msg[:16000]}
+            else:
+                messages.append({"role": "user", "content": safe_msg[:16000]})
+        else:
+            messages = [{"role": "user", "content": safe_msg[:16000]}]
+
+        return _call_llm_with_messages(system, messages, fallback_user_message=safe_msg)

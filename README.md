@@ -1,6 +1,6 @@
-# ifelse - Coding Interview Platform 🚀
+# If Else – Coding Interview Platform
 
-A production-ready coding interview practice platform built with **React** + **FastAPI** + **MongoDB**, featuring real-time code execution, progress tracking, and a vibrant UI.
+A coding interview practice platform built with **React** + **FastAPI** + **MongoDB**. Practice curated algorithm problems with real-time code execution, built-in hints and solutions, multiple solution approaches (brute force, optimal), and **If Else AI** for progressive hints, code review, and debug help.
 
 ## 🎯 Phase 1 - Core MVP Features (COMPLETED)
 
@@ -13,7 +13,9 @@ A production-ready coding interview practice platform built with **React** + **F
 - Password hashing with bcrypt
 
 #### 📝 Problem Management
-- 5+ curated coding problems (Easy, Medium, Hard)
+- Curated coding problems (Easy, Medium, Hard) organized by topic
+- Multiple solution approaches per problem (e.g. brute force, optimal) with code in Python, JavaScript, Java, C++, C
+- Built-in hints and solution tab
 - Detailed problem descriptions with examples
 - Test cases (visible and hidden)
 - Tags and company associations
@@ -151,12 +153,15 @@ yarn start
 
 3. **Environment Variables**
 
-Backend (`.env` in `backend/`). **Required**: `MONGO_URL`, `DB_NAME`. Optional: `JWT_SECRET`, `CORS_ORIGINS`, `GOOGLE_CLIENT_ID`, SMTP vars for email OTP.
+Backend (`.env` in `backend/`). **Required**: `MONGO_URL`, `DB_NAME`. Optional: `JWT_SECRET`, `CORS_ORIGINS`, `GOOGLE_CLIENT_ID`, SMTP vars for email OTP, **AI Coach**: `OPENAI_API_KEY`.
 ```env
 MONGO_URL=mongodb://localhost:27017
 DB_NAME=ifelse_db
 JWT_SECRET=your-super-secret-jwt-key-change-in-production
 CORS_ORIGINS=*
+
+# Optional: AI Coach (progressive hints, code review, debug help). Get a key from https://platform.openai.com/api-keys
+# OPENAI_API_KEY=sk-...
 ```
 
 Frontend (`.env` in `frontend/`). For local dev, frontend uses `http://localhost:8000` when hostname is localhost.
@@ -236,11 +241,10 @@ Password: demo123
 
 ## 🔮 Phase 2 - Advanced Features (Planned)
 
-### 🤖 AI Integration (OpenAI GPT-5.2)
-- AI-powered hint engine
-- Code review suggestions
-- Structured JSON output
-- Context-limited prompts
+### 🤖 If Else AI
+- Progressive hints (reveal step-by-step without giving away the solution)
+- Code review and debug help
+- Context-aware prompts and safety controls
 
 ### 💳 Payment Integration (Razorpay)
 - Premium subscription tiers

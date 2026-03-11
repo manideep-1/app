@@ -1,5 +1,5 @@
 """
-LeetCode-style problem-specific starter and driver code.
+ problem-specific starter and driver code.
 Each problem has its own function signature; driver handles stdin parsing and output.
 Keys are problem titles (must match seed_problems_top100 / seed_db).
 """
@@ -91,6 +91,27 @@ rl.on('line', (line) => {
     const result = maxProduct(nums);
     console.log(result);
     rl.close();
+});""",
+    ),
+    "Continuous Subarray Sum": (
+        "def checkSubarraySum(nums, k):\n    # Return True if exists subarray of at least size 2 whose sum is multiple of k\n    pass",
+        """if __name__ == "__main__":
+    import sys
+    lines = sys.stdin.read().strip().split('\\n')
+    nums = list(map(int, lines[0].split())) if lines[0] else []
+    k = int(lines[1]) if len(lines) > 1 else 0
+    result = checkSubarraySum(nums, k)
+    print('true' if result else 'false')""",
+        "function checkSubarraySum(nums, k) {\n    // Return true if exists subarray of at least size 2 whose sum is multiple of k\n}",
+        """const readline = require('readline');
+const rl = readline.createInterface({ input: process.stdin });
+const lines = [];
+rl.on('line', (line) => lines.push(line));
+rl.on('close', () => {
+    const nums = lines[0] ? lines[0].split(' ').map(Number) : [];
+    const k = lines[1] ? parseInt(lines[1], 10) : 0;
+    const result = checkSubarraySum(nums, k);
+    console.log(result ? 'true' : 'false');
 });""",
     ),
     "Valid Palindrome": (
@@ -367,6 +388,73 @@ rl.on('close', () => {
     const target = parseInt(lines[1]);
     const result = search(nums, target);
     console.log(result);
+});""",
+    ),
+    "Find Median from Data Stream": (
+        """import heapq
+class MedianFinder:
+    def __init__(self):
+        self.lo = []  # max-heap (negated)
+        self.hi = []  # min-heap
+
+    def addNum(self, num):
+        # Add num and keep lo/hi balanced
+        pass
+
+    def findMedian(self):
+        # Return median of stream so far
+        pass""",
+        """if __name__ == "__main__":
+    import sys
+    data = sys.stdin.read().strip().split()
+    obj = MedianFinder()
+    out = []
+    i = 0
+    while i < len(data):
+        if data[i] == "addNum":
+            i += 1
+            num = int(data[i])
+            obj.addNum(num)
+            i += 1
+        elif data[i] == "findMedian":
+            out.append(str(obj.findMedian()))
+            i += 1
+        else:
+            i += 1
+    print(" ".join(out))""",
+        """class MedianFinder {
+  constructor() {
+    this.lo = [];
+    this.hi = [];
+  }
+
+  addNum(num) {
+    // Add num and keep lo/hi balanced
+  }
+
+  findMedian() {
+    // Return median of stream so far
+  }
+}""",
+        """const readline = require('readline');
+const rl = readline.createInterface({ input: process.stdin });
+rl.on('line', (line) => {
+  const data = line.trim().split(/\\s+/);
+  const obj = new MedianFinder();
+  const out = [];
+  let i = 0;
+  while (i < data.length) {
+    if (data[i] === 'addNum') {
+      i++;
+      obj.addNum(parseInt(data[i]));
+      i++;
+    } else if (data[i] === 'findMedian') {
+      out.push(String(obj.findMedian()));
+      i++;
+    } else { i++; }
+  }
+  console.log(out.join(' '));
+  rl.close();
 });""",
     ),
     "Find Minimum in Rotated Sorted Array": (
@@ -837,7 +925,8 @@ rl.on('line', (line) => {
 }
 
 
-# Generic fallback for problems not in STARTERS (LeetCode-style: user implements only the function; driver handles I/O)
+# Generic fallback for problems not in STARTERS (: user implements only the function; driver handles I/O)
+# Function name "solve" is replaced with title_to_function_name(title) when returning defaults.
 DEFAULT_STARTER_PY = "def solve(data):\n    # Implement only the solution. Input is passed by the system; return result to print.\n    pass"
 DEFAULT_DRIVER_PY = """if __name__ == "__main__":
     import sys
@@ -856,8 +945,37 @@ rl.on('close', () => {
 });"""
 
 
+def title_to_function_name(title: str) -> str:
+    """Derive a problem-appropriate function name from title (e.g. 'Two Sum' -> twoSum, 'Contains Duplicate' -> containsDuplicate)."""
+    if not title or not isinstance(title, str):
+        return "solution"
+    number_word = {"2": "two", "3": "three", "4": "four", "5": "five", "6": "six", "7": "seven", "8": "eight", "9": "nine"}
+    words = ["".join(c for c in w if c.isalnum()) for w in title.strip().split()]
+    words = [w for w in words if w]
+    if not words:
+        return "solution"
+    first = words[0]
+    first_char = first[0] if first else ""
+    if len(first_char) == 1 and first_char.isdigit() and first_char in number_word:
+        lead = number_word[first_char] + first[1:]
+    else:
+        lead = first_char.lower() + (first[1:] if len(first) > 1 else "")
+    rest = "".join(w[:1].upper() + w[1:].lower() for w in words[1:]) if len(words) > 1 else ""
+    return lead + rest
+
+
 def get_starters_for_problem(title: str):
-    """Return dict with starter_code_python, driver_code_python, starter_code_javascript, driver_code_javascript."""
+    """Return dict with starter_code_* and driver_code_* for python, javascript, java, cpp, c.
+    Uses metadata-driven generator when problem is in the registry; else STARTERS or default (py/js only)."""
+    try:
+        from problem_metadata_registry import get_metadata
+        from starter_template_generator import generate_starter_and_driver
+        entry = get_metadata(title)
+        if entry is not None:
+            metadata, input_spec = entry
+            return generate_starter_and_driver(metadata, input_spec)
+    except ImportError:
+        pass
     if title in STARTERS:
         t = STARTERS[title]
         return {
@@ -866,9 +984,10 @@ def get_starters_for_problem(title: str):
             "starter_code_javascript": t[2],
             "driver_code_javascript": t[3],
         }
+    fn_name = title_to_function_name(title)
     return {
-        "starter_code_python": DEFAULT_STARTER_PY,
-        "driver_code_python": DEFAULT_DRIVER_PY,
-        "starter_code_javascript": DEFAULT_STARTER_JS,
-        "driver_code_javascript": DEFAULT_DRIVER_JS,
+        "starter_code_python": DEFAULT_STARTER_PY.replace("solve", fn_name),
+        "driver_code_python": DEFAULT_DRIVER_PY.replace("solve", fn_name),
+        "starter_code_javascript": DEFAULT_STARTER_JS.replace("solve", fn_name),
+        "driver_code_javascript": DEFAULT_DRIVER_JS.replace("solve", fn_name),
     }

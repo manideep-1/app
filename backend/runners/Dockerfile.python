@@ -1,0 +1,12 @@
+# Python 3.11 runner - no host dependency
+FROM python:3.11-slim
+
+RUN useradd -m -u 10000 -s /bin/sh runner
+WORKDIR /workspace
+
+# Ensure python is on PATH (slim image already has it)
+RUN python3 --version && pip --version
+
+USER runner
+# Code is mounted at /workspace/code.py; stdin = input, stdout = output
+CMD ["python3", "/workspace/code.py"]

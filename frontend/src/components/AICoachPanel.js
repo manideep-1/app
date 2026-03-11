@@ -1,11 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '@/utils/api';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import IfElseIcon from '@/components/IfElseIcon';
-import { Lightbulb, MessageSquare, Bug, BookOpen, Code, ChevronDown, ChevronRight, ChevronUp, Loader2, ThumbsUp, ThumbsDown, X } from 'lucide-react';
+import { Lightbulb, MessageSquare, Bug, BookOpen, Code, ChevronDown, ChevronRight, ChevronUp, Loader2, PanelLeft, PanelBottom, PanelRight, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const MODES = [
   { id: 'hint', label: 'Hint', icon: Lightbulb },
@@ -15,7 +21,7 @@ const MODES = [
   { id: 'chat', label: 'Chat', icon: MessageSquare },
 ];
 
-export default function AICoachPanel({ problemId, problem, code, language, submissionStatus, failingTestInfo, onClose }) {
+export default function AICoachPanel({ problemId, problem, code, language, submissionStatus, failingTestInfo, onClose, panelPosition = 'right', onMoveTo }) {
   const [mode, setMode] = useState('hint');
   const [hintLevel, setHintLevel] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -26,20 +32,18 @@ export default function AICoachPanel({ problemId, problem, code, language, submi
 
   // Hint-mode state (progressive hints)
   const [aiHintContent, setAiHintContent] = useState({});
-  const [hint1Open, setHint1Open] = useState(true);
-  const [hint2Open, setHint2Open] = useState(false);
-  const [hint3Open, setHint3Open] = useState(false);
   const [solutionOpen, setSolutionOpen] = useState(false);
   const [codeSnippetsOpen, setCodeSnippetsOpen] = useState(false);
   const [optionalInstructions, setOptionalInstructions] = useState('');
   const [solutionLoading, setSolutionLoading] = useState(false);
   const [loadingLevel, setLoadingLevel] = useState(null);
-  const autoHintRequested = useRef(false);
 
   const hints = problem?.hints ?? [];
-  const hint1Text = aiHintContent[1] ?? hints[0] ?? null;
-  const hint2Text = aiHintContent[2] ?? hints[1] ?? null;
-  const hint3Text = aiHintContent[3] ?? hints[2] ?? null;
+  // Code-based hint: AI-generated hint that uses the user's current code (separate from problem hints)
+  const [codeBasedHintText, setCodeBasedHintText] = useState('');
+  const [codeBasedHintLoading, setCodeBasedHintLoading] = useState(false);
+  const [codeBasedHintOpen, setCodeBasedHintOpen] = useState(false);
+  const [problemHintsOpen, setProblemHintsOpen] = useState({ 0: true });
 
   const send = async (payload, endpoint) => {
     if (!problemId) return;
@@ -77,6 +81,27 @@ export default function AICoachPanel({ problemId, problem, code, language, submi
     } finally {
       setLoading(false);
       setLoadingLevel(null);
+    }
+  };
+
+  const requestCodeBasedHint = async () => {
+    if (!problemId) return;
+    setCodeBasedHintLoading(true);
+    setCodeBasedHintOpen(true);
+    try {
+      const { data } = await api.post('/coach/hint', {
+        problem_id: problemId,
+        code: code || '',
+        hint_level: 1,
+        ...(optionalInstructions.trim() ? { extra_instructions: optionalInstructions.trim() } : {}),
+      });
+      const text = data.text ?? data.feedback ?? '';
+      setCodeBasedHintText(text);
+    } catch (err) {
+      const msg = err.response?.data?.detail || 'Request failed';
+      toast.error(typeof msg === 'string' ? msg : 'If Else AI request failed');
+    } finally {
+      setCodeBasedHintLoading(false);
     }
   };
 
@@ -127,19 +152,12 @@ export default function AICoachPanel({ problemId, problem, code, language, submi
 
   const handleRetry = () => {
     if (mode === 'hint') {
-      if (hint1Open && !hint1Text) requestHint(1);
-      else if (hint2Open && !hint2Text) requestHint(2);
-      else if (hint3Open && !hint3Text) requestHint(3);
-      else requestHint(hintLevel);
+      requestCodeBasedHint();
     } else {
       if (mode === 'code_review') handleCodeReview();
       else if (mode === 'debug') handleDebug();
       else if (mode === 'concept') handleConcept();
     }
-  };
-
-  const handleRevealHint = (level, isOpen) => {
-    if (isOpen && !aiHintContent[level] && !hints[level - 1]) requestHint(level);
   };
 
   const handleFullSolution = () => {
@@ -175,78 +193,121 @@ export default function AICoachPanel({ problemId, problem, code, language, submi
 
   useEffect(() => {
     setAiHintContent({});
+    setCodeBasedHintText('');
+    setCodeBasedHintOpen(false);
+    setProblemHintsOpen({ 0: true });
     setFullSolutionText('');
     setResponse('');
-    setHint1Open(true);
-    setHint2Open(false);
-    setHint3Open(false);
     setSolutionOpen(false);
     setCodeSnippetsOpen(false);
     setShowSolutionConfirm(false);
-    autoHintRequested.current = false;
   }, [problemId]);
 
-  useEffect(() => {
-    if (!problemId || hints[0] || autoHintRequested.current) return;
-    autoHintRequested.current = true;
-    requestHint(1);
-  }, [problemId]);
+  /** Parse inline **bold** and return React nodes */
+  const parseBold = (s) => {
+    if (typeof s !== 'string') return s;
+    const parts = s.split(/(\*\*[^*]+\*\*)/g);
+    return parts.map((part, i) =>
+      part.startsWith('**') && part.endsWith('**')
+        ? React.createElement('strong', { key: i, className: 'font-semibold text-foreground' }, part.slice(2, -2))
+        : part
+    );
+  };
 
-  const HintRow = ({ level, open, onOpenChange, label, content }) => (
-    <Collapsible open={open} onOpenChange={(o) => { onOpenChange(o); handleRevealHint(level, o); }}>
-      <CollapsibleTrigger asChild>
-        <button
-          type="button"
-          className="w-full flex items-center justify-between py-2.5 px-3 rounded-md hover:bg-muted/30 text-left text-sm font-medium"
-        >
-          <span className="flex items-center gap-2">
-            {open ? <ChevronDown className="w-4 h-4 text-muted-foreground" /> : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
-            {label}
-          </span>
-          {!open && !content && <span className="text-xs text-muted-foreground">Click to reveal</span>}
-        </button>
-      </CollapsibleTrigger>
-      <CollapsibleContent>
-        <div className="px-3 pb-3 text-sm text-muted-foreground whitespace-pre-wrap border-b border-border/30">
-          {loading && loadingLevel === level ? (
-            <span className="inline-flex items-center gap-2">
-              <Loader2 className="w-4 h-4 animate-spin" /> Loading…
-            </span>
-          ) : (
-            content || 'No hint available for this level.'
-          )}
-        </div>
-      </CollapsibleContent>
-    </Collapsible>
-  );
+  /** Format code review response: sections, bold headers, bullet lists */
+  const formatCodeReviewResponse = (text) => {
+    if (!text || typeof text !== 'string') return null;
+    const lines = text.split('\n');
+    const elements = [];
+    let listItems = [];
+    const flushList = () => {
+      if (listItems.length > 0) {
+        elements.push(
+          React.createElement('ul', { key: elements.length, className: 'list-disc pl-4 mt-1 space-y-0.5 text-muted-foreground' }, ...listItems)
+        );
+        listItems = [];
+      }
+    };
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const trimmed = line.trim();
+      if (trimmed.startsWith('- ')) {
+        listItems.push(
+          React.createElement('li', { key: listItems.length }, parseBold(trimmed.slice(2)))
+        );
+      } else if (trimmed === '') {
+        flushList();
+      } else {
+        flushList();
+        const isSectionHeader = trimmed.startsWith('**') && trimmed.includes('**');
+        elements.push(
+          React.createElement(
+            'p',
+            {
+              key: elements.length,
+              className: isSectionHeader ? 'font-semibold text-foreground mt-3 first:mt-0' : 'text-muted-foreground mt-1',
+            },
+            parseBold(trimmed)
+          )
+        );
+      }
+    }
+    flushList();
+    return elements;
+  };
 
-  const renderResponse = (text) => {
+  const renderResponse = (text, useCodeReviewFormat = false) => {
     if (!text) return null;
+    const content =
+      useCodeReviewFormat && mode === 'code_review'
+        ? formatCodeReviewResponse(text)
+        : text;
     return (
-      <div className="mt-3 p-3 rounded-lg bg-muted/30 border border-border/50 text-sm whitespace-pre-wrap text-foreground/90">
-        {text}
+      <div className="mt-3 p-3 rounded-lg bg-muted/30 border border-border/50 text-sm text-foreground/90">
+        {useCodeReviewFormat && mode === 'code_review' ? (
+          <div className="space-y-0 first:mt-0">{content}</div>
+        ) : (
+          <span className="whitespace-pre-wrap">{content}</span>
+        )}
       </div>
     );
   };
 
   return (
     <div className="flex flex-col h-full min-h-0">
-      {/* Header: Hints | If Else AI + feedback + close */}
+      {/* Header: If Else AI + Move to + close */}
       <div className="shrink-0 px-3 py-2.5 border-b border-border/50 flex items-center justify-between">
-        <span className="text-sm font-semibold text-foreground">Hints</span>
-        <span className="flex items-center gap-2">
-          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <span className="w-6 h-6 rounded-md bg-gradient-to-br from-primary to-secondary flex items-center justify-center shrink-0">
-              <IfElseIcon className="w-3.5 h-3.5 text-white" />
-            </span>
-            If Else AI
+        <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <span className="w-6 h-6 rounded-md bg-primary flex items-center justify-center shrink-0">
+            <IfElseIcon className="w-3.5 h-3.5 text-white" />
           </span>
-          <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground" title="Helpful">
-            <ThumbsUp className="w-3.5 h-3.5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground" title="Not helpful">
-            <ThumbsDown className="w-3.5 h-3.5" />
-          </Button>
+          If Else AI
+        </span>
+        <span className="flex items-center gap-1">
+          {typeof onMoveTo === 'function' && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground hover:text-foreground gap-1.5">
+                  Move to:
+                  <ChevronDown className="w-3.5 h-3.5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="min-w-[10rem]">
+                <DropdownMenuItem onClick={() => onMoveTo('left')} className={panelPosition === 'left' ? 'bg-primary/10 text-primary' : ''}>
+                  <PanelLeft className="w-4 h-4 mr-2" />
+                  Left Panel
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onMoveTo('console')} className={panelPosition === 'console' ? 'bg-primary/10 text-primary' : ''}>
+                  <PanelBottom className="w-4 h-4 mr-2" />
+                  Console
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onMoveTo('right')} className={panelPosition === 'right' ? 'bg-primary/10 text-primary' : ''}>
+                  <PanelRight className="w-4 h-4 mr-2" />
+                  Right Panel
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
           {typeof onClose === 'function' && (
             <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground" onClick={onClose} title="Close panel" aria-label="Close">
               <X className="w-4 h-4" />
@@ -260,7 +321,7 @@ export default function AICoachPanel({ problemId, problem, code, language, submi
         {MODES.map((m) => (
           <Button
             key={m.id}
-            variant={mode === m.id ? 'secondary' : 'ghost'}
+            variant={mode === m.id ? 'default' : 'ghost'}
             size="sm"
             className="h-8 text-xs"
             onClick={() => { setMode(m.id); setResponse(''); setShowSolutionConfirm(false); }}
@@ -281,11 +342,64 @@ export default function AICoachPanel({ problemId, problem, code, language, submi
                 Hints
               </span>
             </div>
+            {/* Problem hints (same as left panel) */}
             <div className="space-y-0">
-              <HintRow level={1} open={hint1Open} onOpenChange={setHint1Open} label="Hint 1" content={hint1Text} />
-              <HintRow level={2} open={hint2Open} onOpenChange={setHint2Open} label="Hint 2" content={hint2Text} />
-              <HintRow level={3} open={hint3Open} onOpenChange={setHint3Open} label="Hint 3" content={hint3Text} />
+              {hints.map((hint, i) => (
+                <Collapsible
+                  key={i}
+                  open={!!problemHintsOpen[i]}
+                  onOpenChange={(open) => setProblemHintsOpen((prev) => ({ ...prev, [i]: open }))}
+                >
+                  <CollapsibleTrigger asChild>
+                    <button
+                      type="button"
+                      className="w-full flex items-center justify-between py-2.5 px-3 rounded-md hover:bg-muted/30 text-left text-sm font-medium"
+                    >
+                      <span className="flex items-center gap-2">
+                        {problemHintsOpen[i] ? <ChevronDown className="w-4 h-4 text-muted-foreground" /> : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
+                        Hint {i + 1}
+                      </span>
+                    </button>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <div className="px-3 pb-3 text-sm text-muted-foreground whitespace-pre-wrap border-b border-border/30">
+                      {hint}
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+              ))}
             </div>
+            {/* Hints based on your code (AI-generated using current code) */}
+            <Collapsible open={codeBasedHintOpen} onOpenChange={setCodeBasedHintOpen} className="mt-1">
+              <CollapsibleTrigger asChild>
+                <button
+                  type="button"
+                  className="w-full flex items-center justify-between py-2.5 px-3 rounded-md hover:bg-muted/30 text-left text-sm font-medium"
+                >
+                  <span className="flex items-center gap-2">
+                    {codeBasedHintOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                    Hints based on your code
+                  </span>
+                  {!codeBasedHintOpen && !codeBasedHintText && <span className="text-xs text-muted-foreground">Click to reveal</span>}
+                </button>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div className="px-3 pb-3 border-b border-border/30 space-y-2">
+                  {codeBasedHintLoading ? (
+                    <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+                      <Loader2 className="w-4 h-4 animate-spin" /> Loading…
+                    </span>
+                  ) : codeBasedHintText ? (
+                    <p className="text-sm text-muted-foreground whitespace-pre-wrap">{codeBasedHintText}</p>
+                  ) : (
+                    <Button size="sm" variant="outline" className="gap-2" onClick={requestCodeBasedHint}>
+                      <Lightbulb className="w-3.5 h-3.5" />
+                      Get hints based on your code
+                    </Button>
+                  )}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
             <Collapsible open={solutionOpen} onOpenChange={setSolutionOpen} className="mt-1">
               <CollapsibleTrigger asChild>
                 <button
@@ -353,7 +467,7 @@ export default function AICoachPanel({ problemId, problem, code, language, submi
                 className="min-h-[52px] text-xs resize-none bg-muted/20 border-border/50"
                 maxLength={500}
               />
-              <Button size="sm" variant="secondary" className="w-full gap-2" onClick={handleRetry} disabled={loading}>
+              <Button size="sm" variant="default" className="w-full gap-2" onClick={handleRetry} disabled={loading}>
                 {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                 Retry
               </Button>
@@ -368,7 +482,7 @@ export default function AICoachPanel({ problemId, problem, code, language, submi
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Code className="w-4 h-4" />}
               Review my code
             </Button>
-            {renderResponse(response)}
+            {renderResponse(response, true)}
           </>
         )}
 
@@ -404,7 +518,7 @@ export default function AICoachPanel({ problemId, problem, code, language, submi
               className="min-h-[80px] text-sm resize-none"
               maxLength={2000}
             />
-            <Button size="sm" onClick={handleChat} disabled={loading || !chatInput.trim()} className="mt-2 gap-2">
+            <Button size="sm" onClick={handleChat} disabled={loading || !chatInput.trim()} className="mt-2 gap-2 shrink-0 w-fit">
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <MessageSquare className="w-4 h-4" />}
               Send
             </Button>

@@ -2,7 +2,20 @@
 Problem-specific solutions: Brute Force and Optimal (and other) approaches.
 Keys are problem titles; value is list of { "title": str, "content": str }.
 """
+import json
 import re
+from pathlib import Path
+from typing import Optional
+
+from models import ProblemFunctionMetadata, ProblemFunctionParam, SUPPORTED_LANGUAGES
+from signature_contract import (
+    align_solution_code_to_metadata,
+    extract_signature,
+    LANG_CODE_KEY,
+    REQUIRED_SIGNATURE_LANGS,
+    metadata_signature,
+    signatures_match,
+)
 
 SOLUTIONS = {
     "Two Sum": [
@@ -417,7 +430,7 @@ SOLUTIONS = {
     ],
 }
 
-# Rich format: Prerequisites, Intuition, Algorithm, Code, Complexity, Common Pitfalls (e.g. NeetCode-style)
+# Rich format: Prerequisites, Intuition, Algorithm, Code, Complexity, Common Pitfalls 
 RICH_SOLUTIONS = {
     "Min Stack": {
         "prerequisites": [
@@ -620,7 +633,7 @@ RICH_SOLUTIONS = {
   return [];
 }""",
                 "code_java": "public int[] twoSum(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++)\n        for (int j = i + 1; j < nums.length; j++)\n            if (nums[i] + nums[j] == target) return new int[]{i, j};\n    return new int[]{};\n}",
-                "code_cpp": "vector<int> twoSum(vector<int>& nums, int target) {\n    for (int i = 0; i < (int)nums.size(); i++)\n        for (int j = i + 1; j < (int)nums.size(); j++)\n            if (nums[i] + nums[j] == target) return {i, j};\n    return {};\n}",
+                "code_cpp": "vector<int> twoSum(const vector<int>& nums, int target) {\n    for (int i = 0; i < (int)nums.size(); i++)\n        for (int j = i + 1; j < (int)nums.size(); j++)\n            if (nums[i] + nums[j] == target) return {i, j};\n    return {};\n}",
                 "complexity": "Time complexity: O(n²) - two nested loops.\nSpace complexity: O(1).",
             },
             {
@@ -645,11 +658,20 @@ RICH_SOLUTIONS = {
   return [];
 }""",
                 "code_java": "public int[] twoSum(int[] nums, int target) {\n    Map<Integer, Integer> seen = new HashMap<>();\n    for (int i = 0; i < nums.length; i++) {\n        int need = target - nums[i];\n        if (seen.containsKey(need)) return new int[]{seen.get(need), i};\n        seen.put(nums[i], i);\n    }\n    return new int[]{};\n}",
-                "code_cpp": "vector<int> twoSum(vector<int>& nums, int target) {\n    unordered_map<int, int> seen;\n    for (int i = 0; i < (int)nums.size(); i++) {\n        int need = target - nums[i];\n        if (seen.count(need)) return {seen[need], i};\n        seen[nums[i]] = i;\n    }\n    return {};\n}",
+                "code_cpp": "vector<int> twoSum(const vector<int>& nums, int target) {\n    unordered_map<int, int> seen;\n    for (int i = 0; i < (int)nums.size(); i++) {\n        int need = target - nums[i];\n        if (seen.count(need)) return {seen[need], i};\n        seen[nums[i]] = i;\n    }\n    return {};\n}",
                 "complexity": "Time complexity: O(n) - single pass.\nSpace complexity: O(n) for the hash map.",
             },
         ],
         "common_pitfalls": "Using the same element twice: Ensure j starts at i+1 in brute force, and in the hash map approach you only look at indices before the current one.\n\nDuplicate values: The hash map approach overwrites the index for the same value; that is fine because we only need one valid pair.",
+        "pattern_recognition": "Category: Hash Map / Two Sum (complement pattern).\n\nWhy: We need two indices whose values sum to target — i.e. for each value we look for (target - value). That \"lookup\" suggests a hash structure for O(1) check.\n\nSignals: \"find two numbers that sum to X\", \"return indices\", \"exactly one solution\" — classic two sum. If array were sorted, two pointers would also apply; unsorted → hash map.",
+        "dry_run": "Sample: nums = [2, 7, 11, 15], target = 9.\n\nOptimal (hash map):\n- i=0, n=2, need=7; 7 not in map → seen = {2: 0}\n- i=1, n=7, need=2; 2 in map at index 0 → return [0, 1].\n\nBrute: (0,1) → 2+7=9 ✓ return [0, 1].",
+        "edge_cases": "Empty input: problem states 2 <= n; no need to handle empty.\nSingle element: n >= 2 per constraints.\nDuplicates: hash map overwrites index; we only need one pair — correct index is the most recent, and we check (target - current) before inserting, so we still find a valid pair.\nLarge input: O(n) time and O(n) space avoid TLE.\nNegative values: no overflow; sum and complement work the same.",
+        "interview_tips": "Explain: \"This is a two-sum style problem; we can brute-force all pairs in O(n²) or use a hash map to store value→index and in one pass check if (target - current) exists — O(n) time, O(n) space.\"\nFollow-ups: \"What if we need all pairs?\" — still hash map but collect pairs; \"What if array is sorted?\" — two pointers, O(1) space. \"What if no solution?\" — return empty or throw per problem.",
+        "pitfalls": [
+            {"title": "Using the same element twice", "wrong_example": "if nums[i] + nums[j] == target  # with j starting at 0", "correct_example": "for j in range(i + 1, len(nums))  # j must be after i", "warning": "Inner loop must start at i+1 so we never use the same index twice."},
+            {"title": "Returning value instead of index", "wrong_example": "return [nums[i], nums[j]]", "correct_example": "return [i, j]", "warning": "Problem asks for indices, not the values."},
+            {"title": "Hash map: checking after insert", "wrong_example": "seen[n] = i; if (target - n) in seen: ...", "correct_example": "if (target - n) in seen: return [seen[target-n], i]; seen[n] = i", "warning": "Check for complement before storing current element so we don't match self."},
+        ],
     },
     "Best Time to Buy and Sell Stock": {
         "prerequisites": [
@@ -731,26 +753,134 @@ def _is_placeholder_code(code: str) -> bool:
     )
 
 
-def _normalize_approach(approach: dict, problem_title: str = "") -> dict:
-    """Ensure approach has code_python (from code) and passes through code_* for all languages. Fills missing Java/C++/C from supplemental module. Never emits placeholder text."""
-    out = {k: v for k, v in approach.items() if k in ("title", "content", "intuition", "algorithm", "complexity")}
+def normalize_code_indent(code: str) -> str:
+    """Normalize indentation: expand tabs to 4 spaces, then strip common leading whitespace. Preserves relative indent."""
+    if code is None or not isinstance(code, str):
+        return code
+    code = code.replace("\t", "    ")
+    lines = code.splitlines()
+    min_indent = float("inf")
+    for line in lines:
+        if line.strip():
+            m = re.match(r"^(\s*)", line)
+            min_indent = min(min_indent, len(m.group(1)) if m else 0)
+    if min_indent == 0 or min_indent == float("inf"):
+        return "\n".join(lines)
+    return "\n".join(line[min_indent:] if len(line) >= min_indent else line for line in lines)
+
+
+def _brace_pretty_indent(code: str, indent_size: int = 4) -> str:
+    """Re-indent brace-based code: insert newlines after { and }, then indent each line by brace depth."""
+    if not code or not code.strip():
+        return code
+    code = code.replace("\t", "    ")
+    # Insert newline after { and before/after } so structure is one-per-line
+    code = re.sub(r"\{\s*", "{\n", code)
+    code = re.sub(r"\s*\}\s*", "\n}\n", code)  # break before and after } so closing brace gets its own line
+    lines = [ln.strip() for ln in code.splitlines() if ln.strip()]
+    if not lines:
+        return code.strip()
+    out = []
+    depth = 0
+    for line in lines:
+        opens = line.count("{")
+        closes = line.count("}")
+        # Closing brace line: indent one level less so } aligns with block start
+        if line.strip() == "}":
+            indent = max(0, depth - 1)
+        else:
+            indent = depth
+        prefix = " " * (indent * indent_size)
+        out.append(prefix + line)
+        depth += opens - closes
+        depth = max(0, depth)
+    return "\n".join(out)
+
+
+def normalize_code_indent_by_lang(code: str, code_key: str) -> str:
+    """Normalize code: expand tabs, strip common leading space; for brace-based langs also apply brace pretty-indent."""
+    if code is None or not isinstance(code, str):
+        return code
+    code = code.replace("\t", "    ")
+    # Strip common leading whitespace first
+    lines = code.splitlines()
+    min_indent = float("inf")
+    for line in lines:
+        if line.strip():
+            m = re.match(r"^(\s*)", line)
+            min_indent = min(min_indent, len(m.group(1)) if m else 0)
+    if min_indent and min_indent != float("inf"):
+        lines = [line[min_indent:] if len(line) >= min_indent else line for line in lines]
+    code = "\n".join(lines)
+    # For brace-based languages, re-indent by brace depth so minified/ugly code looks readable
+    if code_key in ("code_java", "code_javascript", "code_cpp", "code_c", "code_typescript"):
+        code = _brace_pretty_indent(code, indent_size=4)
+    return code
+
+
+def _normalize_approach(
+    approach: dict,
+    problem_title: str = "",
+    metadata: Optional[object] = None,
+    enforce_signature: bool = True,
+    metadata_from_registry: bool = False,
+) -> dict:
+    """Ensure approach has code_python (from code) and passes through code_* for supported languages. Fills missing from supplemental module. Never emits placeholder text.
+    When metadata_from_registry is True, strips code that doesn't match the registry signature. When False, keeps all merged code so solutions in all languages are shown."""
+    out = {k: v for k, v in approach.items() if k in ("title", "content", "intuition", "algorithm", "complexity", "complexity_time", "complexity_space")}
     code_python = approach.get("code_python") or approach.get("code")
     if code_python is not None and not _is_placeholder_code(code_python):
         out["code"] = code_python  # backward compat
         out["code_python"] = code_python
-    for lang in ("code_javascript", "code_java", "code_cpp", "code_c"):
+    for lang in ("code_javascript", "code_java", "code_cpp", "code_c", "code_go", "code_csharp", "code_typescript"):
         val = approach.get(lang)
         if val is not None and not _is_placeholder_code(val):
             out[lang] = val
-    # Fill missing Java/C++/C from supplemental multilang module (real code only, no placeholders)
+    # Fill missing Java/C++/C/Go/C# from supplemental multilang module (real code only, no placeholders)
     try:
         from solution_code_multilang import get_multilang
         supplemental = get_multilang(problem_title, approach.get("title") or "")
-        for lang in ("code_java", "code_cpp", "code_c"):
+        for lang in ("code_java", "code_cpp", "code_c", "code_go", "code_csharp"):
             if out.get(lang) is None and supplemental.get(lang) and not _is_placeholder_code(supplemental[lang]):
                 out[lang] = supplemental[lang]
     except ImportError:
         pass
+    for key in ("code", "code_python", "code_javascript", "code_java", "code_cpp", "code_c", "code_go", "code_csharp", "code_typescript"):
+        if key in out and out[key]:
+            out[key] = normalize_code_indent_by_lang(out[key], key)
+    # Only strip by signature when we have registry metadata; otherwise keep all merged code so all languages show.
+    if enforce_signature and metadata is not None and metadata_from_registry:
+        key_to_lang = {
+            "code_python": "python",
+            "code_javascript": "javascript",
+            "code_java": "java",
+            "code_cpp": "cpp",
+            "code_go": "go",
+            "code_csharp": "csharp",
+            "code_typescript": "typescript",
+        }
+        for code_key, lang in key_to_lang.items():
+            if out.get(code_key):
+                out[code_key] = align_solution_code_to_metadata(out[code_key], lang, metadata)
+        # Keep only signature-compatible code snippets.
+        for code_key, lang in key_to_lang.items():
+            code_val = out.get(code_key)
+            if not code_val:
+                continue
+            expected_sig = metadata_signature(metadata, lang)
+            actual_sig = extract_signature(code_val, lang)
+            if not expected_sig or not actual_sig or not signatures_match(
+                expected_sig,
+                actual_sig,
+                strict_types=True,
+                strict_param_names=False,
+            ):
+                out.pop(code_key, None)
+        # Keep legacy "code" mirror aligned to python.
+        if out.get("code_python"):
+            out["code"] = out["code_python"]
+        else:
+            out.pop("code", None)
     return out
 
 
@@ -800,22 +930,241 @@ def _simple_entry_to_rich(e: dict) -> dict:
     if code_python is not None:
         approach["code"] = code_python
         approach["code_python"] = code_python
-    for lang in ("code_javascript", "code_java", "code_cpp", "code_c"):
+    for lang in ("code_javascript", "code_java", "code_cpp", "code_c", "code_go", "code_csharp", "code_typescript"):
         if e.get(lang) is not None:
             approach[lang] = e[lang]
     approach["complexity"] = e.get("complexity") or complexity_parsed or ("See approach description." if content else "")
     return approach
 
 
-def get_solutions_for_problem(title: str):
-    """Return dict with approaches (list), optional prerequisites (list), optional common_pitfalls (str). Or None.
-    Each approach has consistent shape: title, intuition, algorithm, code/code_python/code_javascript/code_java/code_cpp/code_c, complexity."""
+def _first_non_empty(values, default=""):
+    for v in values:
+        if v and str(v).strip():
+            return str(v).strip()
+    return default
+
+
+def _infer_alignment_metadata(title: str, approaches: list) -> Optional[ProblemFunctionMetadata]:
+    """Infer a schema for alignment when explicit registry metadata is missing."""
+    try:
+        from problem_metadata_registry import get_metadata
+        entry = get_metadata(title)
+        if entry is not None:
+            return entry[0]
+    except Exception:
+        pass
+
+    signatures_by_lang = {}
+    try:
+        from seed_starters import get_starters_for_problem
+        starters = get_starters_for_problem(title) or {}
+        for lang in REQUIRED_SIGNATURE_LANGS:
+            sig = extract_signature(starters.get(f"starter_code_{lang}") or "", lang)
+            if sig:
+                signatures_by_lang[lang] = sig
+    except Exception:
+        pass
+
+    if approaches:
+        first = approaches[0] if isinstance(approaches[0], dict) else {}
+        for lang in REQUIRED_SIGNATURE_LANGS:
+            ckey = LANG_CODE_KEY[lang]
+            code = first.get(ckey) or (first.get("code") if lang == "python" else "")
+            sig = extract_signature(code or "", lang)
+            if sig and lang not in signatures_by_lang:
+                signatures_by_lang[lang] = sig
+
+    if not signatures_by_lang:
+        return None
+
+    preferred = (
+        signatures_by_lang.get("python")
+        or signatures_by_lang.get("javascript")
+        or signatures_by_lang.get("java")
+        or next(iter(signatures_by_lang.values()))
+    )
+    if preferred is None:
+        return None
+
+    param_names = [p.name for p in preferred.params]
+    return_type_by_language = {}
+    param_types_by_lang = [dict() for _ in param_names]
+
+    for lang, sig in signatures_by_lang.items():
+        if sig.return_type:
+            return_type_by_language[lang] = sig.return_type
+        for i, p in enumerate(sig.params):
+            if i >= len(param_types_by_lang):
+                break
+            if p.type:
+                param_types_by_lang[i][lang] = p.type
+
+    canonical_return = _first_non_empty(
+        [
+            return_type_by_language.get("python", ""),
+            return_type_by_language.get("java", ""),
+            return_type_by_language.get("cpp", ""),
+            "int",
+        ]
+    )
+
+    params = []
+    for i, pname in enumerate(param_names):
+        typed = param_types_by_lang[i]
+        canonical_ptype = _first_non_empty(
+            [
+                typed.get("python", ""),
+                typed.get("java", ""),
+                typed.get("cpp", ""),
+                "int",
+            ]
+        )
+        full_param_map = typed if all(lang in typed for lang in SUPPORTED_LANGUAGES) else None
+        params.append(
+            ProblemFunctionParam(
+                name=pname,
+                type=canonical_ptype,
+                type_by_language=full_param_map,
+            )
+        )
+
+    full_return_map = return_type_by_language if all(lang in return_type_by_language for lang in SUPPORTED_LANGUAGES) else None
+
+    return ProblemFunctionMetadata(
+        function_name=preferred.function_name,
+        return_type=canonical_return,
+        return_type_by_language=full_return_map,
+        parameters=params,
+    )
+
+
+# Optional: cached YouTube video ID per problem (Video Explanation section). Populate via script or YouTube API.
+YOUTUBE_VIDEO_IDS = {
+    "Two Sum": "KLlXCFG5TnA",
+    "Best Time to Buy and Sell Stock": "1pkOgXD63yU",
+    "Contains Duplicate": "3OamzN90kPg",
+    "Valid Anagram": "9UtInBqnCgA",
+    "Valid Palindrome": "jJXJ16kPFWg",
+    "Product of Array Except Self": "bNvIQI2wAjk",
+    "Maximum Subarray": "5WZl3MMT0Eg",
+    "3Sum": "jzZsG8nc2N0",
+    "Container With Most Water": "UuiTKBwPgAo",
+    "Longest Substring Without Repeating Characters": "wi4pETE4Ubhk",
+    "Climbing Stairs": "Y0lT9FSckIM",
+    "Binary Search": "s4DPMJct5J4",
+}
+
+_GENERATED_SOLUTIONS_DIR = Path(__file__).resolve().parent / "generated_solutions"
+_GENERATED_SOLUTIONS_CACHE = {}
+
+
+def _slug_title(title: str) -> str:
+    return re.sub(r"[^\w\-]", "_", (title or "").strip())[:80]
+
+
+def _load_generated_solution_override(title: str):
+    """Load generated solution JSON for title if present; cache results."""
+    if title in _GENERATED_SOLUTIONS_CACHE:
+        return _GENERATED_SOLUTIONS_CACHE[title]
+    slug = _slug_title(title)
+    path = _GENERATED_SOLUTIONS_DIR / f"{slug}.json"
+    if not path.exists():
+        _GENERATED_SOLUTIONS_CACHE[title] = None
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(data, dict):
+            data = None
+    except Exception:
+        data = None
+    _GENERATED_SOLUTIONS_CACHE[title] = data
+    return data
+
+
+def _get_metadata_and_registry_flag(title: str, raw_approaches: list):
+    """Return (metadata, metadata_from_registry). Use registry when present so signature filtering only runs for registered problems."""
+    try:
+        from problem_metadata_registry import get_metadata
+        entry = get_metadata(title)
+        if entry is not None:
+            return (entry[0], True)
+    except Exception:
+        pass
+    meta = _infer_alignment_metadata(title, raw_approaches) if raw_approaches else None
+    return (meta, False)
+
+
+def get_solutions_for_problem(title: str, enforce_signature: bool = True):
+    """Return dict with approaches (list), optional prerequisites, common_pitfalls, youtube_video_id. Or None.
+    Approaches are in LEARNING ORDER: Brute Force first, then Better, then Optimal. Each has intuition, algorithm, code (all langs), complexity."""
+    generated = _load_generated_solution_override(title)
+    if generated and isinstance(generated.get("approaches"), list):
+        raw_approaches = list(generated.get("approaches") or [])
+        metadata, from_registry = _get_metadata_and_registry_flag(title, raw_approaches)
+        approaches = [
+            _normalize_approach(
+                a,
+                title,
+                metadata=metadata,
+                # Generated outputs are already stage-validated; keep all language blocks visible.
+                enforce_signature=False,
+                metadata_from_registry=from_registry,
+            )
+            for a in raw_approaches
+            if isinstance(a, dict)
+        ]
+        out = dict(generated)
+        out["approaches"] = approaches
+        if not out.get("pattern_recognition"):
+            out["pattern_recognition"] = (out.get("patternRecognition") or "").strip()
+        if not out.get("dry_run"):
+            out["dry_run"] = (out.get("dryRun") or "").strip()
+        if not out.get("edge_cases"):
+            out["edge_cases"] = (out.get("edgeCases") or "").strip()
+        if not out.get("common_pitfalls"):
+            out["common_pitfalls"] = (
+                out.get("commonPitfalls")
+                or out.get("pitfalls")
+                or ""
+            )
+        out["youtube_video_id"] = YOUTUBE_VIDEO_IDS.get(title)
+        return out
+
     if title in RICH_SOLUTIONS:
         rich = RICH_SOLUTIONS[title]
-        approaches = [_normalize_approach(a, title) for a in rich["approaches"]]
-        return {**rich, "approaches": approaches}
+        raw_approaches = list(rich["approaches"] or [])
+        metadata, from_registry = _get_metadata_and_registry_flag(title, raw_approaches)
+        approaches = [
+            _normalize_approach(
+                a,
+                title,
+                metadata=metadata,
+                enforce_signature=enforce_signature,
+                metadata_from_registry=from_registry,
+            )
+            for a in raw_approaches
+        ]
+        out = {**rich, "approaches": approaches}
+        out["youtube_video_id"] = YOUTUBE_VIDEO_IDS.get(title)
+        return out
     entries = SOLUTIONS.get(title)
     if not entries:
         return None
-    approaches = [_normalize_approach(_simple_entry_to_rich(e), title) for e in entries]
-    return {"approaches": approaches, "prerequisites": None, "common_pitfalls": None}
+    raw_approaches = [_simple_entry_to_rich(e) for e in entries]
+    metadata, from_registry = _get_metadata_and_registry_flag(title, raw_approaches)
+    approaches = [
+        _normalize_approach(
+            e,
+            title,
+            metadata=metadata,
+            enforce_signature=enforce_signature,
+            metadata_from_registry=from_registry,
+        )
+        for e in raw_approaches
+    ]
+    return {
+        "approaches": approaches,
+        "prerequisites": None,
+        "common_pitfalls": None,
+        "youtube_video_id": YOUTUBE_VIDEO_IDS.get(title),
+    }

@@ -1,0 +1,14 @@
+{
+  "problems_scanned": 116,
+  "languages": [
+    "python"
+  ],
+  "all_approaches": true,
+  "runs_total": 232,
+  "runs_passed": 232,
+  "runs_failed": 0,
+  "missing_code_entries": 0,
+  "signature_rejected": 0,
+  "problems_with_no_visible_tests": 0,
+  "failures": []
+}

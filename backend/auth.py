@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 import os
 from models import UserInDB, TokenData, UserRole
+from database import get_db
 
 # Load environment variables
 ROOT_DIR = Path(__file__).parent
@@ -49,14 +50,20 @@ def create_refresh_token(data: dict) -> str:
     return encoded_jwt
 
 
-def decode_token(token: str) -> TokenData:
+def decode_token(token: str, expected_type: str = "access") -> TokenData:
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         user_id: str = payload.get("sub")
+        token_type: str = payload.get("type")
         if user_id is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid authentication credentials",
+            )
+        if expected_type and token_type != expected_type:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token type",
             )
         return TokenData(user_id=user_id)
     except JWTError:
@@ -66,11 +73,13 @@ def decode_token(token: str) -> TokenData:
         )
 
 
-async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security), db=None) -> UserInDB:
+async def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+    db=Depends(get_db),
+) -> UserInDB:
     token = credentials.credentials
-    token_data = decode_token(token)
-    
-    # Fetch user from database
+    token_data = decode_token(token, expected_type="access")
+
     user = await db.users.find_one({"id": token_data.user_id}, {"_id": 0})
     if user is None:
         raise HTTPException(
@@ -83,6 +92,17 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         user['created_at'] = datetime.fromisoformat(user['created_at'])
     
     return UserInDB(**user)
+
+
+def get_user_id_from_refresh_token(refresh_token: str) -> str:
+    """Validate refresh token and return user id."""
+    token_data = decode_token(refresh_token, expected_type="refresh")
+    if not token_data.user_id:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid refresh token",
+        )
+    return token_data.user_id
 
 
 async def get_current_admin_user(current_user: UserInDB = Depends(get_current_user)) -> UserInDB:

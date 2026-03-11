@@ -1,0 +1,36 @@
+{
+  "pattern_recognition": "This problem falls under the category of string manipulation. The key signals are the requirement to reverse the string in-place and the constraint of using O(1) extra memory, indicating that we need to modify the input array directly without using additional data structures.",
+  "approaches": [
+    {
+      "title": "Brute Force",
+      "intuition": "Create a new array and copy characters from the original array in reverse order.",
+      "algorithm": "Iterate through the original array from the last index to the first, copying each character to a new array.",
+      "complexity": "See approach.",
+      "code": "def reverseString(s):\n    left, right = 0, len(s) - 1\n    while left < right:\n        s[left], s[right] = s[right], s[left]\n        left += 1\n        right -= 1\n",
+      "code_python": "def reverseString(s):\n    left, right = 0, len(s) - 1\n    while left < right:\n        s[left], s[right] = s[right], s[left]\n        left += 1\n        right -= 1\n",
+      "code_javascript": "function reverseString(s) {\n    let left = 0;\n    let right = s.length - 1;\n    while (left < right) {\n        [s[left], s[right]] = [s[right], s[left]];\n        left++;\n        right--;\n    }\n}",
+      "code_java": "class Solution {\n    public void reverseString(String[] s) {\n        int n = s.length;\n        String[] reversed = new String[n];\n        for (int i = 0; i < n; i++) {\n            reversed[i] = s[n - 1 - i];\n        }\n        for (int i = 0; i < n; i++) {\n            s[i] = reversed[i];\n        }\n    }\n}",
+      "code_cpp": "#include <vector>\n#include <string>\nusing namespace std;\nclass Solution {\n    public:\n    void reverseString(const vector<string>& s) {\n        vector<string> reversed(s.size());\n        for (int i = 0; i < s.size(); ++i) {\n            reversed[i] = s[s.size() - 1 - i];\n        }\n        for (int i = 0; i < reversed.size(); ++i) {\n            cout << reversed[i] << \" \";\n        }\n    }\n}\n;",
+      "code_c": "void reverseString(char* s, int n) {\n    for (int i = 0, j = n - 1; i < j; i++, j--) {\n        char t = s[i]; s[i] = s[j]; s[j] = t;\n    }\n}",
+      "code_go": "func reverseString(s []string) {\n    n := len(s)\n    reversed := make([]string, n)\n    for i := 0; i < n; i++ {\n        reversed[i] = s[n-1-i]\n    }\n    for i := 0; i < n; i++ {\n        s[i] = reversed[i]\n    }\n}",
+      "code_csharp": "public class Solution {\n    public void reverseString(string[] s) {\n        int n = s.Length;\n        string[] reversed = new string[n];\n        for (int i = 0; i < n; i++) {\n            reversed[i] = s[n - 1 - i];\n        }\n        for (int i = 0; i < n; i++) {\n            s[i] = reversed[i];\n        }\n    }\n}"
+    },
+    {
+      "title": "Optimal Approach",
+      "intuition": "Use two pointers to swap characters in the original array in-place, moving towards the center.",
+      "algorithm": "Initialize two pointers, one at the start and one at the end of the array. Swap the characters at these pointers and move the pointers towards the center until they meet.",
+      "complexity": "See approach.",
+      "code": "def reverseString(s):\n    left, right = 0, len(s) - 1\n    while left < right:\n        s[left], s[right] = s[right], s[left]\n        left += 1\n        right -= 1\n",
+      "code_python": "def reverseString(s):\n    left, right = 0, len(s) - 1\n    while left < right:\n        s[left], s[right] = s[right], s[left]\n        left += 1\n        right -= 1\n",
+      "code_javascript": "function reverseString(s) {\n    let left = 0;\n    let right = s.length - 1;\n    while (left < right) {\n        [s[left], s[right]] = [s[right], s[left]];\n        left++;\n        right--;\n    }\n}",
+      "code_java": "class Solution {\n    public void reverseString(String[] s) {\n        int left = 0;\n        int right = s.length - 1;\n        while (left < right) {\n            String temp = s[left];\n            s[left] = s[right];\n            s[right] = temp;\n            left++;\n            right--;\n        }\n    }\n}",
+      "code_cpp": "#include <vector>\n#include <string>\nusing namespace std;\nclass Solution {\n    public:\n    void reverseString(vector<string>& s) {\n        int left = 0;\n        int right = s.size() - 1;\n        while (left < right) {\n            swap(s[left], s[right]);\n            left++;\n            right--;\n        }\n    }\n}\n;",
+      "code_go": "func reverseString(s []string) {\n    left, right := 0, len(s)-1\n    for left < right {\n        s[left], s[right] = s[right], s[left]\n        left++\n        right--\n    }\n}",
+      "code_csharp": "public class Solution {\n    public void reverseString(string[] s) {\n        int left = 0;\n        int right = s.Length - 1;\n        while (left < right) {\n            string temp = s[left];\n            s[left] = s[right];\n            s[right] = temp;\n            left++;\n            right--;\n        }\n    }\n}"
+    }
+  ],
+  "dry_run": "For the input s = ['h', 'e', 'l', 'l', 'o'], initialize two pointers: left at index 0 and right at index 4. Swap s[left] and s[right] to get ['o', 'e', 'l', 'l', 'h']. Move left to index 1 and right to index 3. Swap s[1] and s[3] to get ['o', 'l', 'l', 'e', 'h']. Move left to index 2 and right to index 2. Since left equals right, the process stops, and the final output is ['o', 'l', 'l', 'e', 'h'].",
+  "edge_cases": "An empty input array should return an empty array. A single element array should return the same array. Arrays with duplicate characters should be handled correctly. Large inputs up to 10^5 characters should be processed efficiently without exceeding memory limits.",
+  "common_pitfalls": "Common mistakes include: 1) Not handling the case of an empty array, which could lead to index errors. 2) Using additional data structures for storage, which violates the O(1) space requirement. 3) Failing to swap characters correctly, which could result in an incorrect final output.",
+  "youtube_video_id": null
+}
