@@ -24,7 +24,7 @@ const DashboardPage = () => {
     }
     fetchProgress();
     fetchActivity(selectedYear);
-  }, [user, authLoading]);
+  }, [user, authLoading, navigate, selectedYear]);
 
   useEffect(() => {
     if (!user) return;

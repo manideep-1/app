@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/utils/api';
@@ -96,6 +96,23 @@ const ProblemsPage = () => {
     }
   };
 
+  const fetchProblems = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = {};
+      if (difficulty !== 'all') params.difficulty = difficulty;
+      if (tag !== 'all') params.tag = tag;
+      if (company !== 'all') params.company = company;
+      const response = await api.get('/problems', { params });
+      setAllProblems(response.data || []);
+    } catch (error) {
+      toast.error('Failed to load problems');
+      setAllProblems([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [difficulty, tag, company]);
+
   useEffect(() => {
     if (authLoading) return;
     fetchProblems();
@@ -106,12 +123,12 @@ const ProblemsPage = () => {
     } else {
       setAssignedMap({});
     }
-  }, [user, authLoading]);
+  }, [user, authLoading, fetchProblems]);
 
   useEffect(() => {
     if (authLoading) return;
     fetchProblems();
-  }, [difficulty, tag, company, authLoading]);
+  }, [difficulty, tag, company, authLoading, fetchProblems]);
 
   useEffect(() => {
     setShuffledIds(null);
@@ -145,24 +162,7 @@ const ProblemsPage = () => {
     }
   };
 
-  const fetchProblems = async () => {
-    setLoading(true);
-    try {
-      const params = {};
-      if (difficulty !== 'all') params.difficulty = difficulty;
-      if (tag !== 'all') params.tag = tag;
-      if (company !== 'all') params.company = company;
-      const response = await api.get('/problems', { params });
-      setAllProblems(response.data || []);
-    } catch (error) {
-      toast.error('Failed to load problems');
-      setAllProblems([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filteredByStatus = (list) => {
+  const filteredByStatus = useCallback((list) => {
     if (!list || status === 'all') return list;
     const solved = new Set(progress?.solved_problem_ids || []);
     const attempted = new Set(progress?.attempted_problem_ids || []);
@@ -170,7 +170,7 @@ const ProblemsPage = () => {
     if (status === 'attempted') return list.filter((p) => attempted.has(p.id));
     if (status === 'not_started') return list.filter((p) => !solved.has(p.id) && !attempted.has(p.id));
     return list;
-  };
+  }, [status, progress]);
 
   const problemsToShow = useMemo(() => {
     let list = filteredByStatus(allProblems);
@@ -192,7 +192,7 @@ const ProblemsPage = () => {
       return out;
     }
     return order;
-  }, [allProblems, progress, status, searchQuery, sortBy, sortOrder, shuffledIds]);
+  }, [allProblems, searchQuery, sortBy, sortOrder, shuffledIds, filteredByStatus]);
 
   // Group by tag: "Array" → array related problems list, "Hash Table" → hashmap related, etc.
   const problemsByTag = useMemo(() => {

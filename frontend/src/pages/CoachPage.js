@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import api, { API_BASE } from '@/utils/api';
@@ -25,6 +25,33 @@ export default function CoachPage() {
   const currentSessionIdRef = useRef(currentSessionId);
   currentSessionIdRef.current = currentSessionId;
 
+  const loadSessions = useCallback(async () => {
+    if (sessionsLoadingRef.current) return;
+    sessionsLoadingRef.current = true;
+    try {
+      const { data } = await api.get('coach/session-list');
+      setSessions(data.sessions || []);
+      if (!currentSessionIdRef.current && (data.sessions || []).length > 0) {
+        setCurrentSessionId((data.sessions || [])[0].id);
+      }
+    } catch (err) {
+      const status = err.response?.status;
+      const noResponse = !err.response;
+      const detail = err.response?.data?.detail ?? err.message ?? 'Failed to load sessions';
+      let hint = 'Failed to load sessions';
+      if (noResponse) {
+        hint = `Cannot reach backend at ${COACH_API_BASE_LABEL}. Start it with: cd backend && uvicorn server:app --reload`;
+      } else if (status === 404) {
+        hint = `Coach API not found at ${COACH_API_BASE_LABEL}/coach/session-list. Start backend: cd backend && uvicorn server:app --reload`;
+      } else if (typeof detail === 'string') {
+        hint = detail;
+      }
+      toast.error(hint);
+    } finally {
+      sessionsLoadingRef.current = false;
+    }
+  }, []);
+
   useEffect(() => {
     if (authLoading) return;
     if (!user) {
@@ -32,7 +59,7 @@ export default function CoachPage() {
       return;
     }
     loadSessions();
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, navigate, loadSessions]);
 
   useEffect(() => {
     if (location.state?.problemContext) {
@@ -56,33 +83,6 @@ export default function CoachPage() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  const loadSessions = async () => {
-    if (sessionsLoadingRef.current) return;
-    sessionsLoadingRef.current = true;
-    try {
-      const { data } = await api.get('coach/session-list');
-      setSessions(data.sessions || []);
-      if (!currentSessionId && (data.sessions || []).length > 0) {
-        setCurrentSessionId(data.sessions[0].id);
-      }
-    } catch (err) {
-      const status = err.response?.status;
-      const noResponse = !err.response;
-      const detail = err.response?.data?.detail ?? err.message ?? 'Failed to load sessions';
-      let hint = 'Failed to load sessions';
-      if (noResponse) {
-        hint = `Cannot reach backend at ${COACH_API_BASE_LABEL}. Start it with: cd backend && uvicorn server:app --reload`;
-      } else if (status === 404) {
-        hint = `Coach API not found at ${COACH_API_BASE_LABEL}/coach/session-list. Start backend: cd backend && uvicorn server:app --reload`;
-      } else if (typeof detail === 'string') {
-        hint = detail;
-      }
-      toast.error(hint);
-    } finally {
-      sessionsLoadingRef.current = false;
-    }
-  };
 
   const loadSessionMessages = async (sessionId) => {
     try {
