@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 // In dev, call backend directly to avoid flaky CRA proxy behavior on some POST requests.
-// In production, default to same-origin /api unless REACT_APP_BACKEND_URL is provided.
+// In production (e.g. Vercel): set REACT_APP_BACKEND_URL to your deployed backend URL so
+// login, signup, and all API calls work. If unset, requests go to same-origin /api (no backend on Vercel).
 const isDevOrigin =
   typeof window !== 'undefined' &&
   ['localhost', '127.0.0.1'].includes(window.location?.hostname) &&
