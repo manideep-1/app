@@ -36,7 +36,7 @@ from auth import (
 from code_executor import CodeExecutor, get_available_runtimes
 from docker_executor import run_in_docker
 from signature_validator import validate_signature
-from email_otp import send_otp_email, get_otp_expire_minutes, generate_otp
+from email_otp import send_otp_email, get_otp_expire_minutes, generate_otp, smtp_configured
 from google.oauth2 import id_token as google_id_token
 from google.auth.transport import requests as google_requests
 from seed_hints import get_hints_for_problem
@@ -555,7 +555,10 @@ async def send_signup_otp(body: SendSignupOtpRequest, database=Depends(get_db)):
     except RuntimeError as e:
         await database.pending_signups.delete_many({"email": email_normalized})
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Unable to send email. Try again later.")
-    return {"message": "OTP sent to your email"}
+    response = {"message": "OTP sent to your email"}
+    if not smtp_configured():
+        response["dev_otp"] = otp
+    return response
 
 
 @api_router.post("/auth/verify-signup-otp", response_model=Token, status_code=status.HTTP_201_CREATED)

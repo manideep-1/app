@@ -32,6 +32,11 @@ def _smtp_configured() -> bool:
     )
 
 
+def smtp_configured() -> bool:
+    """Return True if SMTP is configured so OTP can be sent by email."""
+    return _smtp_configured()
+
+
 def send_otp_email(to_email: str, otp: str) -> None:
     """Send OTP to the given email. If SMTP is not configured, log OTP to console."""
     app_name = os.environ.get("APP_NAME", "ifelse")

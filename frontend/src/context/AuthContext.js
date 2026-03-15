@@ -65,7 +65,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const sendSignupOtp = async (email) => {
-    await api.post('/auth/send-signup-otp', { email });
+    const response = await api.post('/auth/send-signup-otp', { email });
+    return response.data;
   };
 
   const registerWithOtp = async (email, otp, username, password, full_name) => {
