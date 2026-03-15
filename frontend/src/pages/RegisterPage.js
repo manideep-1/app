@@ -24,12 +24,20 @@ const RegisterPage = () => {
   const { sendSignupOtp, registerWithOtp, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
 
+  const [devOtp, setDevOtp] = useState(null);
+
   const handleSendOtp = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setDevOtp(null);
     try {
-      await sendSignupOtp(formData.email);
-      toast.success('Verification code sent to your email');
+      const data = await sendSignupOtp(formData.email);
+      if (data?.dev_otp) {
+        setDevOtp(data.dev_otp);
+        toast.success(`Email not configured. Use this code: ${data.dev_otp}`);
+      } else {
+        toast.success('Verification code sent to your email');
+      }
       setStep(2);
     } catch (error) {
       const msg = error.response?.data?.detail || 'Failed to send code';
@@ -199,7 +207,9 @@ const RegisterPage = () => {
           ) : (
             <form onSubmit={handleVerifyAndRegister} className="space-y-6" data-testid="verify-otp-form">
               <p className="text-sm text-muted-foreground">
-                We sent a {OTP_LENGTH}-digit code to <strong>{formData.email}</strong>
+                {devOtp
+                  ? <>Use this code (email not configured): <strong className="text-foreground">{devOtp}</strong></>
+                  : <>We sent a {OTP_LENGTH}-digit code to <strong>{formData.email}</strong></>}
               </p>
               <div className="space-y-2">
                 <Label htmlFor="otp">Verification code</Label>
@@ -226,7 +236,7 @@ const RegisterPage = () => {
               </Button>
               <button
                 type="button"
-                onClick={() => setStep(1)}
+                onClick={() => { setStep(1); setDevOtp(null); setOtp(''); }}
                 className="w-full text-sm text-muted-foreground hover:text-foreground"
               >
                 Use a different email

@@ -9,6 +9,8 @@ import IfElseIcon from '@/components/IfElseIcon';
 import { toast } from 'sonner';
 
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+const DEMO_EMAIL = 'demo@ifelse.com';
+const DEMO_PASSWORD = 'demo123';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -18,6 +20,22 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from || '/problems';
+
+  const handleDemoLogin = async (e) => {
+    e.preventDefault();
+    setEmail(DEMO_EMAIL);
+    setPassword(DEMO_PASSWORD);
+    setLoading(true);
+    try {
+      await login(DEMO_EMAIL, DEMO_PASSWORD);
+      toast.success('Demo login successful!');
+      navigate(from, { replace: true });
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Demo login failed');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -100,6 +118,16 @@ const LoginPage = () => {
               data-testid="login-submit-btn"
             >
               {loading ? 'Logging in...' : 'Login'}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full border-border/50"
+              disabled={loading}
+              onClick={handleDemoLogin}
+              data-testid="demo-login-btn"
+            >
+              Try demo (demo@ifelse.com)
             </Button>
             {GOOGLE_CLIENT_ID && (
               <>
