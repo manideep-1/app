@@ -46,6 +46,12 @@ Your backend must allow the Vercel frontend origin. Set this on the **backend** 
 
 Do **not** use `*` if the backend uses credentials (cookies/auth headers); list the exact frontend origin(s).
 
+### Demo login not working on Vercel?
+
+1. **Backend must be deployed** (e.g. Railway, Render) and running. The demo user (`demo@ifelse.com` / `demo123`) is created when the backend starts.
+2. **Vercel:** Set **REACT_APP_BACKEND_URL** to that backend URL (no `/api`). Redeploy after changing env vars so the build picks them up.
+3. **Backend env:** Set **CORS_ORIGINS** to include your Vercel URL, e.g. `https://app-c5gt9lew7-laxmishettymanideep-7351s-projects.vercel.app`. Use the exact URL from the browser address bar.
+
 ## 3. Why you were getting 404 (SPA routes)
 
 - The app is a **single-page app (SPA)**. There is only one real file: `index.html`. All routes (`/dashboard`, `/problems`, `/coach`, `/login`, etc.) are handled by **React Router** in the browser.

@@ -12,6 +12,22 @@ const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const DEMO_EMAIL = 'demo@ifelse.com';
 const DEMO_PASSWORD = 'demo123';
 
+function getLoginErrorMessage(error, defaultMsg) {
+  if (!error) return defaultMsg;
+  const status = error.response?.status;
+  const data = error.response?.data;
+  const isNetworkOrUnreachable =
+    error.code === 'ERR_NETWORK' ||
+    status === 404 ||
+    (status === 200 && typeof data === 'string');
+  if (isNetworkOrUnreachable) {
+    return 'Cannot reach the server. On Vercel: set REACT_APP_BACKEND_URL to your backend URL in Project Settings → Environment Variables, then redeploy.';
+  }
+  const detail = data?.detail;
+  if (detail) return Array.isArray(detail) ? detail[0]?.msg ?? detail : detail;
+  return defaultMsg;
+}
+
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -31,7 +47,7 @@ const LoginPage = () => {
       toast.success('Demo login successful!');
       navigate(from, { replace: true });
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Demo login failed');
+      toast.error(getLoginErrorMessage(error, 'Demo login failed'));
     } finally {
       setLoading(false);
     }
@@ -46,7 +62,7 @@ const LoginPage = () => {
       toast.success('Login successful!');
       navigate(from, { replace: true });
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Login failed');
+      toast.error(getLoginErrorMessage(error, 'Login failed'));
     } finally {
       setLoading(false);
     }
